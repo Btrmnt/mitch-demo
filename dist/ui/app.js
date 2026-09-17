@@ -1,15 +1,64 @@
-import { fetchedActionSource } from "../actions/source.js?v=ec6377a";
-import { validateActionsPayload } from "../actions/validate.js?v=ec6377a";
-import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=ec6377a";
-import { initMasonry, relayoutMasonry } from "./masonry.js?v=ec6377a";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, } from "./state.js?v=ec6377a";
+import { fetchedActionSource } from "../actions/source.js?v=40ca430";
+import { validateActionsPayload } from "../actions/validate.js?v=40ca430";
+import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=40ca430";
+import { showToast } from "./toast.js?v=40ca430";
+import { initMasonry, relayoutMasonry } from "./masonry.js?v=40ca430";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=40ca430";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=ec6377a";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=40ca430";
 let state = initialUiState();
 let actions = [];
+/**
+ * Module-scoped so refresh() can reach it. The swap point is still one
+ * binding — main() assigns it — but reads now happen from two places: once
+ * at startup and again whenever the reader comes back from another system.
+ */
+let source = null;
+/** The upstream status of an item, i.e. before any local decision. */
+function upstreamStatus(id) {
+    return actions.find((a) => a.id === id)?.status ?? "needs_you";
+}
+/**
+ * Re-reads the source and folds it against local decisions.
+ *
+ * The trigger is the reader coming back to this tab. Someone who fixes a fee
+ * in PropertyMe and switches back should not have to tell Mitch what they
+ * just did — the systems of record are the truth, and reconcile() drops any
+ * local decision the source has overtaken.
+ *
+ * Failures are swallowed on purpose. This runs on every tab focus, and a
+ * refetch that 404s or returns something malformed must leave the screen
+ * exactly as it was rather than replacing a working queue with an error.
+ */
+let refreshing = false;
+async function refresh() {
+    if (refreshing || source === null || document.hidden)
+        return;
+    refreshing = true;
+    try {
+        const fresh = await source();
+        if (validateActionsPayload({ actions: fresh }).length > 0)
+            return;
+        const changed = fresh.length !== actions.length ||
+            fresh.some((a, i) => a.id !== actions[i]?.id || a.status !== actions[i]?.status);
+        const before = state;
+        actions = fresh;
+        state = reconcile(fresh, state);
+        if (changed || state !== before) {
+            render();
+            showToast("Updated from the source systems.");
+        }
+    }
+    catch {
+        // Keep what is on screen.
+    }
+    finally {
+        refreshing = false;
+    }
+}
 function render() {
     const view = deriveView(actions, state);
     const root = document.getElementById("app");
@@ -107,10 +156,23 @@ function bindEvents(root) {
         // this" and "someone dealt with it elsewhere".
         if (action === "approve" && id) {
             state = applyDecision(state, id, "sent", "Sent — Mitch is entering it in PropertyMe.", { time: nowLabel(),
-                text: "Approved by you — Mitch is entering it in PropertyMe" });
+                text: "Approved by you — Mitch is entering it in PropertyMe" }, upstreamStatus(id));
         }
         if (action === "close-handled" && id) {
-            state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.", { time: nowLabel(), text: "Closed by you — handled outside Mitch" });
+            state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.", { time: nowLabel(), text: "Closed by you — handled outside Mitch" }, upstreamStatus(id));
+        }
+        // A link to a system of record. With no url — which is every link in the
+        // demo payloads — the button says what it would do rather than going
+        // nowhere. This writes no state, so it is handled here and returns
+        // before the identity check below.
+        if (action === "open-system" && id) {
+            const link = actions.find((a) => a.id === id)?.links?.[Number(el?.dataset.link)];
+            if (link) {
+                if (link.url)
+                    window.open(link.url, "_blank", "noopener,noreferrer");
+                else
+                    showToast(link.opens);
+            }
         }
         // "assign", "redirect" and "not-managed" have no branch. They are inert
         // this phase: choosing one shuts the menu below and writes nothing. A
@@ -127,7 +189,7 @@ async function main() {
     // The swap point. A Highland-backed ActionSource replaces the right-hand
     // side of this one binding and nothing else here changes; the annotation
     // is what makes TypeScript check that whatever is bound conforms.
-    const source = fetchedActionSource(PAYLOAD_URL);
+    source = fetchedActionSource(PAYLOAD_URL);
     const loaded = await source();
     // The runtime half of check:actions, at the source boundary. That check
     // only runs at authoring time over files in this repo; a live source's
@@ -147,6 +209,15 @@ async function main() {
     // The resize listener, attached once here for the same reason the click and
     // keydown listeners are — never from inside render().
     initMasonry();
+    // Coming back to this tab is the signal that something may have changed
+    // elsewhere. Both events fire in practice — visibilitychange when Teams
+    // switches tabs, focus when the window itself regains it — and refresh()
+    // guards against overlapping runs.
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden)
+            void refresh();
+    });
+    window.addEventListener("focus", () => void refresh());
     render();
 }
 main().catch((err) => {

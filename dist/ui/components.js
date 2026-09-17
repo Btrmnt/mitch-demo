@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=ec6377a";
+import { esc } from "./escape.js?v=40ca430";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -200,6 +200,28 @@ export function cardGrid(cards) {
 function metaRow(label, value) {
     return `<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`;
 }
+/**
+ * Where a person would go to act on this — the systems of record, not pages
+ * in this UI. Rendered as secondary buttons, since going to PropertyMe is a
+ * real alternative to deciding here, not a way out of the card.
+ *
+ * Returns nothing when an item names no systems: a "Where to fix this"
+ * heading over an empty row states a falsehood.
+ */
+export function linkRow(card) {
+    if (!card.links?.length)
+        return "";
+    const buttons = card.links
+        .map((l, i) => `<button class="btn-secondary link-btn" data-action="open-system" ` +
+        `data-id="${esc(card.id)}" data-link="${esc(String(i))}" ` +
+        `title="${esc(l.opens)}">${esc(l.label)}</button>`)
+        .join("");
+    return `
+          <section>
+            <div class="modal__eyebrow">Where to fix this</div>
+            <div class="link-row">${buttons}</div>
+          </section>`;
+}
 export function modal(card) {
     if (!card)
         return "";
@@ -248,6 +270,8 @@ export function modal(card) {
             <div class="modal__eyebrow">History</div>
             <ul class="modal__history">${history}</ul>
           </section>
+
+          ${linkRow(card)}
 
           ${footer}
         </div>

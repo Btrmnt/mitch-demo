@@ -57,6 +57,25 @@ export function validateActionsPayload(input) {
                 }
             });
         }
+        // links is optional, but a malformed one renders a button that lies about
+        // where it goes — checked as strictly as a required field when present.
+        if (a.links !== undefined) {
+            if (!Array.isArray(a.links)) {
+                issues.push({ id, message: "links must be an array when present" });
+            }
+            else {
+                a.links.forEach((l, i) => {
+                    for (const field of ["system", "label", "opens"]) {
+                        if (!isNonEmptyString(l?.[field])) {
+                            issues.push({ id, message: `links[${i}].${field} is required` });
+                        }
+                    }
+                    if (l?.url !== undefined && !isNonEmptyString(l.url)) {
+                        issues.push({ id, message: `links[${i}].url must be a non-empty string when present` });
+                    }
+                });
+            }
+        }
         if (isNonEmptyString(a.id)) {
             if (seen.has(a.id)) {
                 issues.push({ id, message: `duplicate id ${a.id}` });

@@ -30,6 +30,18 @@
           "time": "now",
           "text": "Awaiting your review"
         }
+      ],
+      "links": [
+        {
+          "system": "PropertyMe",
+          "label": "Open in PropertyMe",
+          "opens": "Opens the owner record for SP 41207 in PropertyMe, at the bank details. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "FLK",
+          "label": "View the signed MAA",
+          "opens": "Opens the executed MAA in FLK so the bank details can be read against the record. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -62,6 +74,18 @@
           "time": "now",
           "text": "Awaiting your review"
         }
+      ],
+      "links": [
+        {
+          "system": "PropertyMe",
+          "label": "Open in PropertyMe",
+          "opens": "Opens the compliance tab for SP 41207 in PropertyMe, where the pool certificate is recorded. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "Compliance register",
+          "label": "Open the register",
+          "opens": "Opens Highland's compliance register filtered to this property. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -91,6 +115,18 @@
         {
           "time": "now",
           "text": "Waiting on leasing confirmation"
+        }
+      ],
+      "links": [
+        {
+          "system": "PropertyMe",
+          "label": "Open in PropertyMe",
+          "opens": "Opens the tenancy record for SP 39980 in PropertyMe, at the letting type. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "FLK",
+          "label": "View the signed MAA",
+          "opens": "Opens the MAA in FLK at the fee section that carries the casual-letting marker. Mitch keeps this action open until the change comes back from the source."
         }
       ]
     },
@@ -122,6 +158,13 @@
           "time": "now",
           "text": "Sent — no action needed"
         }
+      ],
+      "links": [
+        {
+          "system": "PropertyMe",
+          "label": "Open in PropertyMe",
+          "opens": "Opens SP 41102 in PropertyMe, at the go-live status. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -151,6 +194,13 @@
         {
           "time": "08:03",
           "text": "BDM notified in Teams — visibility only"
+        }
+      ],
+      "links": [
+        {
+          "system": "FLK",
+          "label": "View the signed MAA",
+          "opens": "Opens FLK document FLK-2291, the MAA this case was opened from. Mitch keeps this action open until the change comes back from the source."
         }
       ]
     },
@@ -184,6 +234,13 @@
           "time": "now",
           "text": "Held — awaiting your assignment"
         }
+      ],
+      "links": [
+        {
+          "system": "PropertyMe",
+          "label": "Open the portfolio",
+          "opens": "Opens the Cronulla portfolio in PropertyMe so the silo boundary can be checked. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -216,6 +273,18 @@
           "time": "now",
           "text": "Awaiting your correction"
         }
+      ],
+      "links": [
+        {
+          "system": "PropertyMe",
+          "label": "Open the fee schedule",
+          "opens": "Opens the fee schedule for SP 41355 in PropertyMe, at the management fee field. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "FLK",
+          "label": "View the signed MAA",
+          "opens": "Opens the MAA in FLK at the fee schedule, to read what was actually agreed. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -245,6 +314,13 @@
         {
           "time": "now",
           "text": "Watching the trust account for the deposit"
+        }
+      ],
+      "links": [
+        {
+          "system": "Trust account",
+          "label": "Open the trust account",
+          "opens": "Opens the trust account filtered to SP 40904, where the deposit would appear. Mitch keeps this action open until the change comes back from the source."
         }
       ]
     },
@@ -278,6 +354,18 @@
           "time": "now",
           "text": "3 properties queued — awaiting your call"
         }
+      ],
+      "links": [
+        {
+          "system": "Agentbox",
+          "label": "Check Agentbox status",
+          "opens": "Opens the Agentbox integration health page. Nothing is blocked meanwhile — the Smartsheet fallback is carrying onboarding. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "Smartsheet",
+          "label": "Open the fallback sheet",
+          "opens": "Opens the Smartsheet fallback that onboarding switched to at 07:25. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -309,6 +397,13 @@
           "time": "now",
           "text": "Awaiting your confirmation"
         }
+      ],
+      "links": [
+        {
+          "system": "PropertyMe",
+          "label": "Open the property notes",
+          "opens": "Opens SP 40118 in PropertyMe, at the special instructions these requirements were written to. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -339,6 +434,18 @@
         {
           "time": "now",
           "text": "Graded conditional — listing gated"
+        }
+      ],
+      "links": [
+        {
+          "system": "Compliance register",
+          "label": "Open the register",
+          "opens": "Opens the rubric result for SP 40662, showing the ten passes and the one outstanding item. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "PropertyMe",
+          "label": "Open the documents",
+          "opens": "Opens the documents tab for SP 40662, where a replacement smoke alarm certificate is filed. Mitch keeps this action open until the change comes back from the source."
         }
       ]
     },
@@ -372,6 +479,13 @@
           "time": "now",
           "text": "Awaiting your decision"
         }
+      ],
+      "links": [
+        {
+          "system": "FLK",
+          "label": "Open the identity documents",
+          "opens": "Opens the licence and passport in FLK, side by side with the address discrepancy marked. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -403,6 +517,18 @@
         {
           "time": "now",
           "text": "Held — awaiting your confirmation"
+        }
+      ],
+      "links": [
+        {
+          "system": "ASIC",
+          "label": "Open the ABN record",
+          "opens": "Opens the ASIC record for ABN 51 824 753 556, at the branch registration. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "PropertyMe",
+          "label": "Open the owner record",
+          "opens": "Opens the owner record for SP 41102 in PropertyMe. Mitch keeps this action open until the change comes back from the source."
         }
       ]
     },
@@ -436,6 +562,18 @@
           "time": "now",
           "text": "Held — awaiting your resolution"
         }
+      ],
+      "links": [
+        {
+          "system": "ASIC",
+          "label": "Open the director list",
+          "opens": "Opens the ASIC director list for the signing entity. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "FLK",
+          "label": "View the signature block",
+          "opens": "Opens the MAA in FLK at the signature block read as 'D. Marsh, Director'. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -465,6 +603,18 @@
         {
           "time": "16:22",
           "text": "Ad posted to Snug"
+        }
+      ],
+      "links": [
+        {
+          "system": "Agentbox",
+          "label": "View the live ad",
+          "opens": "Opens the published ad for SP 39980 in Agentbox. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "Snug",
+          "label": "View the live ad",
+          "opens": "Opens the published ad for SP 39980 in Snug. Mitch keeps this action open until the change comes back from the source."
         }
       ]
     },
@@ -498,6 +648,18 @@
           "time": "now",
           "text": "Held — awaiting your correction"
         }
+      ],
+      "links": [
+        {
+          "system": "Snug",
+          "label": "Open the rejected feed",
+          "opens": "Opens the Snug feed for SP 40904, at the property type field it rejected twice. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "Agentbox",
+          "label": "View the live ad",
+          "opens": "Opens the Agentbox ad, which went live at 15:10. Mitch keeps this action open until the change comes back from the source."
+        }
       ]
     },
     {
@@ -527,6 +689,13 @@
         {
           "time": "Yesterday",
           "text": "Applied to 4 open exceptions on the next evaluation"
+        }
+      ],
+      "links": [
+        {
+          "system": "Mitch console",
+          "label": "Open routing configuration",
+          "opens": "Opens the routing configuration for the Cronulla silo, where this change was made. Mitch keeps this action open until the change comes back from the source."
         }
       ]
     },
@@ -559,6 +728,18 @@
         {
           "time": "now",
           "text": "Held — awaiting your confirmation"
+        }
+      ],
+      "links": [
+        {
+          "system": "PropertyMe",
+          "label": "Open the fee schedule",
+          "opens": "Opens the fee schedule for SP 40662 in PropertyMe, at both fee fields. Mitch keeps this action open until the change comes back from the source."
+        },
+        {
+          "system": "FLK",
+          "label": "View the signed MAA",
+          "opens": "Opens the MAA in FLK at the fee schedule, which carries no GST clause. Mitch keeps this action open until the change comes back from the source."
         }
       ]
     }

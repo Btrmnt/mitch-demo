@@ -653,3 +653,49 @@ html, body {
     overflow: visible;
   }
 }
+
+/* The systems-of-record row. Wraps, because an item can name three systems
+   and the modal is 560px — truncating these would hide which system it is,
+   which is the only information the button carries. */
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.link-row .link-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Transient confirmation, anchored to the viewport rather than the modal:
+   it reports on a click that may have come from either, and it must clear
+   the scrim — hence a z-index above --z-modal rather than beside it.
+   pointer-events: none so it can never swallow a click on what is beneath. */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translate(-50%, 12px);
+  z-index: calc(var(--z-modal) + 10);
+  max-width: min(520px, calc(100vw - 32px));
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  background: var(--ink-1);
+  color: var(--surface-card);
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  line-height: 1.45;
+  box-shadow: 0 8px 28px rgba(22, 36, 60, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.toast--visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Motion is decoration here; the message is the content. */
+@media (prefers-reduced-motion: reduce) {
+  .toast { transition: none; }
+}

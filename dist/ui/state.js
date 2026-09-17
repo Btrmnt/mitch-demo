@@ -30,14 +30,14 @@ export function closeMenu(state) {
     return { ...state, openMenuId: null };
 }
 /** Records a decision and closes the modal, which is always what follows one. */
-export function applyDecision(state, id, status, note, entry) {
+export function applyDecision(state, id, status, note, entry, baseStatus) {
     return {
         ...state,
         openCardId: null,
         // A decision reached through the overflow menu closes that menu with it;
         // one taken elsewhere leaves a menu open on another card alone.
         openMenuId: state.openMenuId === id ? null : state.openMenuId,
-        overrides: { ...state.overrides, [id]: { status, note, entry } },
+        overrides: { ...state.overrides, [id]: { status, note, entry, baseStatus } },
     };
 }
 const DEFAULT_NOTE = {
@@ -82,4 +82,40 @@ export function deriveView(actions, state) {
         ? all.find((c) => c.id === state.openCardId) ?? null
         : null;
     return { counts, cards, openCard: open };
+}
+/**
+ * Folds a freshly fetched payload against the decisions taken locally.
+ *
+ * A local decision is an intent, not a fact — the systems of record are.
+ * So when the source comes back and an item has moved on its own (someone
+ * fixed it in PropertyMe, a deposit cleared, a certificate arrived), the
+ * local override is dropped and upstream wins. An item that has not moved
+ * keeps its override, so a decision does not flicker back to undecided on
+ * every refetch.
+ *
+ * An item that has disappeared upstream takes its override with it, or the
+ * map would grow orphans for the life of the session.
+ *
+ * Returns the state unchanged — same object — when nothing needed dropping,
+ * so callers can use identity to decide whether to re-render.
+ */
+export function reconcile(fresh, state) {
+    const upstream = new Map(fresh.map((a) => [a.id, a.status]));
+    const kept = {};
+    let dropped = 0;
+    for (const [id, override] of Object.entries(state.overrides)) {
+        const now = upstream.get(id);
+        if (now !== undefined && now === override.baseStatus)
+            kept[id] = override;
+        else
+            dropped++;
+    }
+    if (dropped === 0)
+        return state;
+    return {
+        ...state,
+        overrides: kept,
+        // A card that no longer exists upstream must not stay open over nothing.
+        openCardId: state.openCardId && upstream.has(state.openCardId) ? state.openCardId : null,
+    };
 }
