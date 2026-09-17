@@ -4,12 +4,37 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mitch Actions</title>
-    <link rel="stylesheet" href="./src/ui/fonts.css?v=40ca430" />
-    <link rel="stylesheet" href="./src/ui/tokens.css?v=40ca430" />
-    <link rel="stylesheet" href="./src/ui/styles.css?v=40ca430" />
+    <script>
+      // This file is served with `cache-control: max-age=600`, and the Teams
+      // webview caches harder still. Naming assets directly here meant a
+      // deploy stayed invisible for ten minutes or more — and stamping those
+      // names at build time did not help, because the file carrying the
+      // stamps was itself the stale one.
+      //
+      // So this shell names nothing version-specific and never changes. A
+      // cached copy of it is therefore always correct, and it stamps each
+      // asset URL at load time so what it pulls is never stale. The compiled
+      // modules still carry a build id on their own imports, which is what
+      // keeps the rest of the graph fresh.
+      (function () {
+        var v = Date.now().toString(36);
+        ['src/ui/fonts.css', 'src/ui/tokens.css', 'src/ui/styles.css'].forEach(
+          function (href) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = './' + href + '?v=' + v;
+            document.head.appendChild(link);
+          }
+        );
+        var app = document.createElement('script');
+        app.type = 'module';
+        app.src = './dist/ui/app.js?v=' + v;
+        document.head.appendChild(app);
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="./dist/ui/app.js?v=40ca430"></script>
+    <noscript>The Mitch actions inbox needs JavaScript enabled.</noscript>
   </body>
 </html>
