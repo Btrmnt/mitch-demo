@@ -466,7 +466,16 @@ html, body {
   min-width: 0;
   max-height: var(--modal-max-h);
   overflow: auto;
-  padding: 28px;
+  /* Named because the footer spans it with negative margins; two copies of
+     28px that must stay equal is exactly the pair that drifts.
+     No padding at the BOTTOM: the sticky footer supplies it instead, so that
+     `bottom: 0` pins the row flush to the scrollport's edge. Sticky would
+     otherwise have to be offset past the padding, which pushes the row's
+     lower edge outside the visible box and clips it. The footer is always
+     rendered — buttons on a needs-you item, a status note otherwise — so
+     nothing else has to make up the missing space. */
+  --modal-pad: 28px;
+  padding: var(--modal-pad) var(--modal-pad) 0;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -531,7 +540,23 @@ html, body {
   gap: 12px;
   flex-wrap: nowrap;
   border-top: 1px solid var(--hairline);
-  padding-top: 16px;
+
+  /* Pinned, not scrolled. The decision is the one thing a reader must always
+     be able to reach, and .modal is the scrollport (overflow:auto plus a
+     max-height), so a plain flex item scrolls out of sight on a long card.
+
+     The negative margins spread the row across the modal's padding: without
+     them the scrolling content stays visible in the 28px gutters either side
+     of the buttons, which reads as a rendering fault rather than a fixed bar.
+     The padding puts that spacing back inside the row, and its bottom value
+     replaces the padding .modal gives up. Needs an opaque background for the
+     same reason — content passes underneath it. */
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin: 0 calc(-1 * var(--modal-pad));
+  padding: 16px var(--modal-pad) var(--modal-pad);
+  background: var(--surface-card);
 }
 .modal__footer .btn-primary { flex: 0 1 auto; }
 .modal__footer .btn-secondary { flex: 0 2 auto; }
