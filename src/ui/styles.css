@@ -546,14 +546,12 @@ html, body {
 .modal__history li { display: flex; gap: 12px; padding: 3px 0; }
 .modal__time { color: var(--ink-muted-2); width: 72px; flex: none; }
 
-/* One row, never wrapped — the labels truncate instead. The primary takes the
-   room it needs and the secondary yields first, so the decision action stays
-   readable longest. */
+/* Two rows, both pinned: the decision and the actions supporting it, then a
+   rail of the ways to move the item elsewhere. */
 .modal__footer {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  gap: 10px;
   border-top: 1px solid var(--hairline);
 
   /* Pinned, not scrolled. The decision is the one thing a reader must always
@@ -573,8 +571,34 @@ html, body {
   padding: 16px var(--modal-pad) var(--modal-pad);
   background: var(--surface-card);
 }
-.modal__footer .btn-primary { flex: 0 1 auto; }
-.modal__footer .btn-secondary { flex: 0 2 auto; }
+/* Row one. Wraps rather than truncating: with a primary and up to two
+   systems of record the labels are the whole information — "Open in
+   PropertyMe" clipped to "Open in Pro…" tells a reader nothing. The shrink
+   values still order who yields first if a row does get tight. */
+.modal__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+}
+.modal__actions .btn-primary { flex: 0 1 auto; }
+.modal__actions .btn-secondary { flex: 0 2 auto; }
+
+/* Row two: the tertiary rail, as CJ writes it — text, not buttons, set apart
+   by a hairline. These are the same four entries as the card's overflow
+   menu, shown openly here. A reader deciding on an open card should not have
+   to discover them behind an ellipsis. */
+.modal__rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 18px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 10px;
+}
+.modal__rail-item {
+  padding: 2px 0;
+}
 
 /* .btn-text is gone. Its one user — "Close (Handled Outside Mitch)" in the
    modal footer — is a secondary button now, and a fourth near-duplicate of

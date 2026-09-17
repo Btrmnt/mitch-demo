@@ -1,14 +1,14 @@
-import { fetchedActionSource } from "../actions/source.js?v=40ca430";
-import { validateActionsPayload } from "../actions/validate.js?v=40ca430";
-import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=40ca430";
-import { showToast } from "./toast.js?v=40ca430";
-import { initMasonry, relayoutMasonry } from "./masonry.js?v=40ca430";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=40ca430";
+import { fetchedActionSource } from "../actions/source.js?v=eaa84f3";
+import { validateActionsPayload } from "../actions/validate.js?v=eaa84f3";
+import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=eaa84f3";
+import { showToast } from "./toast.js?v=eaa84f3";
+import { initMasonry, relayoutMasonry } from "./masonry.js?v=eaa84f3";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=eaa84f3";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=40ca430";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=eaa84f3";
 let state = initialUiState();
 let actions = [];
 /**
@@ -174,10 +174,18 @@ function bindEvents(root) {
                     showToast(link.opens);
             }
         }
-        // "assign", "redirect" and "not-managed" have no branch. They are inert
-        // this phase: choosing one shuts the menu below and writes nothing. A
-        // later phase gives them behaviour by adding a branch here, which is why
-        // they carry distinct names rather than one shared no-op.
+        // "assign", "redirect" and "not-managed" still write no state — the
+        // routing they describe needs a backend. They are no longer silent,
+        // though: shown openly in the modal's tertiary rail, a click that did
+        // nothing at all read as a broken button. Each says what it would do,
+        // the same way a system-of-record link does.
+        const ROUTING = {
+            assign: "Opens a teammate picker. The action moves to their queue and stays open until they resolve it.",
+            redirect: "Sends this action to another queue. Mitch keeps watching the source in case it resolves itself first.",
+            "not-managed": "Marks this property as not managed by Highland. Mitch stops raising actions against it.",
+        };
+        if (action && ROUTING[action])
+            showToast(ROUTING[action]);
         // Every menu item is terminal, so any click inside the menu shuts it.
         if (inMenu)
             state = closeMenu(state);

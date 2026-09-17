@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=40ca430";
+import { esc } from "./escape.js?v=eaa84f3";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -201,37 +201,63 @@ function metaRow(label, value) {
     return `<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`;
 }
 /**
- * Where a person would go to act on this — the systems of record, not pages
- * in this UI. Rendered as secondary buttons, since going to PropertyMe is a
- * real alternative to deciding here, not a way out of the card.
+ * The supporting actions: where a person would go to act on this — the
+ * systems of record, not pages in this UI. Secondary, because going to
+ * PropertyMe is a real alternative to approving Mitch's draft, not a way
+ * out of the card.
  *
- * Returns nothing when an item names no systems: a "Where to fix this"
- * heading over an empty row states a falsehood.
+ * These belong in the pinned footer beside the primary. They spent one
+ * revision as a section in the scrollable body, where a long card hid them
+ * below the fold — which is exactly where the actions must never be.
  */
-export function linkRow(card) {
+export function supportingActions(card) {
     if (!card.links?.length)
         return "";
-    const buttons = card.links
+    return card.links
         .map((l, i) => `<button class="btn-secondary link-btn" data-action="open-system" ` +
         `data-id="${esc(card.id)}" data-link="${esc(String(i))}" ` +
         `title="${esc(l.opens)}">${esc(l.label)}</button>`)
         .join("");
+}
+/**
+ * The tertiary rail: the ways to push this action somewhere else rather than
+ * resolve it here. Same four entries as the card's overflow menu, shown
+ * openly in the modal — a reader deciding on a card should not have to know
+ * they are hidden behind an ellipsis.
+ *
+ * "Close (Handled Outside Mitch)" lives here, not beside the primary. It is
+ * not an alternative way to decide; it is a way to take the item off the
+ * queue, which is what the rail is for.
+ */
+export function tertiaryRail(card) {
+    const item = (action, label) => tertiaryButton(label, action, card.id, "modal__rail-item");
     return `
-          <section>
-            <div class="modal__eyebrow">Where to fix this</div>
-            <div class="link-row">${buttons}</div>
-          </section>`;
+        <div class="modal__rail">
+          ${item("assign", "Assign to a Teammate")}
+          ${item("redirect", "Redirect")}
+          ${item("not-managed", "Not Managed by Us")}
+          ${item("close-handled", "Close (Handled Outside Mitch)")}
+        </div>`;
 }
 export function modal(card) {
     if (!card)
         return "";
     const alert = alertBlock(card);
-    const footer = card.isNeedsYou && card.primaryLabel
-        ? `<div class="modal__footer">
-         ${primaryButton(card.primaryLabel, "approve", card.id)}
-         ${secondaryButton("Close (Handled Outside Mitch)", "close-handled", card.id)}
-       </div>`
-        : `<div class="modal__footer">${statusNote(card)}</div>`;
+    // Row one is the decision and the things that support making it; row two
+    // is everything that moves the item elsewhere. Both pinned, because an
+    // action a reader cannot reach without scrolling is an action they will
+    // not take.
+    const decision = card.isNeedsYou && card.primaryLabel
+        ? primaryButton(card.primaryLabel, "approve", card.id)
+        : statusNote(card);
+    const footer = `
+        <div class="modal__footer">
+          <div class="modal__actions">
+            ${decision}
+            ${supportingActions(card)}
+          </div>
+          ${tertiaryRail(card)}
+        </div>`;
     const history = card.history
         .map((h) => `<li><span class="modal__time">${esc(h.time)}</span>${esc(h.text)}</li>`)
         .join("");
@@ -270,8 +296,6 @@ export function modal(card) {
             <div class="modal__eyebrow">History</div>
             <ul class="modal__history">${history}</ul>
           </section>
-
-          ${linkRow(card)}
 
           ${footer}
         </div>
