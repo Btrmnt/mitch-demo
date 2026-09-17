@@ -466,16 +466,17 @@ html, body {
   min-width: 0;
   max-height: var(--modal-max-h);
   overflow: auto;
-  /* Named because the footer spans it with negative margins; two copies of
-     28px that must stay equal is exactly the pair that drifts.
-     No padding at the BOTTOM: the sticky footer supplies it instead, so that
-     `bottom: 0` pins the row flush to the scrollport's edge. Sticky would
-     otherwise have to be offset past the padding, which pushes the row's
-     lower edge outside the visible box and clips it. The footer is always
-     rendered — buttons on a needs-you item, a status note otherwise — so
-     nothing else has to make up the missing space. */
+  /* Named because the pinned header and footer span it with negative
+     margins; three copies of 28px that must stay equal is exactly the set
+     that drifts.
+     No padding top or bottom: the sticky header and footer supply their own,
+     so `top: 0` and `bottom: 0` pin them flush to the scrollport's edges.
+     Sticky would otherwise have to be offset past the padding, which pushes
+     the row outside the visible box and clips it. Both are always rendered —
+     the footer is buttons on a needs-you item and a status note otherwise —
+     so nothing has to make up the missing space. */
   --modal-pad: 28px;
-  padding: var(--modal-pad) var(--modal-pad) 0;
+  padding: 0 var(--modal-pad);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -490,6 +491,20 @@ html, body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
+
+  /* Pinned, for the same reason the footer is: on a long card the title says
+     which item you are reading and the close button is the way out, and both
+     used to scroll away. Mirrors the footer exactly — negative margins so
+     content cannot show in the gutters beside it, an opaque background
+     because content passes underneath, and its own padding replacing what
+     .modal gives up. The hairline answers the footer's border-top. */
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 calc(-1 * var(--modal-pad));
+  padding: var(--modal-pad) var(--modal-pad) 14px;
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--hairline);
 }
 .modal__head .icon-btn { margin: -6px -6px 0 0; }
 .modal__title { margin: 0; font-size: 17px; font-weight: 700; color: var(--ink-1); }
