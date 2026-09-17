@@ -45,6 +45,19 @@ function render() {
  * reliable dirty check — and it means a click that both dismisses a menu and
  * does something else renders once, not twice.
  */
+/**
+ * Clock label for a decision's history line, in the display-ready form the
+ * payload uses ("09:14"). Built here, not in state.ts, so that module stays a
+ * pure function of its inputs — a clock read inside it would make every
+ * transition untestable.
+ */
+function nowLabel() {
+    return new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+    });
+}
 function bindEvents(root) {
     document.addEventListener("keydown", (event) => {
         if (event.key !== "Escape")
@@ -88,11 +101,16 @@ function bindEvents(root) {
         if (action === "dismiss" && el === target) {
             state = closeCard(state);
         }
+        // Approve and close-handled are different outcomes and land on different
+        // statuses. Both used to resolve to "closed", which left the Sent column
+        // unreachable and erased the distinction between "Mitch is acting on
+        // this" and "someone dealt with it elsewhere".
         if (action === "approve" && id) {
-            state = applyDecision(state, id, "closed", "Approved — entered in PropertyMe.");
+            state = applyDecision(state, id, "sent", "Sent — Mitch is entering it in PropertyMe.", { time: nowLabel(),
+                text: "Approved by you — Mitch is entering it in PropertyMe" });
         }
         if (action === "close-handled" && id) {
-            state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.");
+            state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.", { time: nowLabel(), text: "Closed by you — handled outside Mitch" });
         }
         // "assign", "redirect" and "not-managed" have no branch. They are inert
         // this phase: choosing one shuts the menu below and writes nothing. A

@@ -30,14 +30,14 @@ export function closeMenu(state) {
     return { ...state, openMenuId: null };
 }
 /** Records a decision and closes the modal, which is always what follows one. */
-export function applyDecision(state, id, status, note) {
+export function applyDecision(state, id, status, note, entry) {
     return {
         ...state,
         openCardId: null,
         // A decision reached through the overflow menu closes that menu with it;
         // one taken elsewhere leaves a menu open on another card alone.
         openMenuId: state.openMenuId === id ? null : state.openMenuId,
-        overrides: { ...state.overrides, [id]: { status, note } },
+        overrides: { ...state.overrides, [id]: { status, note, entry } },
     };
 }
 const DEFAULT_NOTE = {
@@ -51,6 +51,9 @@ function derive(item, override, menuOpen) {
     return {
         ...item,
         status,
+        // A decided card shows what the decision did, as the newest history line.
+        // New array, never a push — item.history belongs to the source's payload.
+        history: override ? [...item.history, override.entry] : item.history,
         hasAlert: Boolean(item.flag),
         isNeedsYou: status === "needs_you",
         noteText: override?.note ?? DEFAULT_NOTE[status],
