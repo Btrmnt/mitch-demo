@@ -1,0 +1,67 @@
+/* AI Staff Member Design System v1 — tokens.
+   The system is the visual authority; these values are copied from it, not
+   from the Mitch mockup, which predates it and disagrees. */
+:root {
+  /* ink */
+  --ink-1: #16243C;
+  --ink-2: #1F2325;
+  --ink-muted-1: #53565A;
+  --ink-muted-2: #8B9098;
+  --ink-muted-3: #9B9B94;
+
+  /* brand */
+  --brand-navy: #16243C;
+  --brand-navy-2: #25408C;
+  --accent-blue: #2C6E9E;
+  --accent-blue-strong: #4FA8D6;
+  --accent-blue-tint: #EAF3F9;
+
+  /* status — ink/tint pairs */
+  --status-needs-you-ink: #2C6E9E;
+  --status-needs-you-tint: rgba(95, 178, 218, 0.16);
+  --status-sent-ink: #0c7a5a;
+  --status-sent-tint: rgba(15, 160, 117, 0.14);
+  --status-waiting-ink: #E08A00;
+  --status-waiting-tint: rgba(246, 167, 36, 0.18);
+  --status-closed-ink: #53565A;
+  --status-closed-tint: rgba(31, 35, 37, 0.1);
+  --danger-ink: #B92418;
+  --danger-tint: rgba(229, 57, 43, 0.14);
+
+  /* surfaces */
+  --surface-page: #F6F5F2;
+  --surface-card: #ffffff;
+  --surface-context: #E3E6EA;
+  --hairline: rgba(31, 35, 37, 0.11);
+  --hairline-strong: rgba(31, 35, 37, 0.22);
+
+  /* radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --radius-context: 0 14px 14px 0;
+
+  /* layering — one named stop, so nothing in the page flow has to guess how
+     high it may climb. The grid's cards live at 0 or 1; the modal scrim sits
+     three orders above that, which is what stops a card painting over an
+     open modal. Anything new that must cover the page uses this token, not a
+     bare number of its own. */
+  --z-modal: 1000;
+
+  /* shadow */
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04),
+                 0 8px 20px -14px rgba(22, 36, 60, 0.18);
+
+  /* type */
+  --font-ui: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* The one permitted background motif: live AI-drafted work awaiting a
+     decision. Never decorative, never twice on one screen. */
+  --motif-queue:
+    radial-gradient(circle at 20% 15%, #2C4A7C 0%, #16243C 45%, #0B1526 100%),
+    repeating-linear-gradient(135deg,
+      rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 2px,
+      transparent 2px, transparent 6px);
+}

@@ -1,0 +1,92 @@
+{
+  "staffMember": "Mitch",
+  "actions": [
+    {
+      "id": "c1",
+      "title": "New Business — Owner Entry Needs Review",
+      "subtitle": "SP 41207 · 42 Seaview St, Cronulla NSW 2230 (sample)",
+      "tag": "MAA INTAKE",
+      "status": "needs_you",
+      "source": "MAA received via FLK, signed 15 Sep 2026, 09:14. Owner structure: Coastal Holdings Pty Ltd (director J. Marsh) plus individual co-owner S. Marsh. Existing contact match found for J. Marsh with conflicting bank details on file.",
+      "drafted": "Owner record drafted as Business + Individual (linked). Bank detail conflict held for confirmation before PropertyMe entry — the existing record's BSB/account differs from the MAA.",
+      "rule": "Owner Entry — Business + Individual, Existing Contact Conflict",
+      "ruleNote": "Matched inputs: MAA lists two owner types, FLK contact search returned an existing match, bank details differ.",
+      "pm": "Marcus Hale · mhale@example.com",
+      "decidedBy": "Mitch, held for confirmation (bank conflict)",
+      "whoSees": "BDM + Trust Accountant",
+      "confidence": "Conflict detected — human confirmation required",
+      "primaryLabel": "Confirm & Enter in PropertyMe",
+      "scenarioRef": "Mitch-002",
+      "history": [
+        { "time": "09:14", "text": "MAA received via FLK" },
+        { "time": "09:16", "text": "Mitch matched an existing contact and found a bank detail conflict" },
+        { "time": "now", "text": "Awaiting your review" }
+      ]
+    },
+    {
+      "id": "c2",
+      "title": "Pool Compliance — Section 25 Not Crossed Out",
+      "subtitle": "SP 41207 · 42 Seaview St, Cronulla NSW 2230 (sample)",
+      "tag": "COMPLIANCE",
+      "status": "needs_you",
+      "source": "MAA Section 25 (Pool Safety Compliance) reviewed: the clause is present and not crossed out.",
+      "drafted": "Case held at \"Live — compliance pending.\" Full compliance is blocked until pool safety certification is confirmed.",
+      "flag": "This property cannot reach full compliance until pool safety is confirmed.",
+      "rule": "Pool Compliance Gate",
+      "ruleNote": "Matched inputs: MAA Section 25 present and unmarked — a crossed-out clause would clear this gate instead.",
+      "pm": "Marcus Hale · mhale@example.com",
+      "decidedBy": "Mitch, automatic gate",
+      "whoSees": "Compliance team",
+      "confidence": "Single confident match",
+      "primaryLabel": "Acknowledge & Request Pool Compliance",
+      "scenarioRef": "Mitch-014",
+      "history": [
+        { "time": "09:16", "text": "Mitch reviewed MAA Section 25" },
+        { "time": "09:17", "text": "Gate applied — pool compliance required" },
+        { "time": "now", "text": "Awaiting your review" }
+      ]
+    },
+    {
+      "id": "c3",
+      "title": "Casual Letting Detected",
+      "subtitle": "SP 39980 · 8 Bay Pde, Cronulla NSW 2230 (sample)",
+      "tag": "NEW BUSINESS",
+      "status": "waiting",
+      "source": "MAA fee section marked \"N/A — Casual letting.\"",
+      "drafted": "Case routed to the casual-letting process. Leasing team notified to confirm at \"application approved.\"",
+      "rule": "Casual Letting — Fee Section Marker",
+      "ruleNote": "Matched inputs: MAA fee section text — one of four signals Highland uses for casual letting.",
+      "pm": "Priya Raman · praman@example.com",
+      "decidedBy": "Mitch, automatic match",
+      "whoSees": "Leasing team",
+      "confidence": "Single confident match",
+      "scenarioRef": "Mitch-008",
+      "history": [
+        { "time": "Yesterday", "text": "MAA reviewed, casual letting marker found" },
+        { "time": "Yesterday", "text": "Routed to leasing team" },
+        { "time": "now", "text": "Waiting on leasing confirmation" }
+      ]
+    },
+    {
+      "id": "c4",
+      "title": "Go-Live Trigger Sent to Nadia",
+      "subtitle": "SP 41102 · 3 Gerrale St, Cronulla NSW 2230 (sample)",
+      "tag": "LIVE GATE",
+      "status": "sent",
+      "source": "Compliance confirmed. Ad already drafted in Agentbox by the BDM.",
+      "drafted": "Email sent to Nadia with the Agentbox ad link for the go-live compliance check.",
+      "rule": "Live-Gate Email Trigger",
+      "ruleNote": "Matched inputs: compliance confirmed, an Agentbox listing already exists.",
+      "pm": "Priya Raman · praman@example.com",
+      "decidedBy": "Mitch, automatic match",
+      "whoSees": "Nadia (offshore compliance)",
+      "confidence": "Single confident match",
+      "scenarioRef": "Mitch-015",
+      "history": [
+        { "time": "11:02", "text": "Compliance confirmed" },
+        { "time": "11:03", "text": "Email sent to Nadia with the ad link" },
+        { "time": "now", "text": "Sent — no action needed" }
+      ]
+    }
+  ]
+}

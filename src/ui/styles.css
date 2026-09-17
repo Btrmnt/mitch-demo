@@ -1,0 +1,615 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--ink-2);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-header {
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--hairline);
+  padding: 20px 28px 0;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink-1);
+  letter-spacing: -0.01em;
+}
+
+.chip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 0;
+  flex-wrap: wrap;
+}
+
+.chip-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--hairline-strong);
+  margin: 0 4px;
+}
+
+/* The one permitted use of the motif: live work awaiting a decision. */
+.queue {
+  min-height: calc(100vh - 118px);
+  padding: 28px;
+  background: var(--motif-queue);
+  background-blend-mode: overlay;
+}
+
+.queue-empty {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  padding: 3px 8px;
+}
+/* CJ's tag pill is grey, not the blue accent tint — the blue is reserved for
+   the Needs You status badge sitting next to it. */
+.badge--tag {
+  color: var(--ink-muted-1);
+  background: rgba(31, 35, 37, 0.07);
+  box-shadow: inset 0 1px 2px rgba(31, 35, 37, 0.08);
+}
+.badge--needs_you { color: var(--status-needs-you-ink); background: var(--status-needs-you-tint); }
+.badge--waiting { color: var(--status-waiting-ink); background: var(--status-waiting-tint); }
+.badge--sent { color: var(--status-sent-ink); background: var(--status-sent-tint); }
+.badge--closed { color: var(--status-closed-ink); background: var(--status-closed-tint); }
+
+.chip {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted-1);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--ink-muted-2); }
+.chip--active {
+  color: #fff;
+  background: var(--brand-navy);
+  border-color: var(--brand-navy);
+}
+
+/* The three button tiers, in order of weight. One decision per surface is
+   primary; a real alternative to it is secondary; anything that is a way out
+   rather than a choice is tertiary.
+
+   Primary   — filled navy. The card's action, and the decision in the modal.
+   Secondary — CJ's bordered modal-footer button. "Close (Handled Outside
+               Mitch)" is one of these: it is an alternative action a manager
+               deliberately takes, not a throwaway link.
+   Tertiary  — CJ's Redirect / Not Managed treatment: type alone, no box. The
+               four overflow-menu entries. */
+/* Primary and secondary share a box so they read as one control group: same
+   radius, same padding, same type size. Only the fill and border differ.
+   min-width:0 is what lets them shrink far enough for the ellipsis to engage
+   inside a flex row — without it a flex item refuses to go below its content
+   width and the row wraps instead of truncating. */
+.btn-primary,
+.btn-secondary {
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  cursor: pointer;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-primary {
+  font-weight: 700;
+  color: #fff;
+  background: var(--brand-navy-2);
+  border: none;
+}
+.btn-primary:hover { background: var(--ink-1); }
+
+.btn-secondary {
+  font-weight: 600;
+  color: var(--ink-muted-1);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-strong);
+}
+.btn-secondary:hover { color: var(--ink-1); border-color: var(--ink-muted-2); }
+
+.btn-tertiary {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 12.5px;
+  color: var(--ink-muted-2);
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+.btn-tertiary:hover { color: var(--ink-1); }
+
+/* One focus ring for every control on the page, in the system's focus blue.
+   :focus-visible rather than :focus, so a mouse click does not leave a ring
+   behind but a Tab key does. */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-tertiary:focus-visible,
+.icon-btn:focus-visible,
+.chip:focus-visible,
+.card-ctl:focus-visible {
+  outline: 2px solid var(--accent-blue-strong);
+  outline-offset: 2px;
+}
+
+/* True masonry, packed in JavaScript. See src/ui/masonry.ts for why it has to
+   be: `grid-template-rows: masonry` is not shipped, and `columns:` flows
+   column-major (tried, rejected — the second card landed below the first).
+
+   What is declared here is the FALLBACK, and it is the reason a measurement
+   failure shows a slightly ragged queue rather than a blank one. Untouched by
+   JavaScript, these rules are CJ's grid and lay the cards out perfectly
+   readably; the layout pass only ever adds inline position styles on top.
+
+   align-items: start is load-bearing for that fallback. Grid's default is
+   `stretch`, which would pull every card in a row down to the tallest one;
+   `start` lets the heights differ while every card in the row still begins at
+   the same top edge. Do not remove it.
+
+   position: relative is what the layout pass positions against — the cards
+   become absolute children of this box. It affects nothing while they are in
+   flow. The 300px track floor comes from CJ and is duplicated as
+   MIN_COLUMN_WIDTH in masonry.ts; the two must stay in step, or the pass will
+   measure at a different width than it places at. Below 300px the single
+   column just shrinks, and the pass stands down and leaves the stack alone. */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  align-items: start;
+  max-width: 1264px;
+  position: relative;
+}
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 16px 16px 14px;
+  cursor: pointer;
+  /* position only, deliberately no z-index: the overflow popover needs
+     something to anchor against absolutely, nothing more. A z-index here
+     lifted every card into the same stacking order as the modal scrim and
+     the cards painted over an open modal. Leave it off. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* Just enough lift to clear the sibling cards the popover overhangs — 1, not
+   more. The scrim is at --z-modal (1000), so a card at 1 can never reach it. */
+.card--menu-open { z-index: 1; }
+
+/* CJ's anatomy: title, then badges, with the two controls holding the top
+   right of the same row. */
+.card__head { display: flex; align-items: flex-start; gap: 10px; }
+/* min-width:0 is what lets the title actually ellipsis inside a flex item. */
+.card__headings { flex: 1; min-width: 0; }
+.card__controls { flex: none; display: flex; gap: 6px; position: relative; }
+
+.card__title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card__badges { display: flex; gap: 6px; margin-top: 6px; }
+
+.card-ctl {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-card);
+  border-radius: 50%;
+  line-height: 1;
+  cursor: pointer;
+}
+.card-ctl--info {
+  border: 1.5px solid var(--accent-blue);
+  color: var(--accent-blue);
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+.card-ctl--menu {
+  border: 1px solid var(--hairline-strong);
+  color: var(--ink-muted-1);
+}
+.card-ctl--menu .icon { width: 13px; height: 13px; }
+.card-ctl:hover { border-color: var(--ink-1); color: var(--ink-1); }
+
+/* A small popover anchored under the ellipsis. Nothing in the grid sets
+   overflow, so the grid does not clip it; the open card is lifted above its
+   neighbours so the popover paints over them. */
+.card-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 180px;
+  padding: 4px;
+  background: var(--surface-card);
+  border: 1px solid rgba(31, 35, 37, 0.15);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 16px 38px -22px rgba(22, 36, 60, 0.35);
+  z-index: 1;
+}
+/* The type treatment comes from .btn-tertiary, which every menu entry also
+   carries. What is left here is only what makes a tertiary button a menu row:
+   full width, left aligned, and a hit area that fills it. Declared after
+   .btn-tertiary so this padding wins at equal specificity. */
+.card-menu__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: 6px;
+  padding: 7px 10px;
+}
+.card-menu__item:hover { background: var(--surface-page); }
+
+.card__subtitle {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-muted-1);
+}
+
+.card-alert {
+  background: var(--danger-tint);
+  border: 1px solid rgba(229, 57, 43, 0.28);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--danger-ink);
+}
+
+.card-note {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-muted-1);
+}
+/* Notes take the ink of the status they describe, as the badges do. */
+.card-note--needs_you { color: var(--status-needs-you-ink); }
+.card-note--waiting { color: var(--status-waiting-ink); }
+.card-note--sent { color: var(--status-sent-ink); }
+.card-note--closed { color: var(--status-closed-ink); }
+
+/* Context, tucked behind the opened detail as CJ does it: a sibling of the
+   modal in the same .modal-row, so the row's height is the modal's height and
+   the panel has something definite to be shorter than.
+
+   Three declarations here are the whole effect, and each one was visibly
+   wrong before. Do not "tidy" any of them away:
+
+   1. `margin: 14px 0` — the vertical INSET. align-self:stretch would
+      otherwise make the panel exactly as tall as the row, i.e. exactly as
+      tall as the modal, and it would read as a second panel bolted beside
+      it. 14px shorter top and bottom is what makes it read as tucked behind.
+   2. `border-left: none` — that edge lives behind the modal. A border there
+      draws a line down the middle of the seam.
+   3. `z-index: 1` against the modal's 2 — BEHIND, not next to. Both are
+      inside the scrim's stacking context, so these two numbers only ever
+      order the pair against each other.
+
+   The -22px left margin is the tuck itself, and the left padding carries the
+   same 22px on top of the panel's own 14 (= 36px) so the text clears the
+   modal edge covering it. Squared on the side facing the modal — the
+   system's one deliberate radius exception. */
+.context-panel {
+  align-self: stretch;
+  flex: none;
+  width: 180px;
+  min-width: 160px;
+  margin: 14px 0 14px -22px;
+  /* Bounded the same way the modal is, less the 28px of inset, so a long
+     rule note can never make the panel outgrow the modal it hides behind. */
+  max-height: calc(var(--modal-max-h) - 28px);
+  padding: 14px 14px 14px 36px;
+  background: var(--surface-context);
+  border: 1px solid var(--hairline);
+  border-left: none;
+  border-radius: var(--radius-context);
+  box-shadow: 0 24px 52px -30px rgba(22, 36, 60, 0.45);
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
+.context-panel__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted-3);
+  margin-bottom: 8px;
+}
+.context-panel__note {
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #6B6D6A;
+}
+/* A pill is one short line. Real rule names run long — "Owner Entry —
+   Business + Individual, Existing Contact Conflict" wrapped to four lines in
+   a 180px panel and read as a blob rather than a pill. So it truncates, and
+   the full name lives in the title attribute.
+
+   display: block with width: fit-content is what makes that work: a flex
+   container will not ellipsis its own text, and a plain inline box has no
+   width to overflow. fit-content keeps a short rule tight to its text while
+   max-width caps a long one at the panel. */
+.context-panel__rule {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: var(--surface-card);
+  border: 1px solid rgba(31, 35, 37, 0.15);
+  border-radius: var(--radius-pill);
+  padding: 4px 9px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--brand-navy-2);
+}
+
+/* Inline SVG standing in for the Font Awesome glyphs the design system names.
+   The counter takes the surface it sits on, so it reads as punched out. */
+.icon { width: 1em; height: 1em; flex: none; }
+.context-panel__eyebrow .icon { width: 12px; height: 12px; }
+.icon__counter { fill: var(--surface-context); }
+
+/* The payload-rejected screen: takes the place of the queue, so it does not
+   carry the motif. */
+.issues {
+  padding: 28px;
+  max-width: 720px;
+}
+.issues__title { margin: 0 0 8px; font-size: 17px; font-weight: 700; color: var(--ink-1); }
+.issues__lede { margin: 0 0 16px; font-size: 13px; color: var(--ink-muted-1); }
+.issues__lede code { font-family: var(--font-mono); font-size: 12px; }
+.issues__list { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+.issues__list li {
+  background: var(--danger-tint);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  color: var(--danger-ink);
+}
+.issues__id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  margin-right: 10px;
+  color: var(--ink-muted-1);
+}
+
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  /* Above everything in the page flow. The grid's cards top out at 1, so
+     this named stop is what guarantees nothing in the queue paints over an
+     open modal. Do not replace it with a small number. */
+  z-index: var(--z-modal);
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* The scrim's only child: the opened detail and its Context as one row, so
+   the scrim centres the pair together. The row's height is the modal's
+   height, which is what the panel's stretch-and-inset depends on. */
+.modal-row {
+  /* One bound shared by the row and both its children. The modal's cap used
+     to be its own, which let the panel — a sibling, not a descendant — run
+     taller than the thing it is tucked behind. */
+  --modal-max-h: 86vh;
+  display: flex;
+  align-items: stretch;
+  max-width: 100%;
+  max-height: var(--modal-max-h);
+}
+
+.modal {
+  position: relative;
+  /* In front of the context panel at 1. Scoped to the scrim's stacking
+     context, so it is only ever ordered against its own sibling. */
+  z-index: 2;
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  width: 560px;
+  max-width: 100%;
+  min-width: 0;
+  max-height: var(--modal-max-h);
+  overflow: auto;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* flex-start, so the close button holds the top of the header. The default
+   is stretch, which let a 32px button sitting beside a two-line heading
+   drift down past the title. The negative margins pull it into the
+   modal's corner, keeping its optical inset equal to the padding. */
+.modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.modal__head .icon-btn { margin: -6px -6px 0 0; }
+.modal__title { margin: 0; font-size: 17px; font-weight: 700; color: var(--ink-1); }
+.modal__subtitle { margin: 2px 0 0; font-size: 12px; color: var(--ink-muted-2); }
+
+.modal__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted-2);
+  margin-bottom: 6px;
+}
+.modal__quote {
+  background: var(--surface-page);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.modal__draft {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.modal__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+  margin: 0;
+  font-size: 13px;
+}
+.modal__meta dt { color: var(--ink-muted-2); }
+.modal__meta dd { margin: 0; color: var(--ink-1); }
+
+.modal__history { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+.modal__history li { display: flex; gap: 12px; padding: 3px 0; }
+.modal__time { color: var(--ink-muted-2); width: 72px; flex: none; }
+
+/* One row, never wrapped — the labels truncate instead. The primary takes the
+   room it needs and the secondary yields first, so the decision action stays
+   readable longest. */
+.modal__footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  border-top: 1px solid var(--hairline);
+  padding-top: 16px;
+}
+.modal__footer .btn-primary { flex: 0 1 auto; }
+.modal__footer .btn-secondary { flex: 0 2 auto; }
+
+/* .btn-text is gone. Its one user — "Close (Handled Outside Mitch)" in the
+   modal footer — is a secondary button now, and a fourth near-duplicate of
+   the tertiary treatment was not worth keeping for nothing. */
+
+/* A real close control, not a bare glyph. 32px square with the × centred in
+   it, so there is something to aim at; the glyph alone had no padding and no
+   hit area, and sat wherever its baseline fell. The transparent border is
+   held from the start so the hover state does not shift the button by a
+   pixel when it gains one. */
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  font-family: var(--font-ui);
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ink-muted-2);
+  cursor: pointer;
+}
+.icon-btn:hover {
+  color: var(--ink-1);
+  background: var(--surface-page);
+  border-color: var(--hairline);
+}
+
+/* The breakpoint is set by the widest thing on the page that cannot reflow:
+   the modal beside its context panel, 560 + 158 + scrim padding. The grid no
+   longer participates — auto-fill drops to one 1fr track on its own. */
+@media (max-width: 860px) {
+  /* The filters scroll horizontally rather than wrapping. The system asks
+     for them to collapse behind a control instead; that control is not
+     built. A deliberate reduction, recorded here rather than implied. */
+  .chip-row { overflow-x: auto; flex-wrap: nowrap; }
+
+  /* Still a modal, not full-bleed, so its relation to the page is preserved.
+     The scrim scrolls instead of the modal, because the context panel below
+     it is part of the same scroll. */
+  .modal-scrim {
+    padding: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+  /* The row flips to a column, and its children stop being height-bounded
+     because the scrim scrolls instead. */
+  .modal-row { flex-direction: column; max-height: none; }
+  .modal { width: 100%; max-height: none; padding: 20px; }
+  .modal__meta { grid-template-columns: 1fr; gap: 4px 0; }
+  .modal__meta dd { margin-bottom: 8px; }
+
+  /* Too narrow for the panel to sit beside the modal, so it tucks under it
+     rather than behind it — the same arrangement rotated a quarter turn.
+     Everything that was vertical becomes horizontal: the 22px overlap now
+     pulls up instead of left (with the matching 22px moved onto the top
+     padding), the 14px inset is now left and right, and the squared,
+     border-free edge is the top one — the side now facing the modal. It
+     still sits behind: z-index is untouched. */
+  .context-panel {
+    width: auto;
+    min-width: 0;
+    max-height: none;
+    margin: -22px 14px 0;
+    padding: 38px 16px 16px;
+    border-left: 1px solid var(--hairline);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    overflow: visible;
+  }
+}
