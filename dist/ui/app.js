@@ -1,14 +1,14 @@
-import { fetchedActionSource } from "../actions/source.js?v=b517707";
-import { validateActionsPayload } from "../actions/validate.js?v=b517707";
-import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=b517707";
-import { showToast } from "./toast.js?v=b517707";
-import { initMasonry, relayoutMasonry } from "./masonry.js?v=b517707";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=b517707";
+import { fetchedActionSource } from "../actions/source.js?v=f93c6e1";
+import { validateActionsPayload } from "../actions/validate.js?v=f93c6e1";
+import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=f93c6e1";
+import { showToast } from "./toast.js?v=f93c6e1";
+import { initMasonry, relayoutMasonry } from "./masonry.js?v=f93c6e1";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=f93c6e1";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=b517707";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=f93c6e1";
 let state = initialUiState();
 let actions = [];
 /**
@@ -161,10 +161,17 @@ function bindEvents(root) {
             const pa = actions.find((a) => a.id === id)?.primaryAction;
             if (pa) {
                 state = applyDecision(state, id, pa.status, pa.note, { time: nowLabel(), text: pa.history }, upstreamStatus(id));
+                // Taking the decision closes the modal, so the card's new note and
+                // history line land behind whatever the reader looks at next. The
+                // toast carries the consequence forward — the same sentence the
+                // button promised on hover, now as confirmation of what is running.
+                showToast(pa.does);
             }
         }
         if (action === "close-handled" && id) {
             state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.", { time: nowLabel(), text: "Closed by you — handled outside Mitch" }, upstreamStatus(id));
+            showToast("Closed. Mitch stops raising this action, and will not reopen it if " +
+                "the source changes.");
         }
         // A link to a system of record. With no url — which is every link in the
         // demo payloads — the button says what it would do rather than going
