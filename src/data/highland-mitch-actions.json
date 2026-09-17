@@ -15,7 +15,6 @@
       "decidedBy": "Mitch, held for confirmation (bank conflict)",
       "whoSees": "BDM + Trust Accountant",
       "confidence": "Conflict detected — human confirmation required",
-      "primaryLabel": "Confirm & Enter",
       "scenarioRef": "Mitch-002",
       "history": [
         {
@@ -42,7 +41,14 @@
           "label": "FLK",
           "opens": "Opens the executed MAA in FLK so the bank details can be read against the record. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Confirm & Enter",
+        "does": "Enters the owner structure in PropertyMe as Business + Individual, using the bank details on the MAA rather than the conflicting ones already on file.",
+        "status": "sent",
+        "note": "Sent — entered in PropertyMe against the MAA's bank details.",
+        "history": "You confirmed the owner record — Mitch is entering it in PropertyMe"
+      }
     },
     {
       "id": "c2",
@@ -59,7 +65,6 @@
       "decidedBy": "Mitch, automatic gate",
       "whoSees": "Compliance team",
       "confidence": "Single confident match",
-      "primaryLabel": "Request Certificate",
       "scenarioRef": "Mitch-014",
       "history": [
         {
@@ -86,7 +91,14 @@
           "label": "Compliance",
           "opens": "Opens Highland's compliance register filtered to this property. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Request Certificate",
+        "does": "Emails the owner asking for the pool safety certificate, and holds the listing gate closed until it arrives.",
+        "status": "waiting",
+        "note": "Waiting — pool safety certificate requested from the owner.",
+        "history": "You requested the pool safety certificate — the listing gate stays closed"
+      }
     },
     {
       "id": "c3",
@@ -219,7 +231,6 @@
       "decidedBy": "Held for you — Mitch does not choose between equal matches",
       "whoSees": "BDM + Operations",
       "confidence": "Two matches, no tiebreak",
-      "primaryLabel": "Choose Silo",
       "scenarioRef": "Mitch-003",
       "history": [
         {
@@ -241,7 +252,14 @@
           "label": "PropertyMe",
           "opens": "Opens the Cronulla portfolio in PropertyMe so the silo boundary can be checked. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Choose Silo",
+        "does": "Assigns the property to the silo you pick and re-points every downstream task to it. Nothing was routed while this was held.",
+        "status": "sent",
+        "note": "Sent — silo assigned, downstream tasks re-pointed.",
+        "history": "You assigned the silo — Mitch re-pointed the downstream tasks"
+      }
     },
     {
       "id": "c7",
@@ -258,7 +276,6 @@
       "decidedBy": "Mitch, hard stop — no autonomous entry on money fields",
       "whoSees": "Trust Accountant + BDM",
       "confidence": "Format conflict, entry refused",
-      "primaryLabel": "Confirm Fee",
       "scenarioRef": "Mitch-004",
       "history": [
         {
@@ -285,7 +302,14 @@
           "label": "FLK",
           "opens": "Opens the MAA in FLK at the fee schedule, to read what was actually agreed. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Confirm Fee",
+        "does": "Records the management fee as you confirm it and lifts the money-field hard stop, letting entry into PropertyMe proceed.",
+        "status": "sent",
+        "note": "Sent — fee confirmed, entry hold lifted.",
+        "history": "You confirmed the management fee — Mitch lifted the entry hold"
+      }
     },
     {
       "id": "c8",
@@ -339,7 +363,6 @@
       "decidedBy": "Held for you — the queue-or-proceed choice is yours",
       "whoSees": "Operations",
       "confidence": "Sustained failure, fallback active",
-      "primaryLabel": "Hold the Queue",
       "scenarioRef": "Mitch-007",
       "history": [
         {
@@ -366,7 +389,14 @@
           "label": "Smartsheet",
           "opens": "Opens the Smartsheet fallback that onboarding switched to at 07:25. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Hold the Queue",
+        "does": "Keeps the three queued properties waiting for Agentbox instead of publishing them to Snug alone. Onboarding continues on the Smartsheet fallback either way.",
+        "status": "waiting",
+        "note": "Waiting — 3 properties held until Agentbox recovers.",
+        "history": "You held the queue — Mitch is waiting for Agentbox rather than posting to Snug alone"
+      }
     },
     {
       "id": "c10",
@@ -382,7 +412,6 @@
       "decidedBy": "Held for you — free text is read, not interpreted",
       "whoSees": "Leasing team",
       "confidence": "Three requirements extracted",
-      "primaryLabel": "Confirm Requirements",
       "scenarioRef": "Mitch-009",
       "history": [
         {
@@ -404,7 +433,14 @@
           "label": "PropertyMe",
           "opens": "Opens SP 40118 in PropertyMe, at the special instructions these requirements were written to. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Confirm Requirements",
+        "does": "Locks the three landlord requirements onto the property so leasing cannot draft an ad that contradicts them.",
+        "status": "sent",
+        "note": "Sent — requirements locked to the property.",
+        "history": "You confirmed the landlord requirements — Mitch locked them to the property"
+      }
     },
     {
       "id": "c11",
@@ -420,7 +456,6 @@
       "decidedBy": "Mitch, automatic grade",
       "whoSees": "Compliance team",
       "confidence": "10 of 11 items pass",
-      "primaryLabel": "Request Certificate",
       "scenarioRef": "Mitch-010",
       "history": [
         {
@@ -447,7 +482,14 @@
           "label": "PropertyMe",
           "opens": "Opens the documents tab for SP 40662, where a replacement smoke alarm certificate is filed. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Request Certificate",
+        "does": "Emails the owner asking for a current smoke alarm certificate. The grade stays conditional and the listing stays gated until one is filed.",
+        "status": "waiting",
+        "note": "Waiting — current smoke alarm certificate requested.",
+        "history": "You requested a current smoke alarm certificate — the grade stays conditional"
+      }
     },
     {
       "id": "c12",
@@ -464,7 +506,6 @@
       "decidedBy": "You — identity is never decided by Mitch",
       "whoSees": "BDM + Compliance team",
       "confidence": "Not scored — human gate",
-      "primaryLabel": "Record Decision",
       "scenarioRef": "Mitch-011",
       "history": [
         {
@@ -486,7 +527,14 @@
           "label": "FLK",
           "opens": "Opens the licence and passport in FLK, side by side with the address discrepancy marked. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Record Decision",
+        "does": "Records your identity verification against the file, with both documents and the address discrepancy attached. Mitch carries the decision; it never makes it.",
+        "status": "closed",
+        "note": "Closed — your identity decision recorded against the file.",
+        "history": "You recorded the identity decision — Mitch attached it to the file"
+      }
     },
     {
       "id": "c13",
@@ -503,7 +551,6 @@
       "decidedBy": "Held for you — entity identity is not inferred",
       "whoSees": "BDM + Trust Accountant",
       "confidence": "Entity matched, branch not",
-      "primaryLabel": "Confirm Entity",
       "scenarioRef": "Mitch-012",
       "history": [
         {
@@ -530,7 +577,14 @@
           "label": "PropertyMe",
           "opens": "Opens the owner record for SP 41102 in PropertyMe. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Confirm Entity",
+        "does": "Accepts this as the same company despite the branch mismatch and releases the owner record for entry into PropertyMe.",
+        "status": "sent",
+        "note": "Sent — entity confirmed, owner record released for entry.",
+        "history": "You confirmed the entity — Mitch released the owner record"
+      }
     },
     {
       "id": "c14",
@@ -547,7 +601,6 @@
       "decidedBy": "Held for you — authority is never assumed",
       "whoSees": "BDM + Compliance team",
       "confidence": "No authority match found",
-      "primaryLabel": "Resolve Authority",
       "scenarioRef": "Mitch-013",
       "history": [
         {
@@ -574,7 +627,14 @@
           "label": "FLK",
           "opens": "Opens the MAA in FLK at the signature block read as 'D. Marsh, Director'. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Resolve Authority",
+        "does": "Records who holds signature authority, attaches the evidence to the file and lifts the compliance hold.",
+        "status": "sent",
+        "note": "Sent — signature authority recorded, hold lifted.",
+        "history": "You resolved signature authority — Mitch lifted the compliance hold"
+      }
     },
     {
       "id": "c15",
@@ -633,7 +693,6 @@
       "decidedBy": "Held for you — Mitch does not rewrite rejected fields",
       "whoSees": "Leasing team + Operations",
       "confidence": "One feed live, one rejected",
-      "primaryLabel": "Correct & Resend",
       "scenarioRef": "Mitch-017",
       "history": [
         {
@@ -660,7 +719,14 @@
           "label": "Agentbox",
           "opens": "Opens the Agentbox ad, which went live at 15:10. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Correct & Resend",
+        "does": "Sends the corrected property type to Snug and retries the feed. The Agentbox listing is already live and is not touched.",
+        "status": "waiting",
+        "note": "Waiting — corrected feed resent to Snug.",
+        "history": "You corrected the property type — Mitch resent the feed to Snug"
+      }
     },
     {
       "id": "c17",
@@ -714,7 +780,6 @@
       "decidedBy": "Mitch, hard stop — GST is never inferred",
       "whoSees": "Trust Accountant",
       "confidence": "Values clear, GST unstated",
-      "primaryLabel": "Confirm GST",
       "scenarioRef": "Mitch-022",
       "history": [
         {
@@ -741,7 +806,14 @@
           "label": "FLK",
           "opens": "Opens the MAA in FLK at the fee schedule, which carries no GST clause. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "primaryAction": {
+        "label": "Confirm GST",
+        "does": "Records the GST treatment for both fees exactly as you state it and lifts the hold on the fee schedule.",
+        "status": "sent",
+        "note": "Sent — GST treatment recorded, fee schedule released.",
+        "history": "You confirmed the GST treatment — Mitch released the fee schedule"
+      }
     }
   ]
 }

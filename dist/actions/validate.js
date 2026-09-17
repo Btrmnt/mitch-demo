@@ -41,11 +41,29 @@ export function validateActionsPayload(input) {
         if (!STATUSES.includes(a.status)) {
             issues.push({ id, message: `status must be one of ${STATUSES.join(", ")}` });
         }
-        else if (a.status === "needs_you" && !isNonEmptyString(a.primaryLabel)) {
-            issues.push({ id, message: "primaryLabel is required when status is needs_you" });
+        else if (a.status === "needs_you") {
+            const pa = a.primaryAction;
+            if (pa === undefined) {
+                issues.push({ id, message: "primaryAction is required when status is needs_you" });
+            }
+            else {
+                for (const field of ["label", "does", "note", "history"]) {
+                    if (!isNonEmptyString(pa[field])) {
+                        issues.push({ id, message: `primaryAction.${field} is required` });
+                    }
+                }
+                // An action that lands back on needs_you would leave the item exactly
+                // where it started, so the button would appear to do nothing.
+                if (!STATUSES.includes(pa.status) || pa.status === "needs_you") {
+                    issues.push({
+                        id,
+                        message: `primaryAction.status must be one of ${STATUSES.filter((x) => x !== "needs_you").join(", ")}`,
+                    });
+                }
+            }
         }
-        else if (a.status !== "needs_you" && a.primaryLabel !== undefined) {
-            issues.push({ id, message: "primaryLabel is only allowed when status is needs_you" });
+        else if (a.primaryAction !== undefined) {
+            issues.push({ id, message: "primaryAction is only allowed when status is needs_you" });
         }
         if (!Array.isArray(a.history) || a.history.length === 0) {
             issues.push({ id, message: "history must be a non-empty array" });

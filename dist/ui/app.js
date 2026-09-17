@@ -1,14 +1,14 @@
-import { fetchedActionSource } from "../actions/source.js?v=91a03ec";
-import { validateActionsPayload } from "../actions/validate.js?v=91a03ec";
-import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=91a03ec";
-import { showToast } from "./toast.js?v=91a03ec";
-import { initMasonry, relayoutMasonry } from "./masonry.js?v=91a03ec";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=91a03ec";
+import { fetchedActionSource } from "../actions/source.js?v=b517707";
+import { validateActionsPayload } from "../actions/validate.js?v=b517707";
+import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=b517707";
+import { showToast } from "./toast.js?v=b517707";
+import { initMasonry, relayoutMasonry } from "./masonry.js?v=b517707";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=b517707";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=91a03ec";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=b517707";
 let state = initialUiState();
 let actions = [];
 /**
@@ -154,9 +154,14 @@ function bindEvents(root) {
         // statuses. Both used to resolve to "closed", which left the Sent column
         // unreachable and erased the distinction between "Mitch is acting on
         // this" and "someone dealt with it elsewhere".
+        // The outcome comes from the item, not from here. Every primary button
+        // used to run one hardcoded sentence about entering something in
+        // PropertyMe, which was wrong for eleven of the twelve.
         if (action === "approve" && id) {
-            state = applyDecision(state, id, "sent", "Sent — Mitch is entering it in PropertyMe.", { time: nowLabel(),
-                text: "Approved by you — Mitch is entering it in PropertyMe" }, upstreamStatus(id));
+            const pa = actions.find((a) => a.id === id)?.primaryAction;
+            if (pa) {
+                state = applyDecision(state, id, pa.status, pa.note, { time: nowLabel(), text: pa.history }, upstreamStatus(id));
+            }
         }
         if (action === "close-handled" && id) {
             state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.", { time: nowLabel(), text: "Closed by you — handled outside Mitch" }, upstreamStatus(id));

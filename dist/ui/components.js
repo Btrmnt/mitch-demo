@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=91a03ec";
+import { esc } from "./escape.js?v=b517707";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -32,12 +32,12 @@ export function filterChip(opts) {
  * beside "Close (Handled Outside Mitch)". They share one row and truncate, so
  * each carries the full label in `title` for hover.
  */
-function button(cls, label, action, id) {
+function button(cls, label, action, id, title = label) {
     return (`<button class="${esc(cls)}" data-action="${esc(action)}" ` +
-        `data-id="${esc(id)}" title="${esc(label)}">${esc(label)}</button>`);
+        `data-id="${esc(id)}" title="${esc(title)}">${esc(label)}</button>`);
 }
-export function primaryButton(label, action, id) {
-    return button("btn-primary", label, action, id);
+export function primaryButton(label, action, id, title) {
+    return button("btn-primary", label, action, id, title);
 }
 export function secondaryButton(label, action, id) {
     return button("btn-secondary", label, action, id);
@@ -169,8 +169,8 @@ export function actionCard(card) {
     // — so a collapsed card appeared to offer a decision it cannot take. The
     // card's job is to get you to the detail; what is being asked is already
     // said by the title, the badges and the alert.
-    const footer = card.isNeedsYou && card.primaryLabel
-        ? primaryButton("Review", "open", card.id)
+    const footer = card.isNeedsYou && card.primaryAction
+        ? primaryButton("Review", "open", card.id, card.primaryAction.does)
         : statusNote(card);
     const menu = card.menuOpen ? cardMenu(card) : "";
     const open = card.menuOpen ? " card--menu-open" : "";
@@ -252,8 +252,8 @@ export function modal(card) {
     // is everything that moves the item elsewhere. Both pinned, because an
     // action a reader cannot reach without scrolling is an action they will
     // not take.
-    const decision = card.isNeedsYou && card.primaryLabel
-        ? primaryButton(card.primaryLabel, "approve", card.id)
+    const decision = card.isNeedsYou && card.primaryAction
+        ? primaryButton(card.primaryAction.label, "approve", card.id, card.primaryAction.does)
         : statusNote(card);
     const footer = `
         <div class="modal__footer">
