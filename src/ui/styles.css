@@ -571,15 +571,17 @@ html, body {
   padding: 16px var(--modal-pad) var(--modal-pad);
   background: var(--surface-card);
 }
-/* Row one. Wraps rather than truncating: with a primary and up to two
-   systems of record the labels are the whole information — "Open in
-   PropertyMe" clipped to "Open in Pro…" tells a reader nothing. The shrink
-   values still order who yields first if a row does get tight. */
+/* Row one, and it stays one row. Wrapping made the pinned footer grow to
+   two and three lines on the busier cards, eating the content it is pinned
+   over. The labels are short enough now to fit — the systems of record are
+   named by the system alone, and the toast carries the detail — so the
+   shrink values below only ever come into play on a narrow viewport. */
 .modal__actions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 10px 12px;
+  flex-wrap: nowrap;
+  gap: 12px;
+  min-width: 0;
 }
 .modal__actions .btn-primary { flex: 0 1 auto; }
 .modal__actions .btn-secondary { flex: 0 2 auto; }
@@ -590,14 +592,19 @@ html, body {
    to discover them behind an ellipsis. */
 .modal__rail {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 2px 18px;
+  gap: 18px;
+  min-width: 0;
   border-top: 1px solid var(--hairline);
   padding-top: 10px;
 }
 .modal__rail-item {
   padding: 2px 0;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* .btn-text is gone. Its one user — "Close (Handled Outside Mitch)" in the

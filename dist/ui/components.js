@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=eaa84f3";
+import { esc } from "./escape.js?v=91a03ec";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -164,8 +164,13 @@ export function cardMenu(card) {
  */
 export function actionCard(card) {
     const alert = alertBlock(card);
+    // "Review", not the decision's own label. The card carried primaryLabel
+    // here — the same words as the button in the modal that actually approves
+    // — so a collapsed card appeared to offer a decision it cannot take. The
+    // card's job is to get you to the detail; what is being asked is already
+    // said by the title, the badges and the alert.
     const footer = card.isNeedsYou && card.primaryLabel
-        ? primaryButton(card.primaryLabel, "open", card.id)
+        ? primaryButton("Review", "open", card.id)
         : statusNote(card);
     const menu = card.menuOpen ? cardMenu(card) : "";
     const open = card.menuOpen ? " card--menu-open" : "";
@@ -233,10 +238,10 @@ export function tertiaryRail(card) {
     const item = (action, label) => tertiaryButton(label, action, card.id, "modal__rail-item");
     return `
         <div class="modal__rail">
-          ${item("assign", "Assign to a Teammate")}
+          ${item("assign", "Assign")}
           ${item("redirect", "Redirect")}
-          ${item("not-managed", "Not Managed by Us")}
-          ${item("close-handled", "Close (Handled Outside Mitch)")}
+          ${item("not-managed", "Not managed by us")}
+          ${item("close-handled", "Close (handled outside)")}
         </div>`;
 }
 export function modal(card) {

@@ -15,7 +15,7 @@
       "decidedBy": "Mitch, held for confirmation (bank conflict)",
       "whoSees": "BDM + Trust Accountant",
       "confidence": "Conflict detected — human confirmation required",
-      "primaryLabel": "Confirm & Enter in PropertyMe",
+      "primaryLabel": "Confirm & Enter",
       "scenarioRef": "Mitch-002",
       "history": [
         {
@@ -34,12 +34,12 @@
       "links": [
         {
           "system": "PropertyMe",
-          "label": "Open in PropertyMe",
+          "label": "PropertyMe",
           "opens": "Opens the owner record for SP 41207 in PropertyMe, at the bank details. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "FLK",
-          "label": "View the signed MAA",
+          "label": "FLK",
           "opens": "Opens the executed MAA in FLK so the bank details can be read against the record. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -59,7 +59,7 @@
       "decidedBy": "Mitch, automatic gate",
       "whoSees": "Compliance team",
       "confidence": "Single confident match",
-      "primaryLabel": "Acknowledge & Request Pool Compliance",
+      "primaryLabel": "Request Certificate",
       "scenarioRef": "Mitch-014",
       "history": [
         {
@@ -78,12 +78,12 @@
       "links": [
         {
           "system": "PropertyMe",
-          "label": "Open in PropertyMe",
+          "label": "PropertyMe",
           "opens": "Opens the compliance tab for SP 41207 in PropertyMe, where the pool certificate is recorded. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "Compliance register",
-          "label": "Open the register",
+          "label": "Compliance",
           "opens": "Opens Highland's compliance register filtered to this property. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -120,12 +120,12 @@
       "links": [
         {
           "system": "PropertyMe",
-          "label": "Open in PropertyMe",
+          "label": "PropertyMe",
           "opens": "Opens the tenancy record for SP 39980 in PropertyMe, at the letting type. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "FLK",
-          "label": "View the signed MAA",
+          "label": "FLK",
           "opens": "Opens the MAA in FLK at the fee section that carries the casual-letting marker. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -162,7 +162,7 @@
       "links": [
         {
           "system": "PropertyMe",
-          "label": "Open in PropertyMe",
+          "label": "PropertyMe",
           "opens": "Opens SP 41102 in PropertyMe, at the go-live status. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -199,7 +199,7 @@
       "links": [
         {
           "system": "FLK",
-          "label": "View the signed MAA",
+          "label": "FLK",
           "opens": "Opens FLK document FLK-2291, the MAA this case was opened from. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -219,7 +219,7 @@
       "decidedBy": "Held for you — Mitch does not choose between equal matches",
       "whoSees": "BDM + Operations",
       "confidence": "Two matches, no tiebreak",
-      "primaryLabel": "Choose the Correct Silo",
+      "primaryLabel": "Choose Silo",
       "scenarioRef": "Mitch-003",
       "history": [
         {
@@ -238,7 +238,7 @@
       "links": [
         {
           "system": "PropertyMe",
-          "label": "Open the portfolio",
+          "label": "PropertyMe",
           "opens": "Opens the Cronulla portfolio in PropertyMe so the silo boundary can be checked. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -258,7 +258,7 @@
       "decidedBy": "Mitch, hard stop — no autonomous entry on money fields",
       "whoSees": "Trust Accountant + BDM",
       "confidence": "Format conflict, entry refused",
-      "primaryLabel": "Confirm the Correct Fee",
+      "primaryLabel": "Confirm Fee",
       "scenarioRef": "Mitch-004",
       "history": [
         {
@@ -277,12 +277,12 @@
       "links": [
         {
           "system": "PropertyMe",
-          "label": "Open the fee schedule",
+          "label": "PropertyMe",
           "opens": "Opens the fee schedule for SP 41355 in PropertyMe, at the management fee field. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "FLK",
-          "label": "View the signed MAA",
+          "label": "FLK",
           "opens": "Opens the MAA in FLK at the fee schedule, to read what was actually agreed. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -319,7 +319,7 @@
       "links": [
         {
           "system": "Trust account",
-          "label": "Open the trust account",
+          "label": "Trust",
           "opens": "Opens the trust account filtered to SP 40904, where the deposit would appear. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -339,7 +339,7 @@
       "decidedBy": "Held for you — the queue-or-proceed choice is yours",
       "whoSees": "Operations",
       "confidence": "Sustained failure, fallback active",
-      "primaryLabel": "Hold the Queue for Agentbox",
+      "primaryLabel": "Hold the Queue",
       "scenarioRef": "Mitch-007",
       "history": [
         {
@@ -358,12 +358,12 @@
       "links": [
         {
           "system": "Agentbox",
-          "label": "Check Agentbox status",
+          "label": "Agentbox",
           "opens": "Opens the Agentbox integration health page. Nothing is blocked meanwhile — the Smartsheet fallback is carrying onboarding. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "Smartsheet",
-          "label": "Open the fallback sheet",
+          "label": "Smartsheet",
           "opens": "Opens the Smartsheet fallback that onboarding switched to at 07:25. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -382,7 +382,7 @@
       "decidedBy": "Held for you — free text is read, not interpreted",
       "whoSees": "Leasing team",
       "confidence": "Three requirements extracted",
-      "primaryLabel": "Confirm Landlord Requirements",
+      "primaryLabel": "Confirm Requirements",
       "scenarioRef": "Mitch-009",
       "history": [
         {
@@ -401,7 +401,7 @@
       "links": [
         {
           "system": "PropertyMe",
-          "label": "Open the property notes",
+          "label": "PropertyMe",
           "opens": "Opens SP 40118 in PropertyMe, at the special instructions these requirements were written to. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -420,7 +420,7 @@
       "decidedBy": "Mitch, automatic grade",
       "whoSees": "Compliance team",
       "confidence": "10 of 11 items pass",
-      "primaryLabel": "Request the Smoke Alarm Certificate",
+      "primaryLabel": "Request Certificate",
       "scenarioRef": "Mitch-010",
       "history": [
         {
@@ -439,12 +439,12 @@
       "links": [
         {
           "system": "Compliance register",
-          "label": "Open the register",
+          "label": "Compliance",
           "opens": "Opens the rubric result for SP 40662, showing the ten passes and the one outstanding item. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "PropertyMe",
-          "label": "Open the documents",
+          "label": "PropertyMe",
           "opens": "Opens the documents tab for SP 40662, where a replacement smoke alarm certificate is filed. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -464,7 +464,7 @@
       "decidedBy": "You — identity is never decided by Mitch",
       "whoSees": "BDM + Compliance team",
       "confidence": "Not scored — human gate",
-      "primaryLabel": "Record Your Identity Decision",
+      "primaryLabel": "Record Decision",
       "scenarioRef": "Mitch-011",
       "history": [
         {
@@ -483,7 +483,7 @@
       "links": [
         {
           "system": "FLK",
-          "label": "Open the identity documents",
+          "label": "FLK",
           "opens": "Opens the licence and passport in FLK, side by side with the address discrepancy marked. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -503,7 +503,7 @@
       "decidedBy": "Held for you — entity identity is not inferred",
       "whoSees": "BDM + Trust Accountant",
       "confidence": "Entity matched, branch not",
-      "primaryLabel": "Confirm the Entity",
+      "primaryLabel": "Confirm Entity",
       "scenarioRef": "Mitch-012",
       "history": [
         {
@@ -522,12 +522,12 @@
       "links": [
         {
           "system": "ASIC",
-          "label": "Open the ABN record",
+          "label": "ASIC",
           "opens": "Opens the ASIC record for ABN 51 824 753 556, at the branch registration. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "PropertyMe",
-          "label": "Open the owner record",
+          "label": "PropertyMe",
           "opens": "Opens the owner record for SP 41102 in PropertyMe. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -547,7 +547,7 @@
       "decidedBy": "Held for you — authority is never assumed",
       "whoSees": "BDM + Compliance team",
       "confidence": "No authority match found",
-      "primaryLabel": "Resolve Signature Authority",
+      "primaryLabel": "Resolve Authority",
       "scenarioRef": "Mitch-013",
       "history": [
         {
@@ -566,12 +566,12 @@
       "links": [
         {
           "system": "ASIC",
-          "label": "Open the director list",
+          "label": "ASIC",
           "opens": "Opens the ASIC director list for the signing entity. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "FLK",
-          "label": "View the signature block",
+          "label": "FLK",
           "opens": "Opens the MAA in FLK at the signature block read as 'D. Marsh, Director'. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -608,12 +608,12 @@
       "links": [
         {
           "system": "Agentbox",
-          "label": "View the live ad",
+          "label": "Agentbox",
           "opens": "Opens the published ad for SP 39980 in Agentbox. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "Snug",
-          "label": "View the live ad",
+          "label": "Snug",
           "opens": "Opens the published ad for SP 39980 in Snug. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -633,7 +633,7 @@
       "decidedBy": "Held for you — Mitch does not rewrite rejected fields",
       "whoSees": "Leasing team + Operations",
       "confidence": "One feed live, one rejected",
-      "primaryLabel": "Correct the Property Type for Snug",
+      "primaryLabel": "Correct & Resend",
       "scenarioRef": "Mitch-017",
       "history": [
         {
@@ -652,12 +652,12 @@
       "links": [
         {
           "system": "Snug",
-          "label": "Open the rejected feed",
+          "label": "Snug",
           "opens": "Opens the Snug feed for SP 40904, at the property type field it rejected twice. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "Agentbox",
-          "label": "View the live ad",
+          "label": "Agentbox",
           "opens": "Opens the Agentbox ad, which went live at 15:10. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -694,7 +694,7 @@
       "links": [
         {
           "system": "Mitch console",
-          "label": "Open routing configuration",
+          "label": "Console",
           "opens": "Opens the routing configuration for the Cronulla silo, where this change was made. Mitch keeps this action open until the change comes back from the source."
         }
       ]
@@ -714,7 +714,7 @@
       "decidedBy": "Mitch, hard stop — GST is never inferred",
       "whoSees": "Trust Accountant",
       "confidence": "Values clear, GST unstated",
-      "primaryLabel": "Confirm GST Treatment",
+      "primaryLabel": "Confirm GST",
       "scenarioRef": "Mitch-022",
       "history": [
         {
@@ -733,12 +733,12 @@
       "links": [
         {
           "system": "PropertyMe",
-          "label": "Open the fee schedule",
+          "label": "PropertyMe",
           "opens": "Opens the fee schedule for SP 40662 in PropertyMe, at both fee fields. Mitch keeps this action open until the change comes back from the source."
         },
         {
           "system": "FLK",
-          "label": "View the signed MAA",
+          "label": "FLK",
           "opens": "Opens the MAA in FLK at the fee schedule, which carries no GST clause. Mitch keeps this action open until the change comes back from the source."
         }
       ]
