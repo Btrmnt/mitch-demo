@@ -784,3 +784,13 @@ html, body {
    badges. */
 .card--completed { display: flex; flex-direction: column; }
 .card--completed .card-note--done { margin-top: auto; }
+
+/* The card's button spans the card — .card is a flex column and the default
+   stretch makes every child full width — so "Review" sat centred in a wide
+   bar and read as a banner rather than as a control. Left-aligned it starts
+   on the same edge as the title, the subtitle and the note above it, which is
+   the line the eye is already following down the card.
+
+   Scoped to .card deliberately: the modal's footer buttons are auto-width and
+   sit in a row, where centred within the button is correct. */
+.card .btn-primary { text-align: left; }
