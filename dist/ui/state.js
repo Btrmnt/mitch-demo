@@ -48,7 +48,7 @@ const DEFAULT_NOTE = {
     sent: "Sent — no action needed.",
     closed: "Closed.",
 };
-function derive(item, override, menuOpen) {
+function derive(item, override, menuOpen, siblings = []) {
     const status = override?.status ?? item.status;
     return {
         ...item,
@@ -60,14 +60,31 @@ function derive(item, override, menuOpen) {
         isNeedsYou: status === "needs_you",
         noteText: override?.note ?? DEFAULT_NOTE[status],
         menuOpen,
+        siblings,
     };
 }
 /**
  * Pure projection of the payload through the current UI state. Counts are of
  * everything, so the chips keep showing the whole picture while filtered.
  */
+/** Still needing attention, as opposed to decided or already under way. */
+const LIVE = ["needs_you", "waiting"];
 export function deriveView(actions, state) {
-    const all = actions.map((a) => derive(a, state.overrides[a.id], state.openMenuId === a.id));
+    // Two passes. The first settles every status through its override, because
+    // a card's siblings depend on what is live AFTER local decisions, not on
+    // what the payload said. The second hands each card the others.
+    const settled = actions.map((a) => ({
+        item: a,
+        status: state.overrides[a.id]?.status ?? a.status,
+    }));
+    const siblingsFor = (item) => item.caseRef === undefined
+        ? []
+        : settled
+            .filter((o) => o.item.id !== item.id &&
+            o.item.caseRef === item.caseRef &&
+            LIVE.includes(o.status))
+            .map((o) => ({ id: o.item.id, title: o.item.title }));
+    const all = actions.map((a) => derive(a, state.overrides[a.id], state.openMenuId === a.id, siblingsFor(a)));
     const counts = {
         all: all.length,
         // Filled by the caller: deriveView projects actions, and completed work

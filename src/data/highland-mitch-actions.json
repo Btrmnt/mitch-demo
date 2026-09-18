@@ -48,7 +48,8 @@
         "note": "Sent — entered in PropertyMe against the MAA's bank details.",
         "history": "You confirmed the owner record — Mitch is entering it in PropertyMe"
       },
-      "proposal": "Entry needs one set of bank details matching the executed MAA. The existing contact record for J. Marsh carries a different BSB and account, so there are two and neither is authoritative. Confirm which set governs; Mitch enters the owner as Business + Individual, supersedes the other as historic, and continues to trust setup."
+      "proposal": "Entry needs one set of bank details matching the executed MAA. The existing contact record for J. Marsh carries a different BSB and account, so there are two and neither is authoritative. Confirm which set governs; Mitch enters the owner as Business + Individual, supersedes the other as historic, and continues to trust setup.",
+      "caseRef": "SP 41207"
     },
     {
       "id": "c2",
@@ -98,7 +99,8 @@
         "note": "Waiting — pool safety certificate requested from the owner.",
         "history": "You sent the certificate request — Mitch is watching for it"
       },
-      "proposal": "Full compliance requires pool safety certification wherever Section 25 is left un-struck, and no certificate is on file. Mitch has the request drafted, but it goes to the owner from you — outbound messages to end customers stay with a person until message conformance has been validated. Send it, or confirm the property has no pool and the MAA needs correcting. Mitch watches for the certificate and releases the listing gate when it lands."
+      "proposal": "Full compliance requires pool safety certification wherever Section 25 is left un-struck, and no certificate is on file. Mitch has the request drafted, but it goes to the owner from you — outbound messages to end customers stay with a person until message conformance has been validated. Send it, or confirm the property has no pool and the MAA needs correcting. Mitch watches for the certificate and releases the listing gate when it lands.",
+      "caseRef": "SP 41207"
     },
     {
       "id": "c3",
@@ -140,7 +142,8 @@
           "opens": "Opens the MAA in FLK at the fee section that carries the casual-letting marker. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "proposal": "Case routed to the casual-letting process. Leasing team notified to confirm at \"application approved.\""
+      "proposal": "Case routed to the casual-letting process. Leasing team notified to confirm at \"application approved.\"",
+      "caseRef": "SP 39980"
     },
     {
       "id": "c4",
@@ -177,7 +180,8 @@
           "opens": "Opens SP 41102 in PropertyMe, at the go-live status. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "proposal": "Email sent to Nadia with the Agentbox ad link for the go-live compliance check."
+      "proposal": "Email sent to Nadia with the Agentbox ad link for the go-live compliance check.",
+      "caseRef": "SP 41102"
     },
     {
       "id": "c5",
@@ -214,7 +218,8 @@
           "opens": "Opens FLK document FLK-2291, the MAA this case was opened from. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "proposal": "Case opened automatically and keyed to the FLK document id. BDM notified in Teams for visibility only — no kickoff action was required."
+      "proposal": "Case opened automatically and keyed to the FLK document id. BDM notified in Teams for visibility only — no kickoff action was required.",
+      "caseRef": "SP 40118"
     },
     {
       "id": "c6",
@@ -259,7 +264,8 @@
         "history": "You assigned the silo — Mitch re-pointed the downstream tasks"
       },
       "proposal": "A property must resolve to exactly one silo before any task is routed. The office named on the MAA and the property's portfolio boundary resolve to two different silos, and no rule ranks one above the other. Pick the silo; Mitch re-points every downstream task to it and continues. Nothing has been routed while this was held.",
-      "ruleAdjust": "Opens the silo routing rule in the Mitch console. Ranking the office named on the MAA above the portfolio boundary resolves this property and every future one where the two disagree, instead of asking a person each time."
+      "ruleAdjust": "Opens the silo routing rule in the Mitch console. Ranking the office named on the MAA above the portfolio boundary resolves this property and every future one where the two disagree, instead of asking a person each time.",
+      "caseRef": "SP 40662"
     },
     {
       "id": "c7",
@@ -308,7 +314,8 @@
         "note": "Sent — fee confirmed, entry hold lifted.",
         "history": "You confirmed the management fee — Mitch lifted the entry hold"
       },
-      "proposal": "The management fee must be entered as a percentage. The money-field rule refuses a currency amount in that position because $1 and 1% cannot be recovered from one another after entry, and the MAA gives \"$1\" — malformed for this field, not merely unusual. Supply the intended percentage; Mitch enters it and lifts the hold. If $1 is literally what was agreed, it needs a written note on the file first."
+      "proposal": "The management fee must be entered as a percentage. The money-field rule refuses a currency amount in that position because $1 and 1% cannot be recovered from one another after entry, and the MAA gives \"$1\" — malformed for this field, not merely unusual. Supply the intended percentage; Mitch enters it and lifts the hold. If $1 is literally what was agreed, it needs a written note on the file first.",
+      "caseRef": "SP 41355"
     },
     {
       "id": "c8",
@@ -345,7 +352,8 @@
           "opens": "Opens the trust account filtered to SP 40904, where the deposit would appear. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "proposal": "Record prepared in full and held. PropertyMe entry fires on deposit confirmation, not on signature."
+      "proposal": "Record prepared in full and held. PropertyMe entry fires on deposit confirmation, not on signature.",
+      "caseRef": "SP 40904"
     },
     {
       "id": "c9",
@@ -440,7 +448,8 @@
         "history": "You confirmed the landlord requirements — Mitch locked them to the property"
       },
       "proposal": "Landlord requirements have to land in fields the leasing system enforces. Two of the three map cleanly. \"No share-house arrangements\" has no equivalent field in PropertyMe and can only be carried as free text, which leasing does not enforce. Confirm a note is an acceptable home for it, or name the field it should map to; Mitch locks all three to the property and continues to the listing brief.",
-      "ruleAdjust": "Opens the landlord-requirements mapping. Giving share-house restrictions a field of their own lets leasing enforce them, instead of carrying them as a note that nothing checks."
+      "ruleAdjust": "Opens the landlord-requirements mapping. Giving share-house restrictions a field of their own lets leasing enforce them, instead of carrying them as a note that nothing checks.",
+      "caseRef": "SP 40118"
     },
     {
       "id": "c11",
@@ -490,7 +499,8 @@
         "history": "You sent the certificate request — Mitch is watching for it"
       },
       "flag": "Certificate expired. The property cannot be leased until a current one is on file.",
-      "proposal": "A property cannot be leased without a smoke alarm certificate dated within twelve months. Ten of eleven rubric items pass; the certificate on file is dated 2023, so the required input exists but has expired. Mitch has the request drafted — it goes to the owner from you, since outbound messages to end customers stay with a person until conformance is validated. Mitch holds the grade at conditional and re-grades automatically when a current certificate is filed."
+      "proposal": "A property cannot be leased without a smoke alarm certificate dated within twelve months. Ten of eleven rubric items pass; the certificate on file is dated 2023, so the required input exists but has expired. Mitch has the request drafted — it goes to the owner from you, since outbound messages to end customers stay with a person until conformance is validated. Mitch holds the grade at conditional and re-grades automatically when a current certificate is filed.",
+      "caseRef": "SP 40662"
     },
     {
       "id": "c12",
@@ -535,7 +545,8 @@
         "note": "Closed — your identity decision recorded against the file.",
         "history": "You recorded the identity decision — Mitch attached it to the file"
       },
-      "proposal": "Identity documents must match the MAA and each other. The passport matches; the licence carries a different address, so the set is inconsistent and the requirement is unmet. Mitch does not resolve identity conflicts — a person does. Record which document governs and what evidence closes the gap; Mitch attaches the decision to the file and continues to entry."
+      "proposal": "Identity documents must match the MAA and each other. The passport matches; the licence carries a different address, so the set is inconsistent and the requirement is unmet. Mitch does not resolve identity conflicts — a person does. Record which document governs and what evidence closes the gap; Mitch attaches the decision to the file and continues to entry.",
+      "caseRef": "SP 41355"
     },
     {
       "id": "c13",
@@ -585,7 +596,8 @@
         "note": "Sent — entity confirmed, owner record released for entry.",
         "history": "You confirmed the entity — Mitch released the owner record"
       },
-      "proposal": "The owner record must name an entity whose ASIC registration matches the MAA. The ABN is active and the company name matches exactly, but the registered branch differs from the branch written on the agreement, so the match is incomplete. Confirm the entity or correct the branch on the MAA; Mitch releases the owner record for entry once one of them is authoritative."
+      "proposal": "The owner record must name an entity whose ASIC registration matches the MAA. The ABN is active and the company name matches exactly, but the registered branch differs from the branch written on the agreement, so the match is incomplete. Confirm the entity or correct the branch on the MAA; Mitch releases the owner record for entry once one of them is authoritative.",
+      "caseRef": "SP 41102"
     },
     {
       "id": "c14",
@@ -635,7 +647,8 @@
         "note": "Sent — signature authority recorded, hold lifted.",
         "history": "You resolved signature authority — Mitch lifted the compliance hold"
       },
-      "proposal": "An MAA is enforceable only if signed by someone with authority for the owning entity. \"D. Marsh, Director\" appears on neither the ASIC director list nor the title, so authority is not evidenced. Supply that evidence — a recent ASIC change, a trust deed, or a corrected signatory. Mitch attaches it, lifts the compliance hold and continues; no downstream task runs until it does."
+      "proposal": "An MAA is enforceable only if signed by someone with authority for the owning entity. \"D. Marsh, Director\" appears on neither the ASIC director list nor the title, so authority is not evidenced. Supply that evidence — a recent ASIC change, a trust deed, or a corrected signatory. Mitch attaches it, lifts the compliance hold and continues; no downstream task runs until it does.",
+      "caseRef": "SP 41102"
     },
     {
       "id": "c15",
@@ -677,7 +690,8 @@
           "opens": "Opens the published ad for SP 39980 in Snug. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "proposal": "Ad posted to both feeds after sign-off. Post-publish edits remain available and will sync to both systems."
+      "proposal": "Ad posted to both feeds after sign-off. Post-publish edits remain available and will sync to both systems.",
+      "caseRef": "SP 39980"
     },
     {
       "id": "c16",
@@ -727,7 +741,8 @@
         "history": "You corrected the property type — Mitch resent the feed to Snug"
       },
       "proposal": "The listing must exist on both feeds. Agentbox accepted it; Snug rejected the property type twice against its own enumerated list, so the value Highland holds is malformed for that destination. Supply the Snug-accepted value; Mitch resends that feed alone and leaves the live Agentbox ad untouched. Highland's property types do not map one-to-one onto Snug's, which is why Mitch will not substitute one.",
-      "ruleAdjust": "Opens the Highland → Snug property-type mapping. Mapping this type once clears the rejection for every property that uses it, and stops Mitch guessing at a substitute."
+      "ruleAdjust": "Opens the Highland → Snug property-type mapping. Mapping this type once clears the rejection for every property that uses it, and stops Mitch guessing at a substitute.",
+      "caseRef": "SP 40904"
     },
     {
       "id": "c17",
@@ -813,7 +828,8 @@
         "note": "Sent — GST treatment recorded, fee schedule released.",
         "history": "You confirmed the GST treatment — Mitch released the fee schedule"
       },
-      "proposal": "Every fee must state its GST treatment, and this schedule states neither for either fee. The values are clear — 5.5% and 1.5 weeks — but the treatment is absent, and inclusive versus exclusive differ by 10% on every invoice for the life of the management. State the treatment; Mitch records it against both fees and releases the fee schedule for entry."
+      "proposal": "Every fee must state its GST treatment, and this schedule states neither for either fee. The values are clear — 5.5% and 1.5 weeks — but the treatment is absent, and inclusive versus exclusive differ by 10% on every invoice for the life of the management. State the treatment; Mitch records it against both fees and releases the fee schedule for entry.",
+      "caseRef": "SP 40662"
     }
   ],
   "completed": [

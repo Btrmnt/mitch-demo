@@ -1,14 +1,14 @@
-import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=94b0ef9";
-import { validateActionsPayload } from "../actions/validate.js?v=94b0ef9";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, } from "./components.js?v=94b0ef9";
-import { showToast } from "./toast.js?v=94b0ef9";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=94b0ef9";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, } from "./state.js?v=94b0ef9";
+import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=0754f8a";
+import { validateActionsPayload } from "../actions/validate.js?v=0754f8a";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, } from "./components.js?v=0754f8a";
+import { showToast } from "./toast.js?v=0754f8a";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=0754f8a";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, } from "./state.js?v=0754f8a";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=94b0ef9";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=0754f8a";
 let state = initialUiState();
 let actions = [];
 /**
@@ -19,6 +19,25 @@ let actions = [];
 let source = null;
 let completedSource = null;
 let completed = [];
+/**
+ * After a decision, move the reader to the next live item on the same case
+ * rather than back to the grid.
+ *
+ * An exception rarely arrives alone, and the siblings are usually one
+ * conversation with one person — SP 41102's entity mismatch and its
+ * unevidenced signatory are the same phone call. Returning to the grid makes
+ * the reader find the related item themselves, or meet the property again
+ * next week. Siblings are read BEFORE the decision is applied, since applying
+ * it is what removes this card from their counts.
+ */
+function followOn(id) {
+    const view = deriveView(actions, state);
+    // openCard is checked as well as cards: a decision can be taken from an
+    // open modal whose card the current filter excludes.
+    const card = view.cards.find((c) => c.id === id)
+        ?? (view.openCard?.id === id ? view.openCard : undefined);
+    return card?.siblings[0];
+}
 /** The upstream status of an item, i.e. before any local decision. */
 function upstreamStatus(id) {
     return actions.find((a) => a.id === id)?.status ?? "needs_you";
@@ -165,19 +184,27 @@ function bindEvents(root) {
         // PropertyMe, which was wrong for eleven of the twelve.
         if (action === "approve" && id) {
             const pa = actions.find((a) => a.id === id)?.primaryAction;
+            const next = followOn(id);
             if (pa) {
                 state = applyDecision(state, id, pa.status, pa.note, { time: nowLabel(), text: pa.history }, upstreamStatus(id));
+                if (next)
+                    state = openCard(state, next.id);
                 // Taking the decision closes the modal, so the card's new note and
                 // history line land behind whatever the reader looks at next. The
                 // toast carries the consequence forward — the same sentence the
                 // button promised on hover, now as confirmation of what is running.
-                showToast(pa.does);
+                showToast(next ? `${pa.does} Next on this property: ${next.title}.` : pa.does);
             }
         }
         if (action === "close-handled" && id) {
+            const next = followOn(id);
             state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.", { time: nowLabel(), text: "Closed by you — handled outside Mitch" }, upstreamStatus(id));
-            showToast("Closed. Mitch stops raising this action, and will not reopen it if " +
-                "the source changes.");
+            if (next)
+                state = openCard(state, next.id);
+            showToast(next
+                ? `Closed. Still open on this property: ${next.title}.`
+                : "Closed. Mitch stops raising this action, and will not reopen it " +
+                    "if the source changes.");
         }
         // A link to a system of record. With no url — which is every link in the
         // demo payloads — the button says what it would do rather than going

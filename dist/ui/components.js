@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=94b0ef9";
+import { esc } from "./escape.js?v=0754f8a";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -179,6 +179,18 @@ export function cardMenu(card) {
     </div>`;
 }
 /**
+ * How many other live items share this card's case, on the line that already
+ * names the subject. A count, not a list — a scanning reader needs to know
+ * the property will come up again, and the detail belongs in the card they
+ * open, not in the grid.
+ */
+function siblingCount(card) {
+    if (!card.siblings.length)
+        return "";
+    const n = card.siblings.length;
+    return ` <span class="card__siblings">· ${esc(String(n))} more open</span>`;
+}
+/**
  * CJ's card anatomy: the title leads on one truncated line, the badges sit
  * beneath it, and two 24px circular controls hold the top right — an "i"
  * opening the detail view and an ellipsis opening the overflow menu.
@@ -212,7 +224,7 @@ export function actionCard(card) {
           ${menu}
         </div>
       </div>
-      <p class="card__subtitle">${esc(card.subtitle)}</p>
+      <p class="card__subtitle">${esc(card.subtitle)}${siblingCount(card)}</p>
       ${alert}
       ${footer}
     </article>`;
@@ -298,6 +310,24 @@ export function tertiaryRail(card) {
 export function draftedHeading(card) {
     return card.isNeedsYou ? "What action Mitch proposes" : "What Mitch did";
 }
+/**
+ * The other live items on this case, named. A reader deciding on SP 41102's
+ * entity mismatch should know before they act that its signature authority is
+ * also open — the two are one conversation with one person, and finding that
+ * out afterwards means having it twice.
+ */
+export function siblingSection(card) {
+    if (!card.siblings.length)
+        return "";
+    const items = card.siblings
+        .map((s) => `<li>${esc(s.title)}</li>`)
+        .join("");
+    return `
+          <section>
+            <div class="modal__eyebrow">Also open on this property</div>
+            <ul class="modal__siblings">${items}</ul>
+          </section>`;
+}
 export function modal(card) {
     if (!card)
         return "";
@@ -350,6 +380,8 @@ export function modal(card) {
             ${metaRow("Who can see this", card.whoSees)}
             ${metaRow("Confidence", card.confidence)}
           </dl>
+
+          ${siblingSection(card)}
 
           <section>
             <div class="modal__eyebrow">History</div>
