@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=f93c6e1";
+import { esc } from "./escape.js?v=795cf35";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -138,11 +138,15 @@ export function statusNote(card) {
         `${esc(card.noteText)}</div>`);
 }
 /**
- * The card's overflow menu, as CJ writes it. Only the last item does anything
- * this phase: it applies the same close-handled decision the modal offers.
- * The first three are inert — they carry a data-action so the delegated
- * handler can recognise and dismiss the menu, but nothing acts on those
- * names, so a click writes nothing.
+ * The card's overflow menu. Only the last item does anything this phase: it
+ * applies the same close-handled decision the modal offers. The others are
+ * inert — they carry a data-action so the delegated handler can recognise
+ * and dismiss the menu, but nothing acts on those names.
+ *
+ * CJ's "Not Managed by Us" is deliberately absent. It belongs to a staff
+ * member looking after an existing portfolio, where declining a property is
+ * a real answer. Mitch onboards new business: everything in this queue is a
+ * property being taken on, so the option would never be the right one.
  *
  * Out of scope, explicitly: CJ's `@assign` teammate-search popover behind
  * "Assign to a Teammate". That is a feature, not a visual treatment.
@@ -153,7 +157,6 @@ export function cardMenu(card) {
     <div class="card-menu" role="menu">
       ${item("assign", "Assign to a Teammate")}
       ${item("redirect", "Redirect")}
-      ${item("not-managed", "Not Managed by Us")}
       ${item("close-handled", "Close (Handled Outside Mitch)")}
     </div>`;
 }
@@ -240,7 +243,6 @@ export function tertiaryRail(card) {
         <div class="modal__rail">
           ${item("assign", "Assign")}
           ${item("redirect", "Redirect")}
-          ${item("not-managed", "Not managed by us")}
           ${item("close-handled", "Close (handled outside)")}
         </div>`;
 }

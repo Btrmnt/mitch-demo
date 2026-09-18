@@ -101,7 +101,7 @@ html, body {
    Secondary — CJ's bordered modal-footer button. "Close (Handled Outside
                Mitch)" is one of these: it is an alternative action a manager
                deliberately takes, not a throwaway link.
-   Tertiary  — CJ's Redirect / Not Managed treatment: type alone, no box. The
+   Tertiary  — CJ's Redirect treatment: type alone, no box. The
                four overflow-menu entries. */
 /* Primary and secondary share a box so they read as one control group: same
    radius, same padding, same type size. Only the fill and border differ.
