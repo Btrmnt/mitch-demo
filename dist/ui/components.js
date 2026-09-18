@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=2115232";
+import { esc } from "./escape.js?v=cf0abac";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -121,11 +121,19 @@ export function contextPanel(card) {
     // the easier of the two places to break out of. Rule names are verbatim
     // from the source documents and are not shortened to fit.
     const rule = `Rule: ${esc(card.rule)}`;
+    // Only where the rule itself is the problem. On a card whose exception is
+    // this property's data, changing the rule would be the wrong fix and
+    // offering it invites exactly that.
+    const adjust = card.ruleAdjust
+        ? `<button class="btn-tertiary context-panel__adjust" data-action="adjust-rule" ` +
+            `data-id="${esc(card.id)}" title="${esc(card.ruleAdjust)}">Adjust this rule</button>`
+        : "";
     return `
     <aside class="context-panel">
       <div class="context-panel__eyebrow">${ICON_CIRCLE_INFO}<span>Context</span></div>
       <p class="context-panel__note">${esc(card.ruleNote)}</p>
       <span class="context-panel__rule" title="${rule}">${rule}</span>
+      ${adjust}
     </aside>`;
 }
 /**
@@ -321,7 +329,7 @@ export function modal(card) {
 
           <section>
             <div class="modal__eyebrow">${draftedHeading(card)}</div>
-            <div class="modal__draft">${esc(card.drafted)}</div>
+            <div class="modal__draft">${esc(card.proposal)}</div>
           </section>
 
           ${alert}
@@ -364,4 +372,38 @@ export function issueScreen(issues) {
       </p>
       <ul class="issues__list">${rows}</ul>
     </div>`;
+}
+/**
+ * What Mitch got through without anyone. The queue shows only exceptions, so
+ * without this the staff member is judged on the twelve things that went
+ * wrong and gets no credit for the two hundred that did not — which is both
+ * unfair and, during a trial, the thing a client is actually trying to
+ * assess.
+ *
+ * Rows, not cards. These need no decision and open nothing; giving them card
+ * shape would invite a reader to work through them, and the whole point is
+ * that nobody has to.
+ */
+export function completedSection(items) {
+    if (!items.length)
+        return "";
+    const rows = items
+        .map((i) => `
+        <li class="completed__row">
+          <span class="completed__time">${esc(i.time)}</span>
+          <span class="completed__body">
+            <span class="completed__title">${esc(i.title)}</span>
+            <span class="completed__subtitle">${esc(i.subtitle)}</span>
+            <span class="completed__summary">${esc(i.summary)}</span>
+          </span>
+        </li>`)
+        .join("");
+    return `
+    <section class="completed">
+      <h2 class="completed__heading">
+        Completed by Mitch
+        <span class="completed__count">${esc(String(items.length))} today, no intervention</span>
+      </h2>
+      <ul class="completed__list">${rows}</ul>
+    </section>`;
 }

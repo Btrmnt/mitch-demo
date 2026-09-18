@@ -6,7 +6,7 @@ const REQUIRED_STRINGS = [
     "subtitle",
     "tag",
     "source",
-    "drafted",
+    "proposal",
     "rule",
     "ruleNote",
     "pm",
@@ -75,6 +75,9 @@ export function validateActionsPayload(input) {
                 }
             });
         }
+        if (a.ruleAdjust !== undefined && !isNonEmptyString(a.ruleAdjust)) {
+            issues.push({ id, message: "ruleAdjust must be a non-empty string when present" });
+        }
         // links is optional, but a malformed one renders a button that lies about
         // where it goes — checked as strictly as a required field when present.
         if (a.links !== undefined) {
@@ -99,6 +102,37 @@ export function validateActionsPayload(input) {
                 issues.push({ id, message: `duplicate id ${a.id}` });
             }
             seen.add(a.id);
+        }
+    });
+    return issues;
+}
+/**
+ * The completed log, checked on the same terms as the queue. These rows are
+ * rendered, so a malformed one breaks the screen exactly as a malformed
+ * action would — being lower-stakes information is not a reason to trust it.
+ */
+export function validateCompleted(input) {
+    const issues = [];
+    const completed = input?.completed;
+    if (completed === undefined)
+        return issues;
+    if (!Array.isArray(completed)) {
+        return [{ id: null, message: "completed must be an array when present" }];
+    }
+    const seen = new Set();
+    completed.forEach((raw, index) => {
+        const c = raw;
+        const id = isNonEmptyString(c?.id) ? c.id : `completed[${index}]`;
+        for (const field of ["id", "title", "subtitle", "time", "summary"]) {
+            if (!isNonEmptyString(c?.[field])) {
+                issues.push({ id, message: `${field} is required on a completed item` });
+            }
+        }
+        if (isNonEmptyString(c?.id)) {
+            if (seen.has(c.id)) {
+                issues.push({ id, message: `duplicate completed id ${String(c.id)}` });
+            }
+            seen.add(c.id);
         }
     });
     return issues;

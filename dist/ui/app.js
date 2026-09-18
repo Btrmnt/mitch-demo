@@ -1,14 +1,14 @@
-import { fetchedActionSource } from "../actions/source.js?v=2115232";
-import { validateActionsPayload } from "../actions/validate.js?v=2115232";
-import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=2115232";
-import { showToast } from "./toast.js?v=2115232";
-import { initMasonry, relayoutMasonry } from "./masonry.js?v=2115232";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=2115232";
+import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=cf0abac";
+import { validateActionsPayload } from "../actions/validate.js?v=cf0abac";
+import { chipRow, cardGrid, modal, issueScreen, completedSection, } from "./components.js?v=cf0abac";
+import { showToast } from "./toast.js?v=cf0abac";
+import { initMasonry, relayoutMasonry } from "./masonry.js?v=cf0abac";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=cf0abac";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=2115232";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=cf0abac";
 let state = initialUiState();
 let actions = [];
 /**
@@ -17,6 +17,8 @@ let actions = [];
  * at startup and again whenever the reader comes back from another system.
  */
 let source = null;
+let completedSource = null;
+let completed = [];
 /** The upstream status of an item, i.e. before any local decision. */
 function upstreamStatus(id) {
     return actions.find((a) => a.id === id)?.status ?? "needs_you";
@@ -42,6 +44,8 @@ async function refresh() {
         const fresh = await source();
         if (validateActionsPayload({ actions: fresh }).length > 0)
             return;
+        if (completedSource)
+            completed = await completedSource().catch(() => completed);
         const changed = fresh.length !== actions.length ||
             fresh.some((a, i) => a.id !== actions[i]?.id || a.status !== actions[i]?.status);
         const before = state;
@@ -71,6 +75,7 @@ function render() {
     </header>
     <main class="queue">
       ${cardGrid(view.cards)}
+      ${completedSection(completed)}
     </main>
     ${modal(view.openCard)}
   `;
@@ -197,6 +202,13 @@ function bindEvents(root) {
         };
         if (action && ROUTING[action])
             showToast(ROUTING[action]);
+        // Adjusting the rule is how a class of exception stops recurring, rather
+        // than how this one card gets answered.
+        if (action === "adjust-rule" && id) {
+            const adjust = actions.find((a) => a.id === id)?.ruleAdjust;
+            if (adjust)
+                showToast(adjust);
+        }
         // Every menu item is terminal, so any click inside the menu shuts it.
         if (inMenu)
             state = closeMenu(state);
@@ -209,7 +221,11 @@ async function main() {
     // side of this one binding and nothing else here changes; the annotation
     // is what makes TypeScript check that whatever is bound conforms.
     source = fetchedActionSource(PAYLOAD_URL);
+    completedSource = fetchedCompletedSource(PAYLOAD_URL);
     const loaded = await source();
+    // The completed log is decoration for the queue, not a precondition for it.
+    // A source that cannot answer it still gives a usable screen.
+    completed = await completedSource().catch(() => []);
     // The runtime half of check:actions, at the source boundary. That check
     // only runs at authoring time over files in this repo; a live source's
     // output is not authored here. Rendering an item with an unknown status

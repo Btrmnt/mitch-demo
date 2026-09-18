@@ -33,3 +33,22 @@ export function fetchedActionSource(url) {
         return staticActionSource(payload)();
     };
 }
+/**
+ * The completed-work counterpart to staticActionSource. Absent `completed`
+ * yields an empty list rather than throwing: a payload that only describes
+ * exceptions is legitimate, and the UI shows no completed section for it.
+ */
+export function staticCompletedSource(payload) {
+    return async () => [...(payload.completed ?? [])];
+}
+/** The completed-work counterpart to fetchedActionSource. */
+export function fetchedCompletedSource(url) {
+    return async () => {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`Could not load ${url}: ${res.status} ${res.statusText}`);
+        }
+        const payload = (await res.json());
+        return staticCompletedSource(payload)();
+    };
+}

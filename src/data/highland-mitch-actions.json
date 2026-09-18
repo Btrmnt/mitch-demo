@@ -8,7 +8,6 @@
       "tag": "MAA INTAKE",
       "status": "needs_you",
       "source": "MAA received via FLK, signed 15 Sep 2026, 09:14. Owner structure: Coastal Holdings Pty Ltd (director J. Marsh) plus individual co-owner S. Marsh. Existing contact match found for J. Marsh with conflicting bank details on file.",
-      "drafted": "Entry needs one set of bank details matching the executed MAA. The existing contact record for J. Marsh carries a different BSB and account, so there are two and neither is authoritative. Confirm which set governs; Mitch enters the owner as Business + Individual, supersedes the other as historic, and continues to trust setup.",
       "rule": "Owner Entry — Business + Individual, Existing Contact Conflict",
       "ruleNote": "Matched inputs: MAA lists two owner types, FLK contact search returned an existing match, bank details differ.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -48,7 +47,8 @@
         "status": "sent",
         "note": "Sent — entered in PropertyMe against the MAA's bank details.",
         "history": "You confirmed the owner record — Mitch is entering it in PropertyMe"
-      }
+      },
+      "proposal": "Entry needs one set of bank details matching the executed MAA. The existing contact record for J. Marsh carries a different BSB and account, so there are two and neither is authoritative. Confirm which set governs; Mitch enters the owner as Business + Individual, supersedes the other as historic, and continues to trust setup."
     },
     {
       "id": "c2",
@@ -57,7 +57,6 @@
       "tag": "COMPLIANCE",
       "status": "needs_you",
       "source": "MAA Section 25 (Pool Safety Compliance) reviewed: the clause is present and not crossed out.",
-      "drafted": "Full compliance requires pool safety certification wherever Section 25 is left un-struck, and no certificate is on file. Mitch has the request drafted, but it goes to the owner from you — outbound messages to end customers stay with a person until message conformance has been validated. Send it, or confirm the property has no pool and the MAA needs correcting. Mitch watches for the certificate and releases the listing gate when it lands.",
       "flag": "This property cannot reach full compliance until pool safety is confirmed.",
       "rule": "Pool Compliance Gate",
       "ruleNote": "Matched inputs: MAA Section 25 present and unmarked — a crossed-out clause would clear this gate instead.",
@@ -98,7 +97,8 @@
         "status": "waiting",
         "note": "Waiting — pool safety certificate requested from the owner.",
         "history": "You sent the certificate request — Mitch is watching for it"
-      }
+      },
+      "proposal": "Full compliance requires pool safety certification wherever Section 25 is left un-struck, and no certificate is on file. Mitch has the request drafted, but it goes to the owner from you — outbound messages to end customers stay with a person until message conformance has been validated. Send it, or confirm the property has no pool and the MAA needs correcting. Mitch watches for the certificate and releases the listing gate when it lands."
     },
     {
       "id": "c3",
@@ -107,7 +107,6 @@
       "tag": "NEW BUSINESS",
       "status": "waiting",
       "source": "MAA fee section marked \"N/A — Casual letting.\"",
-      "drafted": "Case routed to the casual-letting process. Leasing team notified to confirm at \"application approved.\"",
       "rule": "Casual Letting — Fee Section Marker",
       "ruleNote": "Matched inputs: MAA fee section text — one of four signals Highland uses for casual letting.",
       "pm": "Priya Raman · praman@example.com",
@@ -140,7 +139,8 @@
           "label": "FLK",
           "opens": "Opens the MAA in FLK at the fee section that carries the casual-letting marker. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "proposal": "Case routed to the casual-letting process. Leasing team notified to confirm at \"application approved.\""
     },
     {
       "id": "c4",
@@ -149,7 +149,6 @@
       "tag": "LIVE GATE",
       "status": "sent",
       "source": "Compliance confirmed. Ad already drafted in Agentbox by the BDM.",
-      "drafted": "Email sent to Nadia with the Agentbox ad link for the go-live compliance check.",
       "rule": "Live-Gate Email Trigger",
       "ruleNote": "Matched inputs: compliance confirmed, an Agentbox listing already exists.",
       "pm": "Priya Raman · praman@example.com",
@@ -177,7 +176,8 @@
           "label": "PropertyMe",
           "opens": "Opens SP 41102 in PropertyMe, at the go-live status. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "proposal": "Email sent to Nadia with the Agentbox ad link for the go-live compliance check."
     },
     {
       "id": "c5",
@@ -186,7 +186,6 @@
       "tag": "MAA INTAKE",
       "status": "sent",
       "source": "FLK reported the MAA reached fully-executed status 18 Sep 2026, 08:02. Document id FLK-2291.",
-      "drafted": "Case opened automatically and keyed to the FLK document id. BDM notified in Teams for visibility only — no kickoff action was required.",
       "rule": "Case Kickoff — Automatic on Fully-Executed MAA",
       "ruleNote": "Matched inputs: FLK status moved to fully-executed. This path needs no human kickoff, so the case opens itself.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -214,7 +213,8 @@
           "label": "FLK",
           "opens": "Opens FLK document FLK-2291, the MAA this case was opened from. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "proposal": "Case opened automatically and keyed to the FLK document id. BDM notified in Teams for visibility only — no kickoff action was required."
     },
     {
       "id": "c6",
@@ -223,7 +223,6 @@
       "tag": "MAA INTAKE",
       "status": "needs_you",
       "source": "MAA office reads 'Highland Cronulla'. The property sits in the Sutherland portfolio boundary, which two silos both claim.",
-      "drafted": "A property must resolve to exactly one silo before any task is routed. The office named on the MAA and the property's portfolio boundary resolve to two different silos, and no rule ranks one above the other. Pick the silo; Mitch re-points every downstream task to it and continues. Nothing has been routed while this was held.",
       "rule": "Silo & Portfolio Assignment — Ambiguity Held for Review",
       "ruleNote": "Matched inputs: MAA office and property portfolio resolve to different silos, and no tiebreak rule covers this pair.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -258,7 +257,9 @@
         "status": "sent",
         "note": "Sent — silo assigned, downstream tasks re-pointed.",
         "history": "You assigned the silo — Mitch re-pointed the downstream tasks"
-      }
+      },
+      "proposal": "A property must resolve to exactly one silo before any task is routed. The office named on the MAA and the property's portfolio boundary resolve to two different silos, and no rule ranks one above the other. Pick the silo; Mitch re-points every downstream task to it and continues. Nothing has been routed while this was held.",
+      "ruleAdjust": "Opens the silo routing rule in the Mitch console. Ranking the office named on the MAA above the portfolio boundary resolves this property and every future one where the two disagree, instead of asking a person each time."
     },
     {
       "id": "c7",
@@ -267,7 +268,6 @@
       "tag": "FEES",
       "status": "needs_you",
       "source": "MAA management fee field contains '$1'. The surrounding schedule is expressed in percentages, and the letting fee beside it reads '1.5 weeks rent'.",
-      "drafted": "The management fee must be entered as a percentage. The money-field rule refuses a currency amount in that position because $1 and 1% cannot be recovered from one another after entry, and the MAA gives \"$1\" — malformed for this field, not merely unusual. Supply the intended percentage; Mitch enters it and lifts the hold. If $1 is literally what was agreed, it needs a written note on the file first.",
       "rule": "Money-Field Hard Stop — % vs Fixed $",
       "ruleNote": "Matched inputs: fee field carries a currency symbol, the schedule's other fees are percentages, and no GST treatment is stated.",
       "pm": "Priya Raman · praman@example.com",
@@ -307,7 +307,8 @@
         "status": "sent",
         "note": "Sent — fee confirmed, entry hold lifted.",
         "history": "You confirmed the management fee — Mitch lifted the entry hold"
-      }
+      },
+      "proposal": "The management fee must be entered as a percentage. The money-field rule refuses a currency amount in that position because $1 and 1% cannot be recovered from one another after entry, and the MAA gives \"$1\" — malformed for this field, not merely unusual. Supply the intended percentage; Mitch enters it and lifts the hold. If $1 is literally what was agreed, it needs a written note on the file first."
     },
     {
       "id": "c8",
@@ -316,7 +317,6 @@
       "tag": "MAA INTAKE",
       "status": "waiting",
       "source": "MAA executed 17 Sep. Trust account shows no matching deposit against this property.",
-      "drafted": "Record prepared in full and held. PropertyMe entry fires on deposit confirmation, not on signature.",
       "rule": "Deposit Confirmation Fires Entry",
       "ruleNote": "Matched inputs: MAA executed, deposit unconfirmed. Entry is deliberately deferred so no record exists before the money does.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -344,7 +344,8 @@
           "label": "Trust",
           "opens": "Opens the trust account filtered to SP 40904, where the deposit would appear. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "proposal": "Record prepared in full and held. PropertyMe entry fires on deposit confirmation, not on signature."
     },
     {
       "id": "c9",
@@ -353,7 +354,6 @@
       "tag": "RESILIENCE",
       "status": "needs_you",
       "source": "Agentbox API returned 5xx on every attempt since 07:20. Snug is responding normally.",
-      "drafted": "The ad must reach both feeds. Agentbox has been unavailable since 07:20, so one required destination cannot be written and Mitch will not publish a partial listing silently. Decide whether the three queued properties wait for recovery or go to Snug alone; Mitch executes either. Onboarding continues on the Smartsheet fallback regardless.",
       "rule": "Graceful Degradation — Manual Path Never Hard-Stops",
       "ruleNote": "Matched inputs: one integration is failing, an alternative path is available, and no work item has been blocked as a result.",
       "pm": "Priya Raman · praman@example.com",
@@ -393,7 +393,9 @@
         "status": "waiting",
         "note": "Waiting — 3 properties held until Agentbox recovers.",
         "history": "You held the queue — Mitch is waiting for Agentbox rather than posting to Snug alone"
-      }
+      },
+      "proposal": "The ad must reach both feeds. Agentbox has been unavailable since 07:20, so one required destination cannot be written and Mitch will not publish a partial listing silently. Decide whether the three queued properties wait for recovery or go to Snug alone; Mitch executes either. Onboarding continues on the Smartsheet fallback regardless.",
+      "ruleAdjust": "Opens the publishing policy in the Mitch console. Setting a wait threshold — release to the available feed after four hours — answers this for every outage, rather than once per property while one is happening."
     },
     {
       "id": "c10",
@@ -402,7 +404,6 @@
       "tag": "LISTING",
       "status": "needs_you",
       "source": "MAA special instructions: 'No pets under any circumstances. No share-house arrangements. Owner requests 12-month leases only.'",
-      "drafted": "Landlord requirements have to land in fields the leasing system enforces. Two of the three map cleanly. \"No share-house arrangements\" has no equivalent field in PropertyMe and can only be carried as free text, which leasing does not enforce. Confirm a note is an acceptable home for it, or name the field it should map to; Mitch locks all three to the property and continues to the listing brief.",
       "rule": "Landlord Requirements — Retain and Surface",
       "ruleNote": "Matched inputs: MAA carries free-text special instructions that constrain leasing, which are lost if they stay in the document.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -437,7 +438,9 @@
         "status": "sent",
         "note": "Sent — requirements locked to the property.",
         "history": "You confirmed the landlord requirements — Mitch locked them to the property"
-      }
+      },
+      "proposal": "Landlord requirements have to land in fields the leasing system enforces. Two of the three map cleanly. \"No share-house arrangements\" has no equivalent field in PropertyMe and can only be carried as free text, which leasing does not enforce. Confirm a note is an acceptable home for it, or name the field it should map to; Mitch locks all three to the property and continues to the listing brief.",
+      "ruleAdjust": "Opens the landlord-requirements mapping. Giving share-house restrictions a field of their own lets leasing enforce them, instead of carrying them as a note that nothing checks."
     },
     {
       "id": "c11",
@@ -446,7 +449,6 @@
       "tag": "COMPLIANCE",
       "status": "needs_you",
       "source": "Rubric run across 11 items. Ten pass. Smoke alarm certificate is dated 2023 and the rubric requires one within 12 months.",
-      "drafted": "A property cannot be leased without a smoke alarm certificate dated within twelve months. Ten of eleven rubric items pass; the certificate on file is dated 2023, so the required input exists but has expired. Mitch has the request drafted — it goes to the owner from you, since outbound messages to end customers stay with a person until conformance is validated. Mitch holds the grade at conditional and re-grades automatically when a current certificate is filed.",
       "rule": "Compliance Rubric — Conditional Grade Gates Listing",
       "ruleNote": "Matched inputs: one rubric item failed, the remainder passed, and the failure is remediable with a document.",
       "pm": "Priya Raman · praman@example.com",
@@ -487,7 +489,8 @@
         "note": "Waiting — current smoke alarm certificate requested.",
         "history": "You sent the certificate request — Mitch is watching for it"
       },
-      "flag": "Certificate expired. The property cannot be leased until a current one is on file."
+      "flag": "Certificate expired. The property cannot be leased until a current one is on file.",
+      "proposal": "A property cannot be leased without a smoke alarm certificate dated within twelve months. Ten of eleven rubric items pass; the certificate on file is dated 2023, so the required input exists but has expired. Mitch has the request drafted — it goes to the owner from you, since outbound messages to end customers stay with a person until conformance is validated. Mitch holds the grade at conditional and re-grades automatically when a current certificate is filed."
     },
     {
       "id": "c12",
@@ -496,7 +499,6 @@
       "tag": "IDENTITY",
       "status": "needs_you",
       "source": "Two identity documents supplied. The licence address does not match the address on the MAA; the passport matches.",
-      "drafted": "Identity documents must match the MAA and each other. The passport matches; the licence carries a different address, so the set is inconsistent and the requirement is unmet. Mitch does not resolve identity conflicts — a person does. Record which document governs and what evidence closes the gap; Mitch attaches the decision to the file and continues to entry.",
       "flag": "Licence address differs from the MAA address. Passport matches.",
       "rule": "Identity Verification — Human Gate, Always",
       "ruleNote": "Matched inputs: identity documents present and a field-level discrepancy found. Mitch highlights, it never clears.",
@@ -532,7 +534,8 @@
         "status": "closed",
         "note": "Closed — your identity decision recorded against the file.",
         "history": "You recorded the identity decision — Mitch attached it to the file"
-      }
+      },
+      "proposal": "Identity documents must match the MAA and each other. The passport matches; the licence carries a different address, so the set is inconsistent and the requirement is unmet. Mitch does not resolve identity conflicts — a person does. Record which document governs and what evidence closes the gap; Mitch attaches the decision to the file and continues to entry."
     },
     {
       "id": "c13",
@@ -541,7 +544,6 @@
       "tag": "IDENTITY",
       "status": "needs_you",
       "source": "ABN 51 824 753 556 resolves to an active company. Registered branch differs from the branch address written on the MAA.",
-      "drafted": "The owner record must name an entity whose ASIC registration matches the MAA. The ABN is active and the company name matches exactly, but the registered branch differs from the branch written on the agreement, so the match is incomplete. Confirm the entity or correct the branch on the MAA; Mitch releases the owner record for entry once one of them is authoritative.",
       "flag": "Registered branch does not match the MAA. Confirm this is the same entity before entry.",
       "rule": "Company Verification — ASIC/ABN Branch Mismatch",
       "ruleNote": "Matched inputs: ABN active and name-matched, branch registration inconsistent with the document.",
@@ -582,7 +584,8 @@
         "status": "sent",
         "note": "Sent — entity confirmed, owner record released for entry.",
         "history": "You confirmed the entity — Mitch released the owner record"
-      }
+      },
+      "proposal": "The owner record must name an entity whose ASIC registration matches the MAA. The ABN is active and the company name matches exactly, but the registered branch differs from the branch written on the agreement, so the match is incomplete. Confirm the entity or correct the branch on the MAA; Mitch releases the owner record for entry once one of them is authoritative."
     },
     {
       "id": "c14",
@@ -591,7 +594,6 @@
       "tag": "IDENTITY",
       "status": "needs_you",
       "source": "MAA signed by 'D. Marsh, Director'. ASIC lists two directors, neither named D. Marsh. Owner name on title reads 'Marsh Family Holdings Pty Ltd'.",
-      "drafted": "An MAA is enforceable only if signed by someone with authority for the owning entity. \"D. Marsh, Director\" appears on neither the ASIC director list nor the title, so authority is not evidenced. Supply that evidence — a recent ASIC change, a trust deed, or a corrected signatory. Mitch attaches it, lifts the compliance hold and continues; no downstream task runs until it does.",
       "flag": "The signatory does not appear on ASIC as a director. Signature authority is unconfirmed.",
       "rule": "Name/Title Discrepancy — Signature Authority",
       "ruleNote": "Matched inputs: signatory name absent from the director list, and the owner name on title differs from the signing entity.",
@@ -632,7 +634,8 @@
         "status": "sent",
         "note": "Sent — signature authority recorded, hold lifted.",
         "history": "You resolved signature authority — Mitch lifted the compliance hold"
-      }
+      },
+      "proposal": "An MAA is enforceable only if signed by someone with authority for the owning entity. \"D. Marsh, Director\" appears on neither the ASIC director list nor the title, so authority is not evidenced. Supply that evidence — a recent ASIC change, a trust deed, or a corrected signatory. Mitch attaches it, lifts the compliance hold and continues; no downstream task runs until it does."
     },
     {
       "id": "c15",
@@ -641,7 +644,6 @@
       "tag": "LISTING",
       "status": "sent",
       "source": "Compliance signed off 17 Sep, 16:20. Listing brief complete, photography attached.",
-      "drafted": "Ad posted to both feeds after sign-off. Post-publish edits remain available and will sync to both systems.",
       "rule": "Ad Placement — Feed Post After Compliance Sign-Off",
       "ruleNote": "Matched inputs: a recorded human compliance decision exists, and the listing brief has no outstanding items.",
       "pm": "Priya Raman · praman@example.com",
@@ -674,7 +676,8 @@
           "label": "Snug",
           "opens": "Opens the published ad for SP 39980 in Snug. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "proposal": "Ad posted to both feeds after sign-off. Post-publish edits remain available and will sync to both systems."
     },
     {
       "id": "c16",
@@ -683,7 +686,6 @@
       "tag": "RESILIENCE",
       "status": "needs_you",
       "source": "Agentbox accepted the ad at 15:10. Snug rejected it twice with a feed validation error on the property type field.",
-      "drafted": "The listing must exist on both feeds. Agentbox accepted it; Snug rejected the property type twice against its own enumerated list, so the value Highland holds is malformed for that destination. Supply the Snug-accepted value; Mitch resends that feed alone and leaves the live Agentbox ad untouched. Highland's property types do not map one-to-one onto Snug's, which is why Mitch will not substitute one.",
       "rule": "Dual-System Partial Failure — Continue via the Other",
       "ruleNote": "Matched inputs: one feed accepted, one rejected with a field-level error, and the handoff has an unblocked path.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -723,7 +725,9 @@
         "status": "waiting",
         "note": "Waiting — corrected feed resent to Snug.",
         "history": "You corrected the property type — Mitch resent the feed to Snug"
-      }
+      },
+      "proposal": "The listing must exist on both feeds. Agentbox accepted it; Snug rejected the property type twice against its own enumerated list, so the value Highland holds is malformed for that destination. Supply the Snug-accepted value; Mitch resends that feed alone and leaves the live Agentbox ad untouched. Highland's property types do not map one-to-one onto Snug's, which is why Mitch will not substitute one.",
+      "ruleAdjust": "Opens the Highland → Snug property-type mapping. Mapping this type once clears the rejection for every property that uses it, and stops Mitch guessing at a substitute."
     },
     {
       "id": "c17",
@@ -732,7 +736,6 @@
       "tag": "OPS",
       "status": "closed",
       "source": "Ops changed the routing for unresolved pool-compliance exceptions from the BDM queue to the Compliance team queue.",
-      "drafted": "Routing updated from the console and applied to 4 open exceptions. No deployment, no engineer involved — the change took effect on the next evaluation.",
       "rule": "Ops Re-routing — Configuration, Not Code",
       "ruleNote": "Matched inputs: an exception route was changed through the console by an operator with routing permission.",
       "pm": "Priya Raman · praman@example.com",
@@ -760,7 +763,8 @@
           "label": "Console",
           "opens": "Opens the routing configuration for the Cronulla silo, where this change was made. Mitch keeps this action open until the change comes back from the source."
         }
-      ]
+      ],
+      "proposal": "Routing updated from the console and applied to 4 open exceptions. No deployment, no engineer involved — the change took effect on the next evaluation."
     },
     {
       "id": "c18",
@@ -769,7 +773,6 @@
       "tag": "FEES",
       "status": "needs_you",
       "source": "Management fee 5.5%. Letting fee 1.5 weeks. Neither line states whether the figure includes GST, and the MAA's fee schedule has no GST clause.",
-      "drafted": "Every fee must state its GST treatment, and this schedule states neither for either fee. The values are clear — 5.5% and 1.5 weeks — but the treatment is absent, and inclusive versus exclusive differ by 10% on every invoice for the life of the management. State the treatment; Mitch records it against both fees and releases the fee schedule for entry.",
       "rule": "Fee Integrity — % vs $ vs GST",
       "ruleNote": "Matched inputs: fee values parse cleanly, but GST presence is neither stated nor derivable from the schedule.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -809,7 +812,122 @@
         "status": "sent",
         "note": "Sent — GST treatment recorded, fee schedule released.",
         "history": "You confirmed the GST treatment — Mitch released the fee schedule"
-      }
+      },
+      "proposal": "Every fee must state its GST treatment, and this schedule states neither for either fee. The values are clear — 5.5% and 1.5 weeks — but the treatment is absent, and inclusive versus exclusive differ by 10% on every invoice for the life of the management. State the treatment; Mitch records it against both fees and releases the fee schedule for entry."
+    }
+  ],
+  "completed": [
+    {
+      "id": "k1",
+      "title": "Case opened from executed MAA",
+      "subtitle": "SP 40551 · 12 Kurnell Rd, Cronulla NSW 2230 (sample)",
+      "time": "07:41",
+      "summary": "FLK reported fully-executed at 07:40. Case opened and keyed to the document id; BDM notified.",
+      "scenarioRef": "Mitch-001"
+    },
+    {
+      "id": "k2",
+      "title": "Owner entered in PropertyMe",
+      "subtitle": "SP 40551 · 12 Kurnell Rd, Cronulla NSW 2230 (sample)",
+      "time": "07:44",
+      "summary": "Single individual owner, no existing contact match, bank details unambiguous. Entered without re-keying.",
+      "scenarioRef": "Mitch-002"
+    },
+    {
+      "id": "k3",
+      "title": "Silo assigned",
+      "subtitle": "SP 40551 · 12 Kurnell Rd, Cronulla NSW 2230 (sample)",
+      "time": "07:45",
+      "summary": "MAA office and portfolio boundary agreed on Highland Cronulla. Downstream tasks routed.",
+      "scenarioRef": "Mitch-003"
+    },
+    {
+      "id": "k4",
+      "title": "Fees entered and verified",
+      "subtitle": "SP 40551 · 12 Kurnell Rd, Cronulla NSW 2230 (sample)",
+      "time": "07:46",
+      "summary": "Management 6% + GST, letting 2 weeks + GST. Both stated explicitly; money-field rule satisfied.",
+      "scenarioRef": "Mitch-022"
+    },
+    {
+      "id": "k5",
+      "title": "Compliance graded pass",
+      "subtitle": "SP 40551 · 12 Kurnell Rd, Cronulla NSW 2230 (sample)",
+      "time": "08:12",
+      "summary": "All 11 rubric items current, including pool and smoke alarm certification. Listing gate released.",
+      "scenarioRef": "Mitch-010"
+    },
+    {
+      "id": "k6",
+      "title": "Deposit confirmed, entry fired",
+      "subtitle": "SP 40208 · 5 Munro St, Cronulla NSW 2230 (sample)",
+      "time": "08:31",
+      "summary": "Trust account matched the deposit against the property. Held record released into PropertyMe.",
+      "scenarioRef": "Mitch-005"
+    },
+    {
+      "id": "k7",
+      "title": "Company verified via ASIC",
+      "subtitle": "SP 40208 · 5 Munro St, Cronulla NSW 2230 (sample)",
+      "time": "09:02",
+      "summary": "ABN active, name and registered branch both matching the MAA. Owner record released.",
+      "scenarioRef": "Mitch-012"
+    },
+    {
+      "id": "k8",
+      "title": "Signature authority confirmed",
+      "subtitle": "SP 40208 · 5 Munro St, Cronulla NSW 2230 (sample)",
+      "time": "09:03",
+      "summary": "Signatory appears on the ASIC director list and on title. No discrepancy to surface.",
+      "scenarioRef": "Mitch-013"
+    },
+    {
+      "id": "k9",
+      "title": "Landlord requirements attached",
+      "subtitle": "SP 40208 · 5 Munro St, Cronulla NSW 2230 (sample)",
+      "time": "09:48",
+      "summary": "Two requirements extracted, both mapping to enforced PropertyMe fields. Carried into the listing brief.",
+      "scenarioRef": "Mitch-009"
+    },
+    {
+      "id": "k10",
+      "title": "Strata plan linked",
+      "subtitle": "SP 41338 · 9 Gerrale St, Cronulla NSW 2230 (sample)",
+      "time": "10:15",
+      "summary": "Strata plan found and linked at entry; levies and correspondence routed to the plan.",
+      "scenarioRef": "Mitch-027"
+    },
+    {
+      "id": "k11",
+      "title": "Ad published to both feeds",
+      "subtitle": "SP 40208 · 5 Munro St, Cronulla NSW 2230 (sample)",
+      "time": "11:20",
+      "summary": "Compliance sign-off recorded at 11:18. Posted to Agentbox and Snug; both accepted first attempt.",
+      "scenarioRef": "Mitch-016"
+    },
+    {
+      "id": "k12",
+      "title": "Agreement and lease dates reconciled",
+      "subtitle": "SP 41338 · 9 Gerrale St, Cronulla NSW 2230 (sample)",
+      "time": "11:52",
+      "summary": "Weekly check: agreement start matches lease start. No fee timing exposure.",
+      "scenarioRef": "Mitch-026"
+    },
+    {
+      "id": "k13",
+      "title": "Identity documents matched",
+      "subtitle": "SP 41338 · 9 Gerrale St, Cronulla NSW 2230 (sample)",
+      "time": "13:07",
+      "summary": "Passport and licence both consistent with the MAA. Surfaced to the PM for the record, no gate raised.",
+      "scenarioRef": "Mitch-011"
+    },
+    {
+      "id": "k14",
+      "title": "Go-live gate cleared",
+      "subtitle": "SP 40551 · 12 Kurnell Rd, Cronulla NSW 2230 (sample)",
+      "time": "14:36",
+      "summary": "Human compliance decision recorded before go-live; property reached live compliant.",
+      "scenarioRef": "Mitch-015"
     }
   ]
 }
