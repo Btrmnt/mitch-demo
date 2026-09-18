@@ -1,14 +1,14 @@
-import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=cf0abac";
-import { validateActionsPayload } from "../actions/validate.js?v=cf0abac";
-import { chipRow, cardGrid, modal, issueScreen, completedSection, } from "./components.js?v=cf0abac";
-import { showToast } from "./toast.js?v=cf0abac";
-import { initMasonry, relayoutMasonry } from "./masonry.js?v=cf0abac";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=cf0abac";
+import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=ad0759e";
+import { validateActionsPayload } from "../actions/validate.js?v=ad0759e";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, } from "./components.js?v=ad0759e";
+import { showToast } from "./toast.js?v=ad0759e";
+import { initMasonry, relayoutMasonry } from "./masonry.js?v=ad0759e";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=ad0759e";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=cf0abac";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=ad0759e";
 let state = initialUiState();
 let actions = [];
 /**
@@ -71,11 +71,10 @@ function render() {
     root.innerHTML = `
     <header class="app-header">
       <div class="app-title">Mitch Actions</div>
-      <div class="chip-row">${chipRow(view.counts, state.filter, state.redAlertsOnly)}</div>
+      <div class="chip-row">${chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length)}</div>
     </header>
     <main class="queue">
-      ${cardGrid(view.cards)}
-      ${completedSection(completed)}
+      ${state.filter === "completed" ? completedGrid(completed) : cardGrid(view.cards)}
     </main>
     ${modal(view.openCard)}
   `;

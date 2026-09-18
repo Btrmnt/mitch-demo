@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=cf0abac";
+import { esc } from "./escape.js?v=ad0759e";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -55,7 +55,7 @@ export function tertiaryButton(label, action, id, extraClass = "") {
  * counts and which filters are on, not the whole UiState — this module is
  * the design system in code and holds no app logic.
  */
-export function chipRow(counts, active, redAlertsOnly) {
+export function chipRow(counts, active, redAlertsOnly, completedCount = 0) {
     const order = [
         { label: "All", value: "all" },
         { label: "Needs You", value: "needs_you" },
@@ -76,7 +76,17 @@ export function chipRow(counts, active, redAlertsOnly) {
         value: "alerts",
         active: redAlertsOnly,
     });
-    return `${chips}<span class="chip-divider"></span>${alerts}`;
+    // After the divider with Red Alerts, because neither is a status: one
+    // narrows the queue, the other swaps it for the work that needed nobody.
+    const completed = completedCount
+        ? filterChip({
+            label: "Completed by Mitch",
+            count: completedCount,
+            value: "completed",
+            active: active === "completed",
+        })
+        : "";
+    return `${chips}<span class="chip-divider"></span>${alerts}${completed}`;
 }
 /** A card's red alert, or nothing. Shown identically on card and modal. */
 function alertBlock(card) {
@@ -374,36 +384,35 @@ export function issueScreen(issues) {
     </div>`;
 }
 /**
- * What Mitch got through without anyone. The queue shows only exceptions, so
- * without this the staff member is judged on the twelve things that went
- * wrong and gets no credit for the two hundred that did not — which is both
- * unfair and, during a trial, the thing a client is actually trying to
- * assess.
+ * One piece of work Mitch finished on its own, as a card in the same grid.
  *
- * Rows, not cards. These need no decision and open nothing; giving them card
- * shape would invite a reader to work through them, and the whole point is
- * that nobody has to.
+ * It was a list beneath the queue for one revision. Wrong twice over: it sat
+ * below eighteen cards where nobody would reach it, and a row of muted text
+ * read as an afterthought rather than as the evidence that Mitch is working.
+ *
+ * Carries no data-action anywhere. There is nothing to decide and nothing to
+ * open — a card that looks clickable in the one collection that needs no
+ * attention would undo the point of separating them.
  */
-export function completedSection(items) {
-    if (!items.length)
-        return "";
-    const rows = items
-        .map((i) => `
-        <li class="completed__row">
-          <span class="completed__time">${esc(i.time)}</span>
-          <span class="completed__body">
-            <span class="completed__title">${esc(i.title)}</span>
-            <span class="completed__subtitle">${esc(i.subtitle)}</span>
-            <span class="completed__summary">${esc(i.summary)}</span>
-          </span>
-        </li>`)
-        .join("");
+export function completedCard(item) {
     return `
-    <section class="completed">
-      <h2 class="completed__heading">
-        Completed by Mitch
-        <span class="completed__count">${esc(String(items.length))} today, no intervention</span>
-      </h2>
-      <ul class="completed__list">${rows}</ul>
-    </section>`;
+    <article class="card card--completed">
+      <div class="card__head">
+        <div class="card__headings">
+          <h2 class="card__title">${esc(item.title)}</h2>
+          <div class="card__badges">
+            <span class="badge badge--done">Completed</span>
+            <span class="badge badge--time">${esc(item.time)}</span>
+          </div>
+        </div>
+      </div>
+      <p class="card__subtitle">${esc(item.subtitle)}</p>
+      <div class="card-note card-note--done">${esc(item.summary)}</div>
+    </article>`;
+}
+export function completedGrid(items) {
+    if (!items.length) {
+        return `<div class="queue-empty">Nothing completed yet today</div>`;
+    }
+    return `<div class="card-grid">${items.map(completedCard).join("")}</div>`;
 }

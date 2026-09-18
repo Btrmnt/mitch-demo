@@ -1,6 +1,8 @@
 export function initialUiState() {
     return {
-        filter: "all",
+        // Needs You, not All. The queue exists to be acted on, and opening on a
+        // mixed list asks a reader to find the actionable items before starting.
+        filter: "needs_you",
         redAlertsOnly: false,
         openCardId: null,
         openMenuId: null,
@@ -68,14 +70,18 @@ export function deriveView(actions, state) {
     const all = actions.map((a) => derive(a, state.overrides[a.id], state.openMenuId === a.id));
     const counts = {
         all: all.length,
+        // Filled by the caller: deriveView projects actions, and completed work
+        // is a different read that this function is not given.
+        completed: 0,
         needs_you: all.filter((c) => c.status === "needs_you").length,
         waiting: all.filter((c) => c.status === "waiting").length,
         sent: all.filter((c) => c.status === "sent").length,
         closed: all.filter((c) => c.status === "closed").length,
     };
     let cards = all;
-    if (state.filter !== "all")
+    if (state.filter !== "all" && state.filter !== "completed") {
         cards = cards.filter((c) => c.status === state.filter);
+    }
     if (state.redAlertsOnly)
         cards = cards.filter((c) => c.hasAlert);
     const open = state.openCardId
