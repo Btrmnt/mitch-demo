@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=795cf35";
+import { esc } from "./escape.js?v=4775aa1";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -236,6 +236,17 @@ export function supportingActions(card) {
  * "Close (Handled Outside Mitch)" lives here, not beside the primary. It is
  * not an alternative way to decide; it is a way to take the item off the
  * queue, which is what the rail is for.
+ *
+ * DO NOT ADD a "Withdrawn" / "Not proceeding" entry here. Onboarding does
+ * have that failure mode — it is Notion scenario Mitch-030, Cancellation &
+ * Withdrawal Handling — but cancelling an MAA is a consequential, externally
+ * visible act: it stops in-flight work and closes a real piece of business.
+ * A row of small text links in a queue is exactly where someone clicks the
+ * wrong one, and this rail carries no confirmation step.
+ *
+ * Mitch-030 is Phase 2 and will need its own surface with its own
+ * confirmation. Closing a case belongs there, deliberately, not one stray
+ * click away from "Redirect". (Rei, 2026-09-18.)
  */
 export function tertiaryRail(card) {
     const item = (action, label) => tertiaryButton(label, action, card.id, "modal__rail-item");
@@ -245,6 +256,29 @@ export function tertiaryRail(card) {
           ${item("redirect", "Redirect")}
           ${item("close-handled", "Close (handled outside)")}
         </div>`;
+}
+/**
+ * The heading over what Mitch has to say about an item, which depends on
+ * whether it has happened yet.
+ *
+ * Both headings replaced "What Mitch drafted", inherited from CJ. There the
+ * field held a literal draft — a letter you read and sent — so the word was
+ * accurate. Mitch's field holds a decision: "Entry stopped before
+ * PropertyMe. A dollar value in a percentage field is the error this hard
+ * stop exists to catch." Nothing was drafted.
+ *
+ * Splitting on status matters because "proposes" is only true while the item
+ * is waiting on a person. On the rest Mitch has already acted — the case was
+ * opened, the ad was posted, the routing was applied — and calling that a
+ * proposal would trade one inaccuracy for another.
+ *
+ * Its sibling heading moved to the plural present for the same reason: CJ
+ * quoted back one received message, while Mitch reads a set of standing
+ * records that still say what they say. That they can change underneath a
+ * decision is the whole premise of reconcile().
+ */
+export function draftedHeading(card) {
+    return card.isNeedsYou ? "What action Mitch proposes" : "What Mitch did";
 }
 export function modal(card) {
     if (!card)
@@ -281,12 +315,12 @@ export function modal(card) {
           </header>
 
           <section>
-            <div class="modal__eyebrow">What the source said</div>
+            <div class="modal__eyebrow">What the sources say</div>
             <div class="modal__quote">${esc(card.source)}</div>
           </section>
 
           <section>
-            <div class="modal__eyebrow">What Mitch drafted</div>
+            <div class="modal__eyebrow">${draftedHeading(card)}</div>
             <div class="modal__draft">${esc(card.drafted)}</div>
           </section>
 

@@ -1,14 +1,14 @@
-import { fetchedActionSource } from "../actions/source.js?v=795cf35";
-import { validateActionsPayload } from "../actions/validate.js?v=795cf35";
-import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=795cf35";
-import { showToast } from "./toast.js?v=795cf35";
-import { initMasonry, relayoutMasonry } from "./masonry.js?v=795cf35";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=795cf35";
+import { fetchedActionSource } from "../actions/source.js?v=4775aa1";
+import { validateActionsPayload } from "../actions/validate.js?v=4775aa1";
+import { chipRow, cardGrid, modal, issueScreen } from "./components.js?v=4775aa1";
+import { showToast } from "./toast.js?v=4775aa1";
+import { initMasonry, relayoutMasonry } from "./masonry.js?v=4775aa1";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=4775aa1";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=795cf35";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=4775aa1";
 let state = initialUiState();
 let actions = [];
 /**
