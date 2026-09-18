@@ -57,7 +57,7 @@
       "tag": "COMPLIANCE",
       "status": "needs_you",
       "source": "MAA Section 25 (Pool Safety Compliance) reviewed: the clause is present and not crossed out.",
-      "drafted": "Full compliance requires pool safety certification wherever Section 25 is left un-struck, and no certificate is on file. The input is missing rather than ambiguous, so the gate holds. Request it from the owner, or confirm the property has no pool and the MAA needs correcting. Mitch re-grades and releases the listing gate the moment either arrives.",
+      "drafted": "Full compliance requires pool safety certification wherever Section 25 is left un-struck, and no certificate is on file. Mitch has the request drafted, but it goes to the owner from you — outbound messages to end customers stay with a person until message conformance has been validated. Send it, or confirm the property has no pool and the MAA needs correcting. Mitch watches for the certificate and releases the listing gate when it lands.",
       "flag": "This property cannot reach full compliance until pool safety is confirmed.",
       "rule": "Pool Compliance Gate",
       "ruleNote": "Matched inputs: MAA Section 25 present and unmarked — a crossed-out clause would clear this gate instead.",
@@ -93,11 +93,11 @@
         }
       ],
       "primaryAction": {
-        "label": "Request Certificate",
-        "does": "Emails the owner asking for the pool safety certificate, and holds the listing gate closed until it arrives.",
+        "label": "Review & Send",
+        "does": "Opens the request Mitch drafted for you to send to the owner from your own mailbox. Mitch then watches for the certificate and releases the listing gate when it arrives.",
         "status": "waiting",
         "note": "Waiting — pool safety certificate requested from the owner.",
-        "history": "You requested the pool safety certificate — the listing gate stays closed"
+        "history": "You sent the certificate request — Mitch is watching for it"
       }
     },
     {
@@ -224,7 +224,6 @@
       "status": "needs_you",
       "source": "MAA office reads 'Highland Cronulla'. The property sits in the Sutherland portfolio boundary, which two silos both claim.",
       "drafted": "A property must resolve to exactly one silo before any task is routed. The office named on the MAA and the property's portfolio boundary resolve to two different silos, and no rule ranks one above the other. Pick the silo; Mitch re-points every downstream task to it and continues. Nothing has been routed while this was held.",
-      "flag": "Two silos match this property. Assigning the wrong one misroutes every downstream task.",
       "rule": "Silo & Portfolio Assignment — Ambiguity Held for Review",
       "ruleNote": "Matched inputs: MAA office and property portfolio resolve to different silos, and no tiebreak rule covers this pair.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -269,7 +268,6 @@
       "status": "needs_you",
       "source": "MAA management fee field contains '$1'. The surrounding schedule is expressed in percentages, and the letting fee beside it reads '1.5 weeks rent'.",
       "drafted": "The management fee must be entered as a percentage. The money-field rule refuses a currency amount in that position because $1 and 1% cannot be recovered from one another after entry, and the MAA gives \"$1\" — malformed for this field, not merely unusual. Supply the intended percentage; Mitch enters it and lifts the hold. If $1 is literally what was agreed, it needs a written note on the file first.",
-      "flag": "A dollar amount sits where a percentage is expected. Entering this as written would understate the fee by orders of magnitude.",
       "rule": "Money-Field Hard Stop — % vs Fixed $",
       "ruleNote": "Matched inputs: fee field carries a currency symbol, the schedule's other fees are percentages, and no GST treatment is stated.",
       "pm": "Priya Raman · praman@example.com",
@@ -356,7 +354,6 @@
       "status": "needs_you",
       "source": "Agentbox API returned 5xx on every attempt since 07:20. Snug is responding normally.",
       "drafted": "The ad must reach both feeds. Agentbox has been unavailable since 07:20, so one required destination cannot be written and Mitch will not publish a partial listing silently. Decide whether the three queued properties wait for recovery or go to Snug alone; Mitch executes either. Onboarding continues on the Smartsheet fallback regardless.",
-      "flag": "Agentbox has been unreachable for over an hour. Three properties are queued behind it.",
       "rule": "Graceful Degradation — Manual Path Never Hard-Stops",
       "ruleNote": "Matched inputs: one integration is failing, an alternative path is available, and no work item has been blocked as a result.",
       "pm": "Priya Raman · praman@example.com",
@@ -449,7 +446,7 @@
       "tag": "COMPLIANCE",
       "status": "needs_you",
       "source": "Rubric run across 11 items. Ten pass. Smoke alarm certificate is dated 2023 and the rubric requires one within 12 months.",
-      "drafted": "A property cannot list without a smoke alarm certificate dated within twelve months. Ten of eleven rubric items pass; the certificate on file is dated 2023, so the required input exists but has expired. Authorise the request to the owner. Mitch holds the grade at conditional, re-grades automatically when a current certificate is filed, and releases the listing gate without returning here.",
+      "drafted": "A property cannot be leased without a smoke alarm certificate dated within twelve months. Ten of eleven rubric items pass; the certificate on file is dated 2023, so the required input exists but has expired. Mitch has the request drafted — it goes to the owner from you, since outbound messages to end customers stay with a person until conformance is validated. Mitch holds the grade at conditional and re-grades automatically when a current certificate is filed.",
       "rule": "Compliance Rubric — Conditional Grade Gates Listing",
       "ruleNote": "Matched inputs: one rubric item failed, the remainder passed, and the failure is remediable with a document.",
       "pm": "Priya Raman · praman@example.com",
@@ -484,12 +481,13 @@
         }
       ],
       "primaryAction": {
-        "label": "Request Certificate",
-        "does": "Emails the owner asking for a current smoke alarm certificate. The grade stays conditional and the listing stays gated until one is filed.",
+        "label": "Review & Send",
+        "does": "Opens the request Mitch drafted for you to send to the owner from your own mailbox. Mitch re-grades and lifts the listing gate the moment a current certificate is filed.",
         "status": "waiting",
         "note": "Waiting — current smoke alarm certificate requested.",
-        "history": "You requested a current smoke alarm certificate — the grade stays conditional"
-      }
+        "history": "You sent the certificate request — Mitch is watching for it"
+      },
+      "flag": "Certificate expired. The property cannot be leased until a current one is on file."
     },
     {
       "id": "c12",
@@ -686,7 +684,6 @@
       "status": "needs_you",
       "source": "Agentbox accepted the ad at 15:10. Snug rejected it twice with a feed validation error on the property type field.",
       "drafted": "The listing must exist on both feeds. Agentbox accepted it; Snug rejected the property type twice against its own enumerated list, so the value Highland holds is malformed for that destination. Supply the Snug-accepted value; Mitch resends that feed alone and leaves the live Agentbox ad untouched. Highland's property types do not map one-to-one onto Snug's, which is why Mitch will not substitute one.",
-      "flag": "Live on Agentbox only. Snug rejected the property type field twice.",
       "rule": "Dual-System Partial Failure — Continue via the Other",
       "ruleNote": "Matched inputs: one feed accepted, one rejected with a field-level error, and the handoff has an unblocked path.",
       "pm": "Marcus Hale · mhale@example.com",
@@ -773,7 +770,6 @@
       "status": "needs_you",
       "source": "Management fee 5.5%. Letting fee 1.5 weeks. Neither line states whether the figure includes GST, and the MAA's fee schedule has no GST clause.",
       "drafted": "Every fee must state its GST treatment, and this schedule states neither for either fee. The values are clear — 5.5% and 1.5 weeks — but the treatment is absent, and inclusive versus exclusive differ by 10% on every invoice for the life of the management. State the treatment; Mitch records it against both fees and releases the fee schedule for entry.",
-      "flag": "GST treatment is unstated on both fees. Inferring it would be wrong 50% of the time.",
       "rule": "Fee Integrity — % vs $ vs GST",
       "ruleNote": "Matched inputs: fee values parse cleanly, but GST presence is neither stated nor derivable from the schedule.",
       "pm": "Marcus Hale · mhale@example.com",
