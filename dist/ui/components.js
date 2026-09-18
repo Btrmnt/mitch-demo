@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=ad0759e";
+import { esc } from "./escape.js?v=e0bdc5a";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -410,9 +410,20 @@ export function completedCard(item) {
       <div class="card-note card-note--done">${esc(item.summary)}</div>
     </article>`;
 }
+/**
+ * A plain grid, not the masonry the queue uses — hence its own class, which
+ * is also what keeps the masonry pass (which selects `.card-grid`) away from
+ * it.
+ *
+ * Reading order is the whole point here. This collection is a log, so it runs
+ * newest first, left to right and down; cards are sized to the tallest of
+ * them so every row starts level and that order is never in doubt. The queue
+ * cannot do this — its cards vary hugely in height and uniform sizing would
+ * waste screens of space — but a log of one-line summaries can.
+ */
 export function completedGrid(items) {
     if (!items.length) {
         return `<div class="queue-empty">Nothing completed yet today</div>`;
     }
-    return `<div class="card-grid">${items.map(completedCard).join("")}</div>`;
+    return `<div class="completed-grid">${items.map(completedCard).join("")}</div>`;
 }

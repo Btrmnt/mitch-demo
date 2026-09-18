@@ -125,3 +125,39 @@ export function reconcile(fresh, state) {
         openCardId: state.openCardId && upstream.has(state.openCardId) ? state.openCardId : null,
     };
 }
+/**
+ * Completed work, most recent first.
+ *
+ * `time` is display-ready rather than a timestamp — the contract says so, and
+ * the payload carries values like "Yesterday" alongside "14:36". So this
+ * parses the clock form and orders on that, and anything it cannot parse
+ * keeps its payload position at the end rather than being sorted on the
+ * accident of its spelling. A stable sort, so equal times stay as authored.
+ *
+ * The queue is not sorted here: those cards are ordered by what needs doing,
+ * not by when it happened, and their own filter already governs them.
+ */
+export function byMostRecent(items) {
+    const minutes = (time) => {
+        const m = /^(\d{1,2}):(\d{2})$/.exec(time.trim());
+        if (!m)
+            return null;
+        const h = Number(m[1]);
+        const min = Number(m[2]);
+        if (h > 23 || min > 59)
+            return null;
+        return h * 60 + min;
+    };
+    return items
+        .map((item, index) => ({ item, index, at: minutes(item.time) }))
+        .sort((a, b) => {
+        if (a.at === null && b.at === null)
+            return a.index - b.index;
+        if (a.at === null)
+            return 1;
+        if (b.at === null)
+            return -1;
+        return b.at - a.at || a.index - b.index;
+    })
+        .map((entry) => entry.item);
+}

@@ -57,12 +57,25 @@ export function columnCountFor(containerWidth, minColumnWidth = MIN_COLUMN_WIDTH
  * The whole algorithm, as arithmetic: heights in DOM order in, a column and a
  * top offset per card out.
  *
- * Walking in DOM order and taking the shortest column each time is what gives
- * both behaviours the owner asked for at once. While every column is still
- * empty they are all equal, the tie goes to the leftmost, and the first row
- * fills left to right in payload order. After that the shortest column is
- * whichever one an early short card left a hole in, so later cards rise into
- * the gaps instead of waiting for the tallest card in the row above.
+ * Walking in DOM order and taking the shortest column each time gives both
+ * behaviours the owner asked for at once. While every column is still empty
+ * they are all equal, the tie goes to the leftmost, and the first row fills
+ * left to right in payload order. After that the shortest column is whichever
+ * one an early short card left a hole in, so later cards rise into the gaps
+ * instead of waiting for the tallest card in the row above.
+ *
+ * It also preserves reading order, which is not obvious and is worth stating:
+ * tops are non-decreasing in payload order. Placing into the shortest column
+ * raises that column, so the new minimum is at least the old one — and each
+ * card's top IS that minimum at the moment it is placed. A later card can
+ * therefore never start above an earlier one, so a queue sorted by recency
+ * reads downwards however ragged the heights become. Verified over several
+ * thousand random layouts, not just argued.
+ *
+ * What this does NOT give is aligned rows. Each column is an independent
+ * stack; cards share a top only while their predecessors happened to sum to
+ * the same height, and that coincidence decays down the grid. Bounding the
+ * drift would cost the gap-filling above — the two are the same trade.
  */
 export function masonryLayout(heights, columns, gap = GRID_GAP) {
     const count = Math.max(1, Math.floor(columns) || 1);
@@ -145,6 +158,51 @@ export function applyMasonry(container) {
 function currentGrid() {
     return document.querySelector(".card-grid");
 }
+/**
+ * Sizes every card in the completed grid to the tallest of them.
+ *
+ * CSS gets close but not there: `align-items: stretch` equalises within a row
+ * and says nothing across rows, and `grid-auto-rows: 1fr` divides available
+ * space rather than following content. One measure pass is the honest way to
+ * make every card the same height as the tallest.
+ *
+ * Read every height, then write every height — interleaving forces a reflow
+ * per card. Clearing first matters as much: without it each pass measures the
+ * height the previous pass imposed, and the grid ratchets taller on every
+ * resize.
+ *
+ * Silent no-op when nothing measures, matching applyMasonry: a layout pass
+ * that cannot measure must leave the CSS grid alone, not blank the view.
+ */
+export function applyUniformHeights(container) {
+    if (!container)
+        return;
+    const cards = Array.from(container.children);
+    if (!cards.length)
+        return;
+    for (const card of cards)
+        card.style.height = "";
+    const heights = cards.map((card) => card.getBoundingClientRect().height);
+    if (heights.some((h) => !Number.isFinite(h) || h <= 0))
+        return;
+    const tallest = Math.max(...heights);
+    for (const card of cards)
+        card.style.height = `${tallest}px`;
+}
+/**
+ * Lays out whichever grid is on screen. The two are mutually exclusive — the
+ * queue and the completed log never render together — so this picks by which
+ * container exists rather than by reading UI state, and stays usable from the
+ * resize listener that knows nothing about filters.
+ */
+export function relayoutGrid() {
+    const masonry = document.querySelector(".card-grid");
+    if (masonry) {
+        applyMasonry(masonry);
+        return;
+    }
+    applyUniformHeights(document.querySelector(".completed-grid"));
+}
 /** Run after every `render()`, once the new markup is in the document. */
 export function relayoutMasonry() {
     applyMasonry(currentGrid());
@@ -162,10 +220,10 @@ let resizeTimer;
 export function initMasonry(debounceMs = 100) {
     window.addEventListener("resize", () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(relayoutMasonry, debounceMs);
+        resizeTimer = setTimeout(relayoutGrid, debounceMs);
     });
     // Web fonts land after first paint and change every card's height. Without
     // this the first layout is measured in the fallback face and stays wrong
     // until something else triggers a relayout.
-    document.fonts?.ready.then(relayoutMasonry).catch(() => { });
+    document.fonts?.ready.then(relayoutGrid).catch(() => { });
 }

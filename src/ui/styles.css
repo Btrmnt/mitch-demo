@@ -767,3 +767,20 @@ html, body {
   color: var(--ink-muted-1);
   font-weight: 400;
 }
+
+/* The completed log's grid. Same tracks and gap as the queue's, but left in
+   normal flow: no masonry pass touches it, and every card is sized to the
+   tallest by a measure pass, so rows start level and newest-first reads
+   left to right and down without the geometry getting a vote. */
+.completed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  align-items: start;
+  max-width: 1264px;
+}
+/* The summary takes the slack when a card is stretched to the tallest, so
+   short cards grow from the bottom rather than leaving a gap under the
+   badges. */
+.card--completed { display: flex; flex-direction: column; }
+.card--completed .card-note--done { margin-top: auto; }

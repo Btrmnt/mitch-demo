@@ -1,14 +1,14 @@
-import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=ad0759e";
-import { validateActionsPayload } from "../actions/validate.js?v=ad0759e";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, } from "./components.js?v=ad0759e";
-import { showToast } from "./toast.js?v=ad0759e";
-import { initMasonry, relayoutMasonry } from "./masonry.js?v=ad0759e";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, } from "./state.js?v=ad0759e";
+import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=e0bdc5a";
+import { validateActionsPayload } from "../actions/validate.js?v=e0bdc5a";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, } from "./components.js?v=e0bdc5a";
+import { showToast } from "./toast.js?v=e0bdc5a";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=e0bdc5a";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, } from "./state.js?v=e0bdc5a";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=ad0759e";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=e0bdc5a";
 let state = initialUiState();
 let actions = [];
 /**
@@ -74,14 +74,16 @@ function render() {
       <div class="chip-row">${chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length)}</div>
     </header>
     <main class="queue">
-      ${state.filter === "completed" ? completedGrid(completed) : cardGrid(view.cards)}
+      ${state.filter === "completed"
+        ? completedGrid(byMostRecent(completed))
+        : cardGrid(view.cards)}
     </main>
     ${modal(view.openCard)}
   `;
     // The grid's markup is in the document now, so the cards can be measured
     // and packed. Layout has to follow every render because render() rebuilds
     // the grid wholesale and the new cards come back in plain CSS-grid flow.
-    relayoutMasonry();
+    relayoutGrid();
 }
 /**
  * Delegated click handling, attached once to the stable #app container
