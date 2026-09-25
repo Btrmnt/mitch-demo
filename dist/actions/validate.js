@@ -9,7 +9,6 @@ const REQUIRED_STRINGS = [
     "proposal",
     "rule",
     "ruleNote",
-    "pm",
     "decidedBy",
     "whoSees",
     "confidence",
@@ -74,6 +73,10 @@ export function validateActionsPayload(input) {
                     issues.push({ id, message: `history[${i}] needs a time and a text` });
                 }
             });
+        }
+        const to = a.assignedTo;
+        if (!isNonEmptyString(to?.role) || !isNonEmptyString(to?.name)) {
+            issues.push({ id, message: "assignedTo needs a role and a name" });
         }
         if (a.ruleAdjust !== undefined && !isNonEmptyString(a.ruleAdjust)) {
             issues.push({ id, message: "ruleAdjust must be a non-empty string when present" });

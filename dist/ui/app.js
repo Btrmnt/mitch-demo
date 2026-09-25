@@ -1,14 +1,15 @@
-import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=0754f8a";
-import { validateActionsPayload } from "../actions/validate.js?v=0754f8a";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, } from "./components.js?v=0754f8a";
-import { showToast } from "./toast.js?v=0754f8a";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=0754f8a";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, } from "./state.js?v=0754f8a";
+import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=cd50862";
+import { storageDecisionStore } from "../actions/decisions.js?v=cd50862";
+import { validateActionsPayload } from "../actions/validate.js?v=cd50862";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, } from "./components.js?v=cd50862";
+import { showToast } from "./toast.js?v=cd50862";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=cd50862";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, } from "./state.js?v=cd50862";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=0754f8a";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=cd50862";
 let state = initialUiState();
 let actions = [];
 /**
@@ -18,6 +19,13 @@ let actions = [];
  */
 let source = null;
 let completedSource = null;
+/**
+ * The write seam. Separate from the read sources on purpose — see
+ * DecisionStore. localStorage is read through a try/catch inside the store,
+ * but constructing it is guarded here too: some embedded webviews throw on
+ * the property access itself, before any method is called.
+ */
+let decisions = null;
 let completed = [];
 /**
  * After a decision, move the reader to the next live item on the same case
@@ -37,6 +45,21 @@ function followOn(id) {
     const card = view.cards.find((c) => c.id === id)
         ?? (view.openCard?.id === id ? view.openCard : undefined);
     return card?.siblings[0];
+}
+/**
+ * Writes a decision through the store, if there is one.
+ *
+ * Deliberately fire-and-forget: persistence is a convenience, and a reader
+ * who has just decided something must not be made to wait on storage, nor
+ * shown an error because a browser refused to keep it. The decision is
+ * already in UI state either way.
+ */
+async function remember(id, status, note, entry) {
+    await decisions?.save({
+        id, status, note, entry,
+        baseStatus: upstreamStatus(id),
+        at: new Date().toISOString(),
+    }).catch(() => { });
 }
 /** The upstream status of an item, i.e. before any local decision. */
 function upstreamStatus(id) {
@@ -69,7 +92,13 @@ async function refresh() {
             fresh.some((a, i) => a.id !== actions[i]?.id || a.status !== actions[i]?.status);
         const before = state;
         actions = fresh;
-        state = reconcile(fresh, state);
+        const kept = reconcile(fresh, state);
+        const dropped = Object.keys(state.overrides).filter((id) => !(id in kept.overrides));
+        state = kept;
+        // Storage follows memory: an override reconcile() discarded must not come
+        // back on the next reload.
+        if (dropped.length)
+            void decisions?.forget(dropped).catch(() => { });
         if (changed || state !== before) {
             render();
             showToast("Updated from the source systems.");
@@ -186,7 +215,9 @@ function bindEvents(root) {
             const pa = actions.find((a) => a.id === id)?.primaryAction;
             const next = followOn(id);
             if (pa) {
-                state = applyDecision(state, id, pa.status, pa.note, { time: nowLabel(), text: pa.history }, upstreamStatus(id));
+                const entry = { time: nowLabel(), text: pa.history };
+                state = applyDecision(state, id, pa.status, pa.note, entry, upstreamStatus(id));
+                void remember(id, pa.status, pa.note, entry);
                 if (next)
                     state = openCard(state, next.id);
                 // Taking the decision closes the modal, so the card's new note and
@@ -198,7 +229,11 @@ function bindEvents(root) {
         }
         if (action === "close-handled" && id) {
             const next = followOn(id);
-            state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.", { time: nowLabel(), text: "Closed by you — handled outside Mitch" }, upstreamStatus(id));
+            const entry = {
+                time: nowLabel(), text: "Closed by you — handled outside Mitch",
+            };
+            state = applyDecision(state, id, "closed", "Closed — handled outside Mitch.", entry, upstreamStatus(id));
+            void remember(id, "closed", "Closed — handled outside Mitch.", entry);
             if (next)
                 state = openCard(state, next.id);
             showToast(next
@@ -268,6 +303,20 @@ async function main() {
         return;
     }
     actions = loaded;
+    try {
+        decisions = storageDecisionStore(window.localStorage);
+    }
+    catch {
+        decisions = null;
+    }
+    if (decisions) {
+        const stored = await decisions.load().catch(() => []);
+        const restored = restoreDecisions(actions, stored, state);
+        state = restored.state;
+        // Anything the source overtook while the tab was closed is dropped now,
+        // rather than being re-tested on every load for the life of the browser.
+        void decisions.forget(restored.stale).catch(() => { });
+    }
     bindEvents(root);
     // The resize listener, attached once here for the same reason the click and
     // keydown listeners are — never from inside render().

@@ -10,7 +10,6 @@
       "source": "MAA received via FLK, signed 15 Sep 2026, 09:14. Owner structure: Coastal Holdings Pty Ltd (director J. Marsh) plus individual co-owner S. Marsh. Existing contact match found for J. Marsh with conflicting bank details on file.",
       "rule": "Owner Entry — Business + Individual, Existing Contact Conflict",
       "ruleNote": "Matched inputs: MAA lists two owner types, FLK contact search returned an existing match, bank details differ.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "Mitch, held for confirmation (bank conflict)",
       "whoSees": "BDM + Trust Accountant",
       "confidence": "Conflict detected — human confirmation required",
@@ -49,7 +48,11 @@
         "history": "You confirmed the owner record — Mitch is entering it in PropertyMe"
       },
       "proposal": "Entry needs one set of bank details matching the executed MAA. The existing contact record for J. Marsh carries a different BSB and account, so there are two and neither is authoritative. Confirm which set governs; Mitch enters the owner as Business + Individual, supersedes the other as historic, and continues to trust setup.",
-      "caseRef": "SP 41207"
+      "caseRef": "SP 41207",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c2",
@@ -61,7 +64,6 @@
       "flag": "This property cannot reach full compliance until pool safety is confirmed.",
       "rule": "Pool Compliance Gate",
       "ruleNote": "Matched inputs: MAA Section 25 present and unmarked — a crossed-out clause would clear this gate instead.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "Mitch, automatic gate",
       "whoSees": "Compliance team",
       "confidence": "Single confident match",
@@ -100,7 +102,11 @@
         "history": "You sent the certificate request — Mitch is watching for it"
       },
       "proposal": "Full compliance requires pool safety certification wherever Section 25 is left un-struck, and no certificate is on file. Mitch has the request drafted, but it goes to the owner from you — outbound messages to end customers stay with a person until message conformance has been validated. Send it, or confirm the property has no pool and the MAA needs correcting. Mitch watches for the certificate and releases the listing gate when it lands.",
-      "caseRef": "SP 41207"
+      "caseRef": "SP 41207",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c3",
@@ -111,7 +117,6 @@
       "source": "MAA fee section marked \"N/A — Casual letting.\"",
       "rule": "Casual Letting — Fee Section Marker",
       "ruleNote": "Matched inputs: MAA fee section text — one of four signals Highland uses for casual letting.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Mitch, automatic match",
       "whoSees": "Leasing team",
       "confidence": "Single confident match",
@@ -143,7 +148,11 @@
         }
       ],
       "proposal": "Case routed to the casual-letting process. Leasing team notified to confirm at \"application approved.\"",
-      "caseRef": "SP 39980"
+      "caseRef": "SP 39980",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c4",
@@ -154,7 +163,6 @@
       "source": "Compliance confirmed. Ad already drafted in Agentbox by the BDM.",
       "rule": "Live-Gate Email Trigger",
       "ruleNote": "Matched inputs: compliance confirmed, an Agentbox listing already exists.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Mitch, automatic match",
       "whoSees": "Nadia (offshore compliance)",
       "confidence": "Single confident match",
@@ -181,7 +189,11 @@
         }
       ],
       "proposal": "Email sent to Nadia with the Agentbox ad link for the go-live compliance check.",
-      "caseRef": "SP 41102"
+      "caseRef": "SP 41102",
+      "assignedTo": {
+        "role": "Property manager",
+        "name": "Priya Raman · praman@example.com"
+      }
     },
     {
       "id": "c5",
@@ -192,7 +204,6 @@
       "source": "FLK reported the MAA reached fully-executed status 18 Sep 2026, 08:02. Document id FLK-2291.",
       "rule": "Case Kickoff — Automatic on Fully-Executed MAA",
       "ruleNote": "Matched inputs: FLK status moved to fully-executed. This path needs no human kickoff, so the case opens itself.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "Mitch, automatic",
       "whoSees": "BDM (visibility only)",
       "confidence": "Single confident match",
@@ -219,7 +230,11 @@
         }
       ],
       "proposal": "Case opened automatically and keyed to the FLK document id. BDM notified in Teams for visibility only — no kickoff action was required.",
-      "caseRef": "SP 40118"
+      "caseRef": "SP 40118",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c6",
@@ -230,7 +245,6 @@
       "source": "MAA office reads 'Highland Cronulla'. The property sits in the Sutherland portfolio boundary, which two silos both claim.",
       "rule": "Silo & Portfolio Assignment — Ambiguity Held for Review",
       "ruleNote": "Matched inputs: MAA office and property portfolio resolve to different silos, and no tiebreak rule covers this pair.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "Held for you — Mitch does not choose between equal matches",
       "whoSees": "BDM + Operations",
       "confidence": "Two matches, no tiebreak",
@@ -265,7 +279,11 @@
       },
       "proposal": "A property must resolve to exactly one silo before any task is routed. The office named on the MAA and the property's portfolio boundary resolve to two different silos, and no rule ranks one above the other. Pick the silo; Mitch re-points every downstream task to it and continues. Nothing has been routed while this was held.",
       "ruleAdjust": "Opens the silo routing rule in the Mitch console. Ranking the office named on the MAA above the portfolio boundary resolves this property and every future one where the two disagree, instead of asking a person each time.",
-      "caseRef": "SP 40662"
+      "caseRef": "SP 40662",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c7",
@@ -276,7 +294,6 @@
       "source": "MAA management fee field contains '$1'. The surrounding schedule is expressed in percentages, and the letting fee beside it reads '1.5 weeks rent'.",
       "rule": "Money-Field Hard Stop — % vs Fixed $",
       "ruleNote": "Matched inputs: fee field carries a currency symbol, the schedule's other fees are percentages, and no GST treatment is stated.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Mitch, hard stop — no autonomous entry on money fields",
       "whoSees": "Trust Accountant + BDM",
       "confidence": "Format conflict, entry refused",
@@ -315,7 +332,11 @@
         "history": "You confirmed the management fee — Mitch lifted the entry hold"
       },
       "proposal": "The management fee must be entered as a percentage. The money-field rule refuses a currency amount in that position because $1 and 1% cannot be recovered from one another after entry, and the MAA gives \"$1\" — malformed for this field, not merely unusual. Supply the intended percentage; Mitch enters it and lifts the hold. If $1 is literally what was agreed, it needs a written note on the file first.",
-      "caseRef": "SP 41355"
+      "caseRef": "SP 41355",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c8",
@@ -326,7 +347,6 @@
       "source": "MAA executed 17 Sep. Trust account shows no matching deposit against this property.",
       "rule": "Deposit Confirmation Fires Entry",
       "ruleNote": "Matched inputs: MAA executed, deposit unconfirmed. Entry is deliberately deferred so no record exists before the money does.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "Mitch, automatic hold",
       "whoSees": "Trust Accountant",
       "confidence": "Single confident match",
@@ -353,7 +373,11 @@
         }
       ],
       "proposal": "Record prepared in full and held. PropertyMe entry fires on deposit confirmation, not on signature.",
-      "caseRef": "SP 40904"
+      "caseRef": "SP 40904",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c9",
@@ -364,7 +388,6 @@
       "source": "Agentbox API returned 5xx on every attempt since 07:20. Snug is responding normally.",
       "rule": "Graceful Degradation — Manual Path Never Hard-Stops",
       "ruleNote": "Matched inputs: one integration is failing, an alternative path is available, and no work item has been blocked as a result.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Held for you — the queue-or-proceed choice is yours",
       "whoSees": "Operations",
       "confidence": "Sustained failure, fallback active",
@@ -403,7 +426,11 @@
         "history": "You held the queue — Mitch is waiting for Agentbox rather than posting to Snug alone"
       },
       "proposal": "The ad must reach both feeds. Agentbox has been unavailable since 07:20, so one required destination cannot be written and Mitch will not publish a partial listing silently. Decide whether the three queued properties wait for recovery or go to Snug alone; Mitch executes either. Onboarding continues on the Smartsheet fallback regardless.",
-      "ruleAdjust": "Opens the publishing policy in the Mitch console. Setting a wait threshold — release to the available feed after four hours — answers this for every outage, rather than once per property while one is happening."
+      "ruleAdjust": "Opens the publishing policy in the Mitch console. Setting a wait threshold — release to the available feed after four hours — answers this for every outage, rather than once per property while one is happening.",
+      "assignedTo": {
+        "role": "Operations",
+        "name": "Operations team"
+      }
     },
     {
       "id": "c10",
@@ -414,7 +441,6 @@
       "source": "MAA special instructions: 'No pets under any circumstances. No share-house arrangements. Owner requests 12-month leases only.'",
       "rule": "Landlord Requirements — Retain and Surface",
       "ruleNote": "Matched inputs: MAA carries free-text special instructions that constrain leasing, which are lost if they stay in the document.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "Held for you — free text is read, not interpreted",
       "whoSees": "Leasing team",
       "confidence": "Three requirements extracted",
@@ -449,7 +475,11 @@
       },
       "proposal": "Landlord requirements have to land in fields the leasing system enforces. Two of the three map cleanly. \"No share-house arrangements\" has no equivalent field in PropertyMe and can only be carried as free text, which leasing does not enforce. Confirm a note is an acceptable home for it, or name the field it should map to; Mitch locks all three to the property and continues to the listing brief.",
       "ruleAdjust": "Opens the landlord-requirements mapping. Giving share-house restrictions a field of their own lets leasing enforce them, instead of carrying them as a note that nothing checks.",
-      "caseRef": "SP 40118"
+      "caseRef": "SP 40118",
+      "assignedTo": {
+        "role": "Property manager",
+        "name": "Marcus Hale · mhale@example.com"
+      }
     },
     {
       "id": "c11",
@@ -460,7 +490,6 @@
       "source": "Rubric run across 11 items. Ten pass. Smoke alarm certificate is dated 2023 and the rubric requires one within 12 months.",
       "rule": "Compliance Rubric — Conditional Grade Gates Listing",
       "ruleNote": "Matched inputs: one rubric item failed, the remainder passed, and the failure is remediable with a document.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Mitch, automatic grade",
       "whoSees": "Compliance team",
       "confidence": "10 of 11 items pass",
@@ -500,7 +529,11 @@
       },
       "flag": "Certificate expired. The property cannot be leased until a current one is on file.",
       "proposal": "A property cannot be leased without a smoke alarm certificate dated within twelve months. Ten of eleven rubric items pass; the certificate on file is dated 2023, so the required input exists but has expired. Mitch has the request drafted — it goes to the owner from you, since outbound messages to end customers stay with a person until conformance is validated. Mitch holds the grade at conditional and re-grades automatically when a current certificate is filed.",
-      "caseRef": "SP 40662"
+      "caseRef": "SP 40662",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c12",
@@ -512,7 +545,6 @@
       "flag": "Licence address differs from the MAA address. Passport matches.",
       "rule": "Identity Verification — Human Gate, Always",
       "ruleNote": "Matched inputs: identity documents present and a field-level discrepancy found. Mitch highlights, it never clears.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "You — identity is never decided by Mitch",
       "whoSees": "BDM + Compliance team",
       "confidence": "Not scored — human gate",
@@ -546,7 +578,11 @@
         "history": "You recorded the identity decision — Mitch attached it to the file"
       },
       "proposal": "Identity documents must match the MAA and each other. The passport matches; the licence carries a different address, so the set is inconsistent and the requirement is unmet. Mitch does not resolve identity conflicts — a person does. Record which document governs and what evidence closes the gap; Mitch attaches the decision to the file and continues to entry.",
-      "caseRef": "SP 41355"
+      "caseRef": "SP 41355",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c13",
@@ -558,7 +594,6 @@
       "flag": "Registered branch does not match the MAA. Confirm this is the same entity before entry.",
       "rule": "Company Verification — ASIC/ABN Branch Mismatch",
       "ruleNote": "Matched inputs: ABN active and name-matched, branch registration inconsistent with the document.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Held for you — entity identity is not inferred",
       "whoSees": "BDM + Trust Accountant",
       "confidence": "Entity matched, branch not",
@@ -597,7 +632,11 @@
         "history": "You confirmed the entity — Mitch released the owner record"
       },
       "proposal": "The owner record must name an entity whose ASIC registration matches the MAA. The ABN is active and the company name matches exactly, but the registered branch differs from the branch written on the agreement, so the match is incomplete. Confirm the entity or correct the branch on the MAA; Mitch releases the owner record for entry once one of them is authoritative.",
-      "caseRef": "SP 41102"
+      "caseRef": "SP 41102",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c14",
@@ -609,7 +648,6 @@
       "flag": "The signatory does not appear on ASIC as a director. Signature authority is unconfirmed.",
       "rule": "Name/Title Discrepancy — Signature Authority",
       "ruleNote": "Matched inputs: signatory name absent from the director list, and the owner name on title differs from the signing entity.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Held for you — authority is never assumed",
       "whoSees": "BDM + Compliance team",
       "confidence": "No authority match found",
@@ -648,7 +686,11 @@
         "history": "You resolved signature authority — Mitch lifted the compliance hold"
       },
       "proposal": "An MAA is enforceable only if signed by someone with authority for the owning entity. \"D. Marsh, Director\" appears on neither the ASIC director list nor the title, so authority is not evidenced. Supply that evidence — a recent ASIC change, a trust deed, or a corrected signatory. Mitch attaches it, lifts the compliance hold and continues; no downstream task runs until it does.",
-      "caseRef": "SP 41102"
+      "caseRef": "SP 41102",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "id": "c15",
@@ -659,7 +701,6 @@
       "source": "Compliance signed off 17 Sep, 16:20. Listing brief complete, photography attached.",
       "rule": "Ad Placement — Feed Post After Compliance Sign-Off",
       "ruleNote": "Matched inputs: a recorded human compliance decision exists, and the listing brief has no outstanding items.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Mitch, automatic after sign-off",
       "whoSees": "Leasing team",
       "confidence": "Single confident match",
@@ -691,7 +732,11 @@
         }
       ],
       "proposal": "Ad posted to both feeds after sign-off. Post-publish edits remain available and will sync to both systems.",
-      "caseRef": "SP 39980"
+      "caseRef": "SP 39980",
+      "assignedTo": {
+        "role": "Property manager",
+        "name": "Priya Raman · praman@example.com"
+      }
     },
     {
       "id": "c16",
@@ -702,7 +747,6 @@
       "source": "Agentbox accepted the ad at 15:10. Snug rejected it twice with a feed validation error on the property type field.",
       "rule": "Dual-System Partial Failure — Continue via the Other",
       "ruleNote": "Matched inputs: one feed accepted, one rejected with a field-level error, and the handoff has an unblocked path.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "Held for you — Mitch does not rewrite rejected fields",
       "whoSees": "Leasing team + Operations",
       "confidence": "One feed live, one rejected",
@@ -742,7 +786,11 @@
       },
       "proposal": "The listing must exist on both feeds. Agentbox accepted it; Snug rejected the property type twice against its own enumerated list, so the value Highland holds is malformed for that destination. Supply the Snug-accepted value; Mitch resends that feed alone and leaves the live Agentbox ad untouched. Highland's property types do not map one-to-one onto Snug's, which is why Mitch will not substitute one.",
       "ruleAdjust": "Opens the Highland → Snug property-type mapping. Mapping this type once clears the rejection for every property that uses it, and stops Mitch guessing at a substitute.",
-      "caseRef": "SP 40904"
+      "caseRef": "SP 40904",
+      "assignedTo": {
+        "role": "Operations",
+        "name": "Operations team"
+      }
     },
     {
       "id": "c17",
@@ -753,7 +801,6 @@
       "source": "Ops changed the routing for unresolved pool-compliance exceptions from the BDM queue to the Compliance team queue.",
       "rule": "Ops Re-routing — Configuration, Not Code",
       "ruleNote": "Matched inputs: an exception route was changed through the console by an operator with routing permission.",
-      "pm": "Priya Raman · praman@example.com",
       "decidedBy": "Operations, via the console",
       "whoSees": "Operations",
       "confidence": "Applied to 4 open exceptions",
@@ -779,7 +826,11 @@
           "opens": "Opens the routing configuration for the Cronulla silo, where this change was made. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "proposal": "Routing updated from the console and applied to 4 open exceptions. No deployment, no engineer involved — the change took effect on the next evaluation."
+      "proposal": "Routing updated from the console and applied to 4 open exceptions. No deployment, no engineer involved — the change took effect on the next evaluation.",
+      "assignedTo": {
+        "role": "Operations",
+        "name": "Operations team"
+      }
     },
     {
       "id": "c18",
@@ -790,7 +841,6 @@
       "source": "Management fee 5.5%. Letting fee 1.5 weeks. Neither line states whether the figure includes GST, and the MAA's fee schedule has no GST clause.",
       "rule": "Fee Integrity — % vs $ vs GST",
       "ruleNote": "Matched inputs: fee values parse cleanly, but GST presence is neither stated nor derivable from the schedule.",
-      "pm": "Marcus Hale · mhale@example.com",
       "decidedBy": "Mitch, hard stop — GST is never inferred",
       "whoSees": "Trust Accountant",
       "confidence": "Values clear, GST unstated",
@@ -829,7 +879,11 @@
         "history": "You confirmed the GST treatment — Mitch released the fee schedule"
       },
       "proposal": "Every fee must state its GST treatment, and this schedule states neither for either fee. The values are clear — 5.5% and 1.5 weeks — but the treatment is absent, and inclusive versus exclusive differ by 10% on every invoice for the life of the management. State the treatment; Mitch records it against both fees and releases the fee schedule for entry.",
-      "caseRef": "SP 40662"
+      "caseRef": "SP 40662",
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     }
   ],
   "completed": [

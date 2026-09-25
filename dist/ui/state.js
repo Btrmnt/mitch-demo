@@ -178,3 +178,35 @@ export function byMostRecent(items) {
     })
         .map((entry) => entry.item);
 }
+/**
+ * Seeds state from decisions that were stored on a previous visit.
+ *
+ * Applies the same test reconcile() applies to a refetch, and for the same
+ * reason: a stored decision is an intent, the source is the truth. So a
+ * decision is restored only where the item still exists AND its upstream
+ * status is still what the decision was taken against. Anything else was
+ * overtaken while the tab was closed, and restoring it would show a reader
+ * their own stale answer as though it were current.
+ *
+ * Returns the ids that were NOT restored, so the caller can drop them from
+ * storage rather than re-testing them on every load forever.
+ */
+export function restoreDecisions(actions, decisions, state) {
+    const upstream = new Map(actions.map((a) => [a.id, a.status]));
+    const overrides = { ...state.overrides };
+    const stale = [];
+    for (const d of decisions) {
+        if (upstream.get(d.id) === d.baseStatus) {
+            overrides[d.id] = {
+                status: d.status,
+                note: d.note,
+                entry: d.entry,
+                baseStatus: d.baseStatus,
+            };
+        }
+        else {
+            stale.push(d.id);
+        }
+    }
+    return { state: { ...state, overrides }, stale };
+}

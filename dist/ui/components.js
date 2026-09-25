@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=0754f8a";
+import { esc } from "./escape.js?v=cd50862";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -375,7 +375,7 @@ export function modal(card) {
           ${alert}
 
           <dl class="modal__meta">
-            ${metaRow("Property manager", card.pm)}
+            ${metaRow(card.assignedTo.role, card.assignedTo.name)}
             ${metaRow("Decided by", card.decidedBy)}
             ${metaRow("Who can see this", card.whoSees)}
             ${metaRow("Confidence", card.confidence)}
