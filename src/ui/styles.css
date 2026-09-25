@@ -833,12 +833,15 @@ html, body {
    Columns by stage, in workflow order, scrolling sideways. A track per
    property showed one journey well and ten not at all; the question a person
    actually has is "what is sitting at Compliance", and that is a column. */
+/* Pushed to the right edge of the header. `.app-title` is a full-width flex
+   row, so auto margin takes all the slack between the title and the switch —
+   it holds the right edge at any width without the header needing to know
+   how wide the title happens to be. */
 .view-switch {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-left: 14px;
-  vertical-align: middle;
+  margin-left: auto;
   font-size: 12px;
 }
 .view-switch .icon { width: 13px; height: 13px; }

@@ -1,15 +1,15 @@
-import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=1424d0b";
-import { storageDecisionStore } from "../actions/decisions.js?v=1424d0b";
-import { validateActionsPayload } from "../actions/validate.js?v=1424d0b";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, } from "./components.js?v=1424d0b";
-import { showToast } from "./toast.js?v=1424d0b";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=1424d0b";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, } from "./state.js?v=1424d0b";
+import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=b06da13";
+import { storageDecisionStore } from "../actions/decisions.js?v=b06da13";
+import { validateActionsPayload } from "../actions/validate.js?v=b06da13";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, } from "./components.js?v=b06da13";
+import { showToast } from "./toast.js?v=b06da13";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=b06da13";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, } from "./state.js?v=b06da13";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=1424d0b";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=b06da13";
 let state = initialUiState();
 let actions = [];
 /**
