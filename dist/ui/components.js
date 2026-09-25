@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=1d6b7dd";
+import { esc } from "./escape.js?v=f30bda3";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -500,10 +500,14 @@ export function caseCard(item) {
     const current = item.stages.find((s) => s.state === "current");
     const blocked = Boolean(current?.blocked);
     const done = item.stages.filter((s) => s.state === "done").length;
+    // One line each, truncated. A card in a 160px column cannot carry a full
+    // exception title, and three of them wrapping to four lines apiece buried
+    // the property the card is about. The full title is on hover, and the card
+    // it opens says it in full anyway.
     const blockers = item.blockers.length
         ? `<p class="case__blockers">${item.blockers
             .map((b) => `<button class="case__blocker" data-action="open" ` +
-            `data-id="${esc(b.id)}">${esc(b.title)}</button>`)
+            `data-id="${esc(b.id)}" title="${esc(b.title)}">${esc(b.title)}</button>`)
             .join("")}</p>`
         : "";
     return `
@@ -511,11 +515,11 @@ export function caseCard(item) {
           <h3 class="case-card__ref">${esc(item.ref)}</h3>
           <p class="case-card__subject">${esc(item.subject)}</p>
           <p class="case-card__holder">${esc(item.assignedTo.name)}</p>
-          <p class="case-card__progress">
+          <p class="case-card__progress"
+             aria-label="${esc(String(done))} of ${esc(String(item.stages.length))} stages complete">
             <span class="case-card__progress-bar" aria-hidden="true">
               <span style="width: ${esc(String(Math.round((done / item.stages.length) * 100)))}%"></span>
             </span>
-            <span class="case-card__progress-text">${esc(String(done))} of ${esc(String(item.stages.length))}</span>
           </p>
           ${blockers}
         </article>`;

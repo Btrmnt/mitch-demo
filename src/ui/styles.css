@@ -932,14 +932,18 @@ html, body {
   height: 100%;
   background: var(--accent-blue);
 }
-.case-card__progress-text {
-  flex: none;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  color: var(--ink-muted-2);
-}
+/* No "4 of 7" beside it. The bar already says how far along the property is,
+   and the number said the same thing in more space — on a card this narrow
+   that space is the difference between a blocker fitting on one line or not.
+   The count survives as the bar's aria-label, since a screen reader gets
+   nothing from a decorative bar. */
 .case__blockers { margin: 8px 0 0; display: flex; flex-direction: column; gap: 3px; }
 .case__blocker {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: var(--font-ui);
   font-size: 11px;
   line-height: 1.35;
