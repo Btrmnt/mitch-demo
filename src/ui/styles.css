@@ -938,12 +938,18 @@ html, body {
    The count survives as the bar's aria-label, since a screen reader gets
    nothing from a decorative bar. */
 .case__blockers { margin: 8px 0 0; display: flex; flex-direction: column; gap: 3px; }
+/* Numbered, because two truncated one-line blockers under each other read as
+   one sentence that happened to wrap. The number is the cheapest thing that
+   says "these are two items" — and it counts them, which is the first thing
+   a reader wants from a blocked card.
+
+   A flex row rather than a block: the number holds its width and only the
+   title truncates, so the marker cannot be the thing that gets cut off. */
 .case__blocker {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   font-family: var(--font-ui);
   font-size: 11px;
   line-height: 1.35;
@@ -956,6 +962,33 @@ html, body {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+.case__blocker-n {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--danger-tint);
+  color: var(--danger-ink);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  /* The digit is centred optically rather than by line-height inheritance,
+     which at 14px lands it a pixel high. */
+  line-height: 1;
+  padding-top: 1px;
+}
+.case__blocker-text {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.case__blocker { text-decoration: none; }
 .case__blocker:hover { color: var(--ink-1); }
 .case__blocker:focus-visible {
   outline: 2px solid var(--accent-blue-strong);

@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=f30bda3";
+import { esc } from "./escape.js?v=c5a1624";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -506,8 +506,10 @@ export function caseCard(item) {
     // it opens says it in full anyway.
     const blockers = item.blockers.length
         ? `<p class="case__blockers">${item.blockers
-            .map((b) => `<button class="case__blocker" data-action="open" ` +
-            `data-id="${esc(b.id)}" title="${esc(b.title)}">${esc(b.title)}</button>`)
+            .map((b, i) => `<button class="case__blocker" data-action="open" ` +
+            `data-id="${esc(b.id)}" title="${esc(b.title)}">` +
+            `<span class="case__blocker-n" aria-hidden="true">${esc(String(i + 1))}</span>` +
+            `<span class="case__blocker-text">${esc(b.title)}</span></button>`)
             .join("")}</p>`
         : "";
     return `
