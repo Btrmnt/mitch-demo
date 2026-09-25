@@ -15,6 +15,8 @@ html, body {
 }
 
 .app-title {
+  display: flex;
+  align-items: center;
   font-size: 20px;
   font-weight: 800;
   color: var(--ink-1);
@@ -826,124 +828,113 @@ html, body {
   background: var(--ink-muted-2);
 }
 
-/* ── Onboardings ───────────────────────────────────────────────────────────
-   Full-width rows, not grid cards. Seven stages read as a track and a track
-   needs width; packed into a 300px column it degenerates into a list of
-   words and stops showing progression, which is the only thing it is for. */
-.case-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-width: 1264px;
-}
-.case {
-  background: var(--surface-card);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  padding: 16px 18px 14px;
-}
-.case__head {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-.case__ref { margin: 0; font-size: 14px; font-weight: 700; color: var(--ink-1); }
-.case__subject { font-size: 12px; color: var(--ink-muted-1); }
 
-/* The track. Stages share the width evenly so the row reads as a progression
-   rather than as text of varying length, and the connecting rule is drawn
-   from each dot to the next rather than as a background the dots sit on —
-   that way the last stage has no trailing line running off the end. */
-.case__track {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 0;
-  overflow-x: auto;
-}
-.stage {
-  flex: 1 1 0;
-  min-width: 92px;
-  position: relative;
-  padding: 18px 8px 0 0;
-}
-.stage::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 6px;
-  right: 0;
-  height: 2px;
-  background: var(--hairline);
-}
-.stage:last-child::before { display: none; }
-.stage__dot {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid var(--hairline);
-  background: var(--surface-card);
-}
-.stage__name {
-  display: block;
-  font-size: 11.5px;
-  line-height: 1.3;
-  color: var(--ink-muted-2);
-}
-.stage__at {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--ink-muted-2);
-  margin-top: 2px;
-}
-
-/* Done is settled, current is where the work is, blocked is current with the
-   queue holding it. Blocked borrows the red-alert colour deliberately: it is
-   the same fact stated in the other view. */
-.stage--done .stage__dot { background: var(--accent-blue); border-color: var(--accent-blue); }
-.stage--done::before { background: var(--accent-blue); }
-.stage--done .stage__name { color: var(--ink-muted-1); }
-
-.stage--current .stage__dot { border-color: var(--brand-navy-2); background: var(--brand-navy-2); }
-.stage--current .stage__name { color: var(--ink-1); font-weight: 700; }
-
-.stage--blocked .stage__dot { border-color: var(--danger-ink); background: var(--danger-ink); }
-.stage--blocked .stage__name { color: var(--danger-ink); font-weight: 700; }
-
-.stage--todo .stage__dot { background: var(--surface-card); }
-
-.case__blockers {
-  margin: 14px 0 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--hairline);
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
+/* ── The onboarding board ──────────────────────────────────────────────────
+   Columns by stage, in workflow order, scrolling sideways. A track per
+   property showed one journey well and ten not at all; the question a person
+   actually has is "what is sitting at Compliance", and that is a column. */
+.view-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 14px;
+  vertical-align: middle;
   font-size: 12px;
 }
-.case__blockers-label {
+.view-switch .icon { width: 13px; height: 13px; }
+
+.board {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  /* The board scrolls, the page does not: seven columns will not fit a laptop
+     and a horizontally scrolling page moves the header out of reach. */
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+.board__column {
+  flex: 0 0 236px;
+  background: var(--surface-context);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+}
+.board__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding: 0 2px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 10.5px;
   letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-muted-1);
+}
+.board__count {
+  font-size: 10.5px;
+  color: var(--ink-muted-2);
+  background: var(--surface-card);
+  border-radius: var(--radius-pill);
+  padding: 1px 7px;
+}
+.board__cards { display: flex; flex-direction: column; gap: 8px; }
+
+.case-card {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 10px 11px;
+}
+/* Blocked borrows the red-alert colour on purpose: it is the same fact the
+   queue states, seen from the other side. */
+.case-card--blocked { border-color: rgba(229, 57, 43, 0.4); }
+.case-card__ref { margin: 0; font-size: 12.5px; font-weight: 700; color: var(--ink-1); }
+.case-card__subject {
+  margin: 2px 0 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ink-muted-1);
+}
+.case-card__holder {
+  margin: 6px 0 0;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ink-muted-2);
 }
-/* A button, because it opens the card that holds this stage — the two views
-   describe the same thing from two directions and moving between them should
-   not mean searching. */
+.case-card__progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+}
+.case-card__progress-bar {
+  flex: 1 1 auto;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--surface-page);
+  overflow: hidden;
+}
+.case-card__progress-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent-blue);
+}
+.case-card__progress-text {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--ink-muted-2);
+}
+.case__blockers { margin: 8px 0 0; display: flex; flex-direction: column; gap: 3px; }
 .case__blocker {
   font-family: var(--font-ui);
-  font-size: 12px;
-  color: var(--accent-blue);
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--danger-ink);
   background: none;
   border: none;
   padding: 0;
@@ -952,8 +943,19 @@ html, body {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.case__blocker:hover { color: var(--brand-navy-2); }
+.case__blocker:hover { color: var(--ink-1); }
 .case__blocker:focus-visible {
   outline: 2px solid var(--accent-blue-strong);
   outline-offset: 2px;
+}
+/* The count the Onboardings chip used to carry. It follows the label rather
+   than the destination — on the board it counts what is waiting back in the
+   queue, which is the number a reader wants before deciding to cross. */
+.view-switch__count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-muted-2);
+  background: var(--surface-page);
+  border-radius: var(--radius-pill);
+  padding: 1px 6px;
 }

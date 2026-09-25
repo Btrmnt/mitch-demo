@@ -1,15 +1,15 @@
-import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=32784bf";
-import { storageDecisionStore } from "../actions/decisions.js?v=32784bf";
-import { validateActionsPayload } from "../actions/validate.js?v=32784bf";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseGrid, } from "./components.js?v=32784bf";
-import { showToast } from "./toast.js?v=32784bf";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=32784bf";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, } from "./state.js?v=32784bf";
+import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=1424d0b";
+import { storageDecisionStore } from "../actions/decisions.js?v=1424d0b";
+import { validateActionsPayload } from "../actions/validate.js?v=1424d0b";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, } from "./components.js?v=1424d0b";
+import { showToast } from "./toast.js?v=1424d0b";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=1424d0b";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, } from "./state.js?v=1424d0b";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=32784bf";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=1424d0b";
 let state = initialUiState();
 let actions = [];
 /**
@@ -124,14 +124,19 @@ function render() {
         return;
     root.innerHTML = `
     <header class="app-header">
-      <div class="app-title">Mitch Actions</div>
-      <div class="chip-row">${chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length, cases.length)}</div>
+      <div class="app-title">
+        Mitch Actions
+        ${cases.length
+        ? viewSwitch(state.filter === "cases", { cases: cases.length, open: view.counts.needs_you })
+        : ""}
+      </div>
+      ${state.filter === "cases" ? "" : `<div class="chip-row">${chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length)}</div>`}
     </header>
     <main class="queue">
       ${state.filter === "completed"
         ? completedGrid(byMostRecent(completed))
         : state.filter === "cases"
-            ? caseGrid(deriveCases(cases, actions, state))
+            ? caseBoard(deriveCases(cases, actions, state))
             : cardGrid(view.cards)}
     </main>
     ${modal(view.openCard)}
@@ -197,6 +202,13 @@ function bindEvents(root) {
             state = closeMenu(state);
             render();
             return;
+        }
+        // The header switch crosses between the queue and the board. It restores
+        // Needs You rather than whatever filter was last set: coming back to a
+        // queue silently narrowed by a decision taken minutes ago reads as items
+        // having gone missing.
+        if (action === "switch-view") {
+            state = setFilter(state, value === "cases" ? "cases" : "needs_you");
         }
         if (action === "filter") {
             state = value === "alerts"

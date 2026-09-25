@@ -176,6 +176,9 @@ export function validateCases(input) {
                 issues.push({ id, message: `${field} is required on a case` });
             }
         }
+        if (!isNonEmptyString(c?.assignedTo?.role) || !isNonEmptyString(c?.assignedTo?.name)) {
+            issues.push({ id, message: "assignedTo needs a role and a name" });
+        }
         if (isNonEmptyString(c?.ref)) {
             if (seen.has(c.ref))
                 issues.push({ id, message: `duplicate case ref ${c.ref}` });

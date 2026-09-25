@@ -1002,7 +1002,11 @@
           "name": "Live",
           "state": "current"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "Property manager",
+        "name": "Marcus Hale"
+      }
     },
     {
       "ref": "SP 40208",
@@ -1041,7 +1045,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "Property manager",
+        "name": "Priya Raman"
+      }
     },
     {
       "ref": "SP 41338",
@@ -1079,7 +1087,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "ref": "SP 41102",
@@ -1117,7 +1129,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "ref": "SP 41207",
@@ -1155,7 +1171,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "ref": "SP 40662",
@@ -1191,7 +1211,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "ref": "SP 41355",
@@ -1226,7 +1250,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     },
     {
       "ref": "SP 40904",
@@ -1265,7 +1293,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "Property manager",
+        "name": "Marcus Hale"
+      }
     },
     {
       "ref": "SP 39980",
@@ -1304,7 +1336,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "Property manager",
+        "name": "Priya Raman"
+      }
     },
     {
       "ref": "SP 40118",
@@ -1342,7 +1378,11 @@
           "name": "Live",
           "state": "todo"
         }
-      ]
+      ],
+      "assignedTo": {
+        "role": "New business (BDM)",
+        "name": "BDM team"
+      }
     }
   ]
 }

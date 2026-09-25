@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=32784bf";
+import { esc } from "./escape.js?v=1424d0b";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -55,7 +55,7 @@ export function tertiaryButton(label, action, id, extraClass = "") {
  * counts and which filters are on, not the whole UiState — this module is
  * the design system in code and holds no app logic.
  */
-export function chipRow(counts, active, redAlertsOnly, completedCount = 0, caseCount = 0) {
+export function chipRow(counts, active, redAlertsOnly, completedCount = 0) {
     const order = [
         { label: "All", value: "all" },
         { label: "Needs You", value: "needs_you" },
@@ -86,15 +86,7 @@ export function chipRow(counts, active, redAlertsOnly, completedCount = 0, caseC
             active: active === "completed",
         })
         : "";
-    const cases = caseCount
-        ? filterChip({
-            label: "Onboardings",
-            count: caseCount,
-            value: "cases",
-            active: active === "cases",
-        })
-        : "";
-    return `${chips}<span class="chip-divider"></span>${alerts}${completed}${cases}`;
+    return `${chips}<span class="chip-divider"></span>${alerts}${completed}`;
 }
 /** A card's red alert, or nothing. Shown identically on card and modal. */
 function alertBlock(card) {
@@ -467,54 +459,93 @@ export function completedGrid(items) {
     }
     return `<div class="completed-grid">${items.map(completedCard).join("")}</div>`;
 }
+/** Stand-in for `fa-table-columns`, on the same terms as the other icons. */
+const ICON_BOARD = `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">` +
+    `<rect x="1.2" y="2.4" width="3.4" height="11.2" rx="1" fill="currentColor"/>` +
+    `<rect x="6.3" y="2.4" width="3.4" height="7.6" rx="1" fill="currentColor"/>` +
+    `<rect x="11.4" y="2.4" width="3.4" height="9.6" rx="1" fill="currentColor"/>` +
+    `</svg>`;
+/** Stand-in for `fa-list-check`. */
+const ICON_LIST = `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">` +
+    `<rect x="1" y="3" width="3" height="3" rx="0.8" fill="currentColor"/>` +
+    `<rect x="1" y="10" width="3" height="3" rx="0.8" fill="currentColor"/>` +
+    `<rect x="6" y="3.9" width="9" height="1.6" rx="0.8" fill="currentColor"/>` +
+    `<rect x="6" y="10.9" width="9" height="1.6" rx="0.8" fill="currentColor"/>` +
+    `</svg>`;
 /**
- * One onboarding's progress: the stages in order, with the current one marked
- * and blocked if the queue is holding it.
- *
- * A full-width row rather than a grid card. Seven stages read as a track, and
- * a track needs width — packed into a 300px column it becomes a list of words
- * and stops showing progression at all, which is the only thing it is for.
+ * The header's view switch, tertiary because it is a way across rather than a
+ * decision. It always names where it goes rather than where you are: a toggle
+ * that reads "Dashboard" while you are on the dashboard has to be learned,
+ * and a reader should not have to remember which of two states a single word
+ * is describing.
  */
-export function caseRow(item) {
-    const stages = item.stages
-        .map((stage) => {
-        const state = stage.blocked ? "blocked" : stage.state;
-        const at = stage.at
-            ? `<span class="stage__at">${esc(stage.at)}</span>`
-            : "";
-        return `
-          <li class="stage stage--${esc(state)}">
-            <span class="stage__dot" aria-hidden="true"></span>
-            <span class="stage__name">${esc(stage.name)}</span>
-            ${at}
-          </li>`;
-    })
-        .join("");
-    // Named, and clickable through to the card that holds them up — the queue
-    // and this view describe the same thing from two directions, so moving
-    // between them should not mean searching.
+export function viewSwitch(onDashboard, counts) {
+    const [label, icon, count] = onDashboard
+        ? ["Actions", ICON_LIST, counts.open]
+        : ["Dashboard", ICON_BOARD, counts.cases];
+    return (`<button class="btn-tertiary view-switch" data-action="switch-view" ` +
+        `data-value="${onDashboard ? "actions" : "cases"}">` +
+        `${icon}<span>${esc(label)}</span>` +
+        `<span class="view-switch__count">${esc(String(count))}</span></button>`);
+}
+/**
+ * One onboarding, as a card in the column of the stage it has reached.
+ *
+ * The board replaced a track per property. A track shows one property's
+ * journey well and ten of them not at all — and nobody works a whole office's
+ * pipeline, so the useful question is "what is sitting at Compliance", which
+ * is a column.
+ */
+export function caseCard(item) {
+    const current = item.stages.find((s) => s.state === "current");
+    const blocked = Boolean(current?.blocked);
+    const done = item.stages.filter((s) => s.state === "done").length;
     const blockers = item.blockers.length
-        ? `<p class="case__blockers">
-         <span class="case__blockers-label">Held by</span>
-         ${item.blockers
+        ? `<p class="case__blockers">${item.blockers
             .map((b) => `<button class="case__blocker" data-action="open" ` +
             `data-id="${esc(b.id)}">${esc(b.title)}</button>`)
-            .join("")}
-       </p>`
+            .join("")}</p>`
         : "";
     return `
-    <article class="case">
-      <div class="case__head">
-        <h2 class="case__ref">${esc(item.ref)}</h2>
-        <span class="case__subject">${esc(item.subject)}</span>
-      </div>
-      <ol class="case__track">${stages}</ol>
-      ${blockers}
-    </article>`;
+        <article class="case-card${blocked ? " case-card--blocked" : ""}">
+          <h3 class="case-card__ref">${esc(item.ref)}</h3>
+          <p class="case-card__subject">${esc(item.subject)}</p>
+          <p class="case-card__holder">${esc(item.assignedTo.name)}</p>
+          <p class="case-card__progress">
+            <span class="case-card__progress-bar" aria-hidden="true">
+              <span style="width: ${esc(String(Math.round((done / item.stages.length) * 100)))}%"></span>
+            </span>
+            <span class="case-card__progress-text">${esc(String(done))} of ${esc(String(item.stages.length))}</span>
+          </p>
+          ${blockers}
+        </article>`;
 }
-export function caseGrid(items) {
+/**
+ * The board: one column per stage, in workflow order, each holding the
+ * properties currently at it.
+ *
+ * Columns come from the cases rather than from a constant, so the stage set
+ * stays the payload's to define — a different staff member's workflow has
+ * different stages and this component should not need to know them. Empty
+ * columns are kept: a gap at Deposit is information, and a board whose
+ * columns move about as work flows is unreadable.
+ */
+export function caseBoard(items) {
     if (!items.length) {
         return `<div class="queue-empty">No onboardings in progress</div>`;
     }
-    return `<div class="case-list">${items.map(caseRow).join("")}</div>`;
+    const order = items[0].stages.map((s) => s.name);
+    const columns = order
+        .map((name) => {
+        const here = items.filter((i) => i.stages.find((s) => s.state === "current")?.name === name);
+        return `
+      <section class="board__column">
+        <h2 class="board__heading">
+          ${esc(name)}<span class="board__count">${esc(String(here.length))}</span>
+        </h2>
+        <div class="board__cards">${here.map(caseCard).join("")}</div>
+      </section>`;
+    })
+        .join("");
+    return `<div class="board">${columns}</div>`;
 }
