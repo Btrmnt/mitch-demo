@@ -6,11 +6,30 @@ export function initialUiState() {
         redAlertsOnly: false,
         openCardId: null,
         openMenuId: null,
+        owner: null,
         overrides: {},
     };
 }
 export function setFilter(state, filter) {
     return { ...state, filter };
+}
+/** Narrows the board to one holder, or to everyone when given null. */
+export function setOwner(state, owner) {
+    return { ...state, owner };
+}
+/**
+ * Holders and how many onboardings each carries, in first-appearance order.
+ *
+ * Derived from the cases rather than declared, so a holder who picks up their
+ * first property appears without anything being configured, and one who has
+ * none does not linger as an empty option.
+ */
+export function ownersOf(cases) {
+    const counts = new Map();
+    for (const c of cases) {
+        counts.set(c.assignedTo.name, (counts.get(c.assignedTo.name) ?? 0) + 1);
+    }
+    return [...counts].map(([name, count]) => ({ name, count }));
 }
 export function toggleRedAlerts(state) {
     return { ...state, redAlertsOnly: !state.redAlertsOnly };

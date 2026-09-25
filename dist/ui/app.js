@@ -1,15 +1,15 @@
-import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=b06da13";
-import { storageDecisionStore } from "../actions/decisions.js?v=b06da13";
-import { validateActionsPayload } from "../actions/validate.js?v=b06da13";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, } from "./components.js?v=b06da13";
-import { showToast } from "./toast.js?v=b06da13";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=b06da13";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, } from "./state.js?v=b06da13";
+import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=1d6b7dd";
+import { storageDecisionStore } from "../actions/decisions.js?v=1d6b7dd";
+import { validateActionsPayload } from "../actions/validate.js?v=1d6b7dd";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, ownerRow, } from "./components.js?v=1d6b7dd";
+import { showToast } from "./toast.js?v=1d6b7dd";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=1d6b7dd";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, setOwner, ownersOf, } from "./state.js?v=1d6b7dd";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=b06da13";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=1d6b7dd";
 let state = initialUiState();
 let actions = [];
 /**
@@ -130,13 +130,15 @@ function render() {
         ? viewSwitch(state.filter === "cases", { cases: cases.length, open: view.counts.needs_you })
         : ""}
       </div>
-      ${state.filter === "cases" ? "" : `<div class="chip-row">${chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length)}</div>`}
+      <div class="chip-row">${state.filter === "cases"
+        ? ownerRow(ownersOf(cases), state.owner)
+        : chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length)}</div>
     </header>
     <main class="queue">
       ${state.filter === "completed"
         ? completedGrid(byMostRecent(completed))
         : state.filter === "cases"
-            ? caseBoard(deriveCases(cases, actions, state))
+            ? caseBoard(deriveCases(cases, actions, state).filter((c) => state.owner === null || c.assignedTo.name === state.owner))
             : cardGrid(view.cards)}
     </main>
     ${modal(view.openCard)}
@@ -209,6 +211,11 @@ function bindEvents(root) {
         // having gone missing.
         if (action === "switch-view") {
             state = setFilter(state, value === "cases" ? "cases" : "needs_you");
+        }
+        // An empty value is "everyone" — the chip carries no name because there
+        // is no holder called everyone.
+        if (action === "owner") {
+            state = setOwner(state, value ? value : null);
         }
         if (action === "filter") {
             state = value === "alerts"

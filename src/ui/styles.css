@@ -856,7 +856,13 @@ html, body {
   padding-bottom: 10px;
 }
 .board__column {
-  flex: 0 0 236px;
+  /* Share the width rather than take a fixed 236px each. At seven stages a
+     fixed width pushed the later columns off the right edge, so the stages
+     that matter most — the ones work is heading towards — were the ones a
+     reader had to go looking for. They only scroll now when the window is
+     genuinely too narrow to hold them. */
+  flex: 1 1 0;
+  min-width: 156px;
   background: var(--surface-context);
   border-radius: var(--radius-md);
   padding: 12px 10px;

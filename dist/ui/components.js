@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=b06da13";
+import { esc } from "./escape.js?v=1d6b7dd";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -15,7 +15,7 @@ export function tagBadge(tag) {
 export function filterChip(opts) {
     const count = opts.count === undefined ? "" : ` · ${esc(String(opts.count))}`;
     const active = opts.active ? " chip--active" : "";
-    return (`<button class="chip${active}" data-action="filter" ` +
+    return (`<button class="chip${active}" data-action="${esc(opts.action ?? "filter")}" ` +
         `data-value="${esc(opts.value)}">${esc(opts.label)}${count}</button>`);
 }
 /**
@@ -548,4 +548,33 @@ export function caseBoard(items) {
     })
         .join("");
     return `<div class="board">${columns}</div>`;
+}
+/**
+ * Whose onboardings the board shows.
+ *
+ * Occupies the row the status chips use on the queue, which is what keeps the
+ * header the same height in both views — the board had no chip row at all, so
+ * crossing to it used to shorten the header and shift the content up.
+ *
+ * Same chip shape as the queue's filters because it is the same kind of
+ * control: narrowing what is shown, not deciding anything.
+ */
+export function ownerRow(owners, active) {
+    const all = filterChip({
+        label: "Everyone",
+        count: owners.reduce((n, o) => n + o.count, 0),
+        value: "",
+        active: active === null,
+        action: "owner",
+    });
+    const each = owners
+        .map((o) => filterChip({
+        label: o.name,
+        count: o.count,
+        value: o.name,
+        active: active === o.name,
+        action: "owner",
+    }))
+        .join("");
+    return `${all}<span class="chip-divider"></span>${each}`;
 }
