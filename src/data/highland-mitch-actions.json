@@ -6,7 +6,7 @@
       "title": "New Business — Owner Entry Needs Review",
       "subtitle": "SP 41207 · 42 Seaview St, Cronulla NSW 2230 (sample)",
       "tag": "MAA INTAKE",
-      "status": "needs_you",
+      "status": "sent",
       "source": "MAA received via FLK, signed 15 Sep 2026, 09:14. Owner structure: Coastal Holdings Pty Ltd (director J. Marsh) plus individual co-owner S. Marsh. Existing contact match found for J. Marsh with conflicting bank details on file.",
       "rule": "Owner Entry — Business + Individual, Existing Contact Conflict",
       "ruleNote": "Matched inputs: MAA lists two owner types, FLK contact search returned an existing match, bank details differ.",
@@ -24,8 +24,8 @@
           "text": "Mitch matched an existing contact and found a bank detail conflict"
         },
         {
-          "time": "now",
-          "text": "Awaiting your review"
+          "time": "Earlier",
+          "text": "You confirmed the MAA's bank details superseded the record on file"
         }
       ],
       "links": [
@@ -40,19 +40,13 @@
           "opens": "Opens the executed MAA in FLK so the bank details can be read against the record. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "primaryAction": {
-        "label": "Confirm & Enter",
-        "does": "Enters the owner structure in PropertyMe as Business + Individual, using the bank details on the MAA rather than the conflicting ones already on file.",
-        "status": "sent",
-        "note": "Sent — entered in PropertyMe against the MAA's bank details.",
-        "history": "You confirmed the owner record — Mitch is entering it in PropertyMe"
-      },
       "proposal": "Entry needs one set of bank details matching the executed MAA. The existing contact record for J. Marsh carries a different BSB and account, so there are two and neither is authoritative. Confirm which set governs; Mitch enters the owner as Business + Individual, supersedes the other as historic, and continues to trust setup.",
       "caseRef": "SP 41207",
       "assignedTo": {
         "role": "New business (BDM)",
         "name": "BDM team"
-      }
+      },
+      "note": "Sent — entered in PropertyMe against the MAA's bank details."
     },
     {
       "id": "c2",
@@ -384,7 +378,7 @@
       "title": "Agentbox Unreachable — Manual Path Continues",
       "subtitle": "Integration health · affects 3 properties (sample)",
       "tag": "RESILIENCE",
-      "status": "needs_you",
+      "status": "closed",
       "source": "Agentbox API returned 5xx on every attempt since 07:20. Snug is responding normally.",
       "rule": "Graceful Degradation — Manual Path Never Hard-Stops",
       "ruleNote": "Matched inputs: one integration is failing, an alternative path is available, and no work item has been blocked as a result.",
@@ -402,8 +396,8 @@
           "text": "Mitch switched onboarding to the Smartsheet fallback"
         },
         {
-          "time": "now",
-          "text": "3 properties queued — awaiting your call"
+          "time": "Earlier",
+          "text": "You held the queue; Mitch released it when Agentbox recovered"
         }
       ],
       "links": [
@@ -418,26 +412,20 @@
           "opens": "Opens the Smartsheet fallback that onboarding switched to at 07:25. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "primaryAction": {
-        "label": "Hold the Queue",
-        "does": "Keeps the three queued properties waiting for Agentbox instead of publishing them to Snug alone. Onboarding continues on the Smartsheet fallback either way.",
-        "status": "waiting",
-        "note": "Waiting — 3 properties held until Agentbox recovers.",
-        "history": "You held the queue — Mitch is waiting for Agentbox rather than posting to Snug alone"
-      },
       "proposal": "The ad must reach both feeds. Agentbox has been unavailable since 07:20, so one required destination cannot be written and Mitch will not publish a partial listing silently. Decide whether the three queued properties wait for recovery or go to Snug alone; Mitch executes either. Onboarding continues on the Smartsheet fallback regardless.",
       "ruleAdjust": "Opens the publishing policy in the Mitch console. Setting a wait threshold — release to the available feed after four hours — answers this for every outage, rather than once per property while one is happening.",
       "assignedTo": {
         "role": "Operations",
         "name": "Operations team"
-      }
+      },
+      "note": "Closed — Agentbox recovered 09:14, all three properties posted."
     },
     {
       "id": "c10",
       "title": "Landlord Requirements Recorded — No Pets, Tenant Restrictions",
       "subtitle": "SP 40118 · 15 Kingsway, Cronulla NSW 2230 (sample)",
       "tag": "LISTING",
-      "status": "needs_you",
+      "status": "sent",
       "source": "MAA special instructions: 'No pets under any circumstances. No share-house arrangements. Owner requests 12-month leases only.'",
       "rule": "Landlord Requirements — Retain and Surface",
       "ruleNote": "Matched inputs: MAA carries free-text special instructions that constrain leasing, which are lost if they stay in the document.",
@@ -455,8 +443,8 @@
           "text": "Mitch attached them to the listing brief"
         },
         {
-          "time": "now",
-          "text": "Awaiting your confirmation"
+          "time": "Earlier",
+          "text": "You confirmed the landlord requirements"
         }
       ],
       "links": [
@@ -466,27 +454,21 @@
           "opens": "Opens SP 40118 in PropertyMe, at the special instructions these requirements were written to. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "primaryAction": {
-        "label": "Confirm Requirements",
-        "does": "Locks the three landlord requirements onto the property so leasing cannot draft an ad that contradicts them.",
-        "status": "sent",
-        "note": "Sent — requirements locked to the property.",
-        "history": "You confirmed the landlord requirements — Mitch locked them to the property"
-      },
       "proposal": "Landlord requirements have to land in fields the leasing system enforces. Two of the three map cleanly. \"No share-house arrangements\" has no equivalent field in PropertyMe and can only be carried as free text, which leasing does not enforce. Confirm a note is an acceptable home for it, or name the field it should map to; Mitch locks all three to the property and continues to the listing brief.",
       "ruleAdjust": "Opens the landlord-requirements mapping. Giving share-house restrictions a field of their own lets leasing enforce them, instead of carrying them as a note that nothing checks.",
       "caseRef": "SP 40118",
       "assignedTo": {
         "role": "Property manager",
         "name": "Marcus Hale · mhale@example.com"
-      }
+      },
+      "note": "Sent — three requirements locked to the property."
     },
     {
       "id": "c11",
       "title": "Compliance Graded Conditional — One Item Outstanding",
       "subtitle": "SP 40662 · 7 Ewos Pde, Cronulla NSW 2230 (sample)",
       "tag": "COMPLIANCE",
-      "status": "needs_you",
+      "status": "waiting",
       "source": "Rubric run across 11 items. Ten pass. Smoke alarm certificate is dated 2023 and the rubric requires one within 12 months.",
       "rule": "Compliance Rubric — Conditional Grade Gates Listing",
       "ruleNote": "Matched inputs: one rubric item failed, the remainder passed, and the failure is remediable with a document.",
@@ -504,8 +486,8 @@
           "text": "Smoke alarm certificate dated 2023 — outside the 12-month window"
         },
         {
-          "time": "now",
-          "text": "Graded conditional — listing gated"
+          "time": "Earlier",
+          "text": "You sent the certificate request — Mitch is watching for it"
         }
       ],
       "links": [
@@ -520,29 +502,22 @@
           "opens": "Opens the documents tab for SP 40662, where a replacement smoke alarm certificate is filed. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "primaryAction": {
-        "label": "Review & Send",
-        "does": "Opens the request Mitch drafted for you to send to the owner from your own mailbox. Mitch re-grades and lifts the listing gate the moment a current certificate is filed.",
-        "status": "waiting",
-        "note": "Waiting — current smoke alarm certificate requested.",
-        "history": "You sent the certificate request — Mitch is watching for it"
-      },
       "flag": "Certificate expired. The property cannot be leased until a current one is on file.",
       "proposal": "A property cannot be leased without a smoke alarm certificate dated within twelve months. Ten of eleven rubric items pass; the certificate on file is dated 2023, so the required input exists but has expired. Mitch has the request drafted — it goes to the owner from you, since outbound messages to end customers stay with a person until conformance is validated. Mitch holds the grade at conditional and re-grades automatically when a current certificate is filed.",
       "caseRef": "SP 40662",
       "assignedTo": {
         "role": "New business (BDM)",
         "name": "BDM team"
-      }
+      },
+      "note": "Waiting — current smoke alarm certificate requested 08:20."
     },
     {
       "id": "c12",
       "title": "Identity Verification Awaiting Your Decision",
       "subtitle": "SP 41355 · 22 Gerrale St, Cronulla NSW 2230 (sample)",
       "tag": "IDENTITY",
-      "status": "needs_you",
+      "status": "closed",
       "source": "Two identity documents supplied. The licence address does not match the address on the MAA; the passport matches.",
-      "flag": "Licence address differs from the MAA address. Passport matches.",
       "rule": "Identity Verification — Human Gate, Always",
       "ruleNote": "Matched inputs: identity documents present and a field-level discrepancy found. Mitch highlights, it never clears.",
       "decidedBy": "You — identity is never decided by Mitch",
@@ -559,8 +534,8 @@
           "text": "Mitch highlighted an address discrepancy across two documents"
         },
         {
-          "time": "now",
-          "text": "Awaiting your decision"
+          "time": "Earlier",
+          "text": "You accepted on the passport and requested an updated licence"
         }
       ],
       "links": [
@@ -570,19 +545,13 @@
           "opens": "Opens the licence and passport in FLK, side by side with the address discrepancy marked. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "primaryAction": {
-        "label": "Record Decision",
-        "does": "Records your identity verification against the file, with both documents and the address discrepancy attached. Mitch carries the decision; it never makes it.",
-        "status": "closed",
-        "note": "Closed — your identity decision recorded against the file.",
-        "history": "You recorded the identity decision — Mitch attached it to the file"
-      },
       "proposal": "Identity documents must match the MAA and each other. The passport matches; the licence carries a different address, so the set is inconsistent and the requirement is unmet. Mitch does not resolve identity conflicts — a person does. Record which document governs and what evidence closes the gap; Mitch attaches the decision to the file and continues to entry.",
       "caseRef": "SP 41355",
       "assignedTo": {
         "role": "New business (BDM)",
         "name": "BDM team"
-      }
+      },
+      "note": "Closed — identity decision recorded against the file."
     },
     {
       "id": "c13",
@@ -837,7 +806,7 @@
       "title": "Fee Schedule Ambiguous — GST Treatment Unstated",
       "subtitle": "SP 40662 · 7 Ewos Pde, Cronulla NSW 2230 (sample)",
       "tag": "FEES",
-      "status": "needs_you",
+      "status": "sent",
       "source": "Management fee 5.5%. Letting fee 1.5 weeks. Neither line states whether the figure includes GST, and the MAA's fee schedule has no GST clause.",
       "rule": "Fee Integrity — % vs $ vs GST",
       "ruleNote": "Matched inputs: fee values parse cleanly, but GST presence is neither stated nor derivable from the schedule.",
@@ -855,8 +824,8 @@
           "text": "No GST clause found in the schedule"
         },
         {
-          "time": "now",
-          "text": "Held — awaiting your confirmation"
+          "time": "Earlier",
+          "text": "You confirmed the GST treatment"
         }
       ],
       "links": [
@@ -871,19 +840,13 @@
           "opens": "Opens the MAA in FLK at the fee schedule, which carries no GST clause. Mitch keeps this action open until the change comes back from the source."
         }
       ],
-      "primaryAction": {
-        "label": "Confirm GST",
-        "does": "Records the GST treatment for both fees exactly as you state it and lifts the hold on the fee schedule.",
-        "status": "sent",
-        "note": "Sent — GST treatment recorded, fee schedule released.",
-        "history": "You confirmed the GST treatment — Mitch released the fee schedule"
-      },
       "proposal": "Every fee must state its GST treatment, and this schedule states neither for either fee. The values are clear — 5.5% and 1.5 weeks — but the treatment is absent, and inclusive versus exclusive differ by 10% on every invoice for the life of the management. State the treatment; Mitch records it against both fees and releases the fee schedule for entry.",
       "caseRef": "SP 40662",
       "assignedTo": {
         "role": "New business (BDM)",
         "name": "BDM team"
-      }
+      },
+      "note": "Sent — fees recorded GST-exclusive, schedule released."
     }
   ],
   "completed": [

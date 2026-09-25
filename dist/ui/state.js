@@ -58,7 +58,9 @@ function derive(item, override, menuOpen, siblings = []) {
         history: override ? [...item.history, override.entry] : item.history,
         hasAlert: Boolean(item.flag),
         isNeedsYou: status === "needs_you",
-        noteText: override?.note ?? DEFAULT_NOTE[status],
+        // A local decision first, then what the payload says about a resolved
+        // item, then the generic line for its status.
+        noteText: override?.note ?? item.note ?? DEFAULT_NOTE[status],
         menuOpen,
         siblings,
     };

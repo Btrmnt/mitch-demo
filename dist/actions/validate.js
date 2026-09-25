@@ -78,6 +78,15 @@ export function validateActionsPayload(input) {
         if (!isNonEmptyString(to?.role) || !isNonEmptyString(to?.name)) {
             issues.push({ id, message: "assignedTo needs a role and a name" });
         }
+        // A red alert means compliance still to be resolved before the property
+        // is leased. A sent or closed item is not outstanding, so a flag there is
+        // a contradiction rather than a leftover to tolerate.
+        if (a.flag !== undefined && (a.status === "sent" || a.status === "closed")) {
+            issues.push({ id, message: "flag is not allowed on a sent or closed item" });
+        }
+        if (a.note !== undefined && !isNonEmptyString(a.note)) {
+            issues.push({ id, message: "note must be a non-empty string when present" });
+        }
         if (a.ruleAdjust !== undefined && !isNonEmptyString(a.ruleAdjust)) {
             issues.push({ id, message: "ruleAdjust must be a non-empty string when present" });
         }
