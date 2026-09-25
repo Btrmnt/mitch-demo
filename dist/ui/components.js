@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=b9b12cf";
+import { esc } from "./escape.js?v=32784bf";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -55,7 +55,7 @@ export function tertiaryButton(label, action, id, extraClass = "") {
  * counts and which filters are on, not the whole UiState — this module is
  * the design system in code and holds no app logic.
  */
-export function chipRow(counts, active, redAlertsOnly, completedCount = 0) {
+export function chipRow(counts, active, redAlertsOnly, completedCount = 0, caseCount = 0) {
     const order = [
         { label: "All", value: "all" },
         { label: "Needs You", value: "needs_you" },
@@ -86,7 +86,15 @@ export function chipRow(counts, active, redAlertsOnly, completedCount = 0) {
             active: active === "completed",
         })
         : "";
-    return `${chips}<span class="chip-divider"></span>${alerts}${completed}`;
+    const cases = caseCount
+        ? filterChip({
+            label: "Onboardings",
+            count: caseCount,
+            value: "cases",
+            active: active === "cases",
+        })
+        : "";
+    return `${chips}<span class="chip-divider"></span>${alerts}${completed}${cases}`;
 }
 /** A card's red alert, or nothing. Shown identically on card and modal. */
 function alertBlock(card) {
@@ -458,4 +466,55 @@ export function completedGrid(items) {
         return `<div class="queue-empty">Nothing completed yet today</div>`;
     }
     return `<div class="completed-grid">${items.map(completedCard).join("")}</div>`;
+}
+/**
+ * One onboarding's progress: the stages in order, with the current one marked
+ * and blocked if the queue is holding it.
+ *
+ * A full-width row rather than a grid card. Seven stages read as a track, and
+ * a track needs width — packed into a 300px column it becomes a list of words
+ * and stops showing progression at all, which is the only thing it is for.
+ */
+export function caseRow(item) {
+    const stages = item.stages
+        .map((stage) => {
+        const state = stage.blocked ? "blocked" : stage.state;
+        const at = stage.at
+            ? `<span class="stage__at">${esc(stage.at)}</span>`
+            : "";
+        return `
+          <li class="stage stage--${esc(state)}">
+            <span class="stage__dot" aria-hidden="true"></span>
+            <span class="stage__name">${esc(stage.name)}</span>
+            ${at}
+          </li>`;
+    })
+        .join("");
+    // Named, and clickable through to the card that holds them up — the queue
+    // and this view describe the same thing from two directions, so moving
+    // between them should not mean searching.
+    const blockers = item.blockers.length
+        ? `<p class="case__blockers">
+         <span class="case__blockers-label">Held by</span>
+         ${item.blockers
+            .map((b) => `<button class="case__blocker" data-action="open" ` +
+            `data-id="${esc(b.id)}">${esc(b.title)}</button>`)
+            .join("")}
+       </p>`
+        : "";
+    return `
+    <article class="case">
+      <div class="case__head">
+        <h2 class="case__ref">${esc(item.ref)}</h2>
+        <span class="case__subject">${esc(item.subject)}</span>
+      </div>
+      <ol class="case__track">${stages}</ol>
+      ${blockers}
+    </article>`;
+}
+export function caseGrid(items) {
+    if (!items.length) {
+        return `<div class="queue-empty">No onboardings in progress</div>`;
+    }
+    return `<div class="case-list">${items.map(caseRow).join("")}</div>`;
 }

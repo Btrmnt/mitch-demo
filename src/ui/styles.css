@@ -825,3 +825,135 @@ html, body {
   border-radius: 50%;
   background: var(--ink-muted-2);
 }
+
+/* ── Onboardings ───────────────────────────────────────────────────────────
+   Full-width rows, not grid cards. Seven stages read as a track and a track
+   needs width; packed into a 300px column it degenerates into a list of
+   words and stops showing progression, which is the only thing it is for. */
+.case-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 1264px;
+}
+.case {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 16px 18px 14px;
+}
+.case__head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.case__ref { margin: 0; font-size: 14px; font-weight: 700; color: var(--ink-1); }
+.case__subject { font-size: 12px; color: var(--ink-muted-1); }
+
+/* The track. Stages share the width evenly so the row reads as a progression
+   rather than as text of varying length, and the connecting rule is drawn
+   from each dot to the next rather than as a background the dots sit on —
+   that way the last stage has no trailing line running off the end. */
+.case__track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+.stage {
+  flex: 1 1 0;
+  min-width: 92px;
+  position: relative;
+  padding: 18px 8px 0 0;
+}
+.stage::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  right: 0;
+  height: 2px;
+  background: var(--hairline);
+}
+.stage:last-child::before { display: none; }
+.stage__dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--hairline);
+  background: var(--surface-card);
+}
+.stage__name {
+  display: block;
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: var(--ink-muted-2);
+}
+.stage__at {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-muted-2);
+  margin-top: 2px;
+}
+
+/* Done is settled, current is where the work is, blocked is current with the
+   queue holding it. Blocked borrows the red-alert colour deliberately: it is
+   the same fact stated in the other view. */
+.stage--done .stage__dot { background: var(--accent-blue); border-color: var(--accent-blue); }
+.stage--done::before { background: var(--accent-blue); }
+.stage--done .stage__name { color: var(--ink-muted-1); }
+
+.stage--current .stage__dot { border-color: var(--brand-navy-2); background: var(--brand-navy-2); }
+.stage--current .stage__name { color: var(--ink-1); font-weight: 700; }
+
+.stage--blocked .stage__dot { border-color: var(--danger-ink); background: var(--danger-ink); }
+.stage--blocked .stage__name { color: var(--danger-ink); font-weight: 700; }
+
+.stage--todo .stage__dot { background: var(--surface-card); }
+
+.case__blockers {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.case__blockers-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted-2);
+}
+/* A button, because it opens the card that holds this stage — the two views
+   describe the same thing from two directions and moving between them should
+   not mean searching. */
+.case__blocker {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--accent-blue);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.case__blocker:hover { color: var(--brand-navy-2); }
+.case__blocker:focus-visible {
+  outline: 2px solid var(--accent-blue-strong);
+  outline-offset: 2px;
+}

@@ -281,16 +281,16 @@
     },
     {
       "id": "c7",
-      "title": "Management Fee Entered as $1, Not a Percentage",
+      "title": "Management Fee Is a Flat Dollar Amount",
       "subtitle": "SP 41355 · 22 Gerrale St, Cronulla NSW 2230 (sample)",
       "tag": "FEES",
       "status": "needs_you",
-      "source": "MAA management fee field contains '$1'. The surrounding schedule is expressed in percentages, and the letting fee beside it reads '1.5 weeks rent'.",
-      "rule": "Money-Field Hard Stop — % vs Fixed $",
-      "ruleNote": "Matched inputs: fee field carries a currency symbol, the schedule's other fees are percentages, and no GST treatment is stated.",
+      "source": "MAA management fee reads \"$68.00 per week\". Highland's other management agreements in this portfolio express the fee as a percentage of rent collected, in a 5.5%–7.7% band.",
+      "rule": "Money-Field Confirmation — Fixed $ Against a Percentage Norm",
+      "ruleNote": "Matched inputs: the fee parses cleanly as a dollar amount, and the same field is a percentage on every other agreement in this portfolio. A form that is valid but unlike its peers is confirmed, not refused.",
       "decidedBy": "Mitch, hard stop — no autonomous entry on money fields",
       "whoSees": "Trust Accountant + BDM",
-      "confidence": "Format conflict, entry refused",
+      "confidence": "Valid but atypical for this portfolio",
       "scenarioRef": "Mitch-004",
       "history": [
         {
@@ -320,12 +320,12 @@
       ],
       "primaryAction": {
         "label": "Confirm Fee",
-        "does": "Records the management fee as you confirm it and lifts the money-field hard stop, letting entry into PropertyMe proceed.",
+        "does": "Records the management fee exactly as you confirm it — flat dollar or percentage — and releases the fee schedule for entry into PropertyMe.",
         "status": "sent",
-        "note": "Sent — fee confirmed, entry hold lifted.",
-        "history": "You confirmed the management fee — Mitch lifted the entry hold"
+        "note": "Sent — fee confirmed and released for entry.",
+        "history": "You confirmed the management fee — Mitch released the fee schedule"
       },
-      "proposal": "The management fee must be entered as a percentage. The money-field rule refuses a currency amount in that position because $1 and 1% cannot be recovered from one another after entry, and the MAA gives \"$1\" — malformed for this field, not merely unusual. Supply the intended percentage; Mitch enters it and lifts the hold. If $1 is literally what was agreed, it needs a written note on the file first.",
+      "proposal": "The fee is enterable as written — a flat dollar management fee is a valid form, not a malformed field. What Mitch cannot settle is whether it was intended: on this property's rent it sits near the bottom of the percentage band today and stops tracking rent at every review after. Confirm the flat amount is deliberate, or supply the percentage it should have been. Mitch enters what you confirm and releases the fee schedule.",
       "caseRef": "SP 41355",
       "assignedTo": {
         "role": "New business (BDM)",
@@ -808,7 +808,7 @@
       "tag": "FEES",
       "status": "sent",
       "source": "Management fee 5.5%. Letting fee 1.5 weeks. Neither line states whether the figure includes GST, and the MAA's fee schedule has no GST clause.",
-      "rule": "Fee Integrity — % vs $ vs GST",
+      "rule": "Fee Integrity — Percentage, Fixed $ and GST",
       "ruleNote": "Matched inputs: fee values parse cleanly, but GST presence is neither stated nor derivable from the schedule.",
       "decidedBy": "Mitch, hard stop — GST is never inferred",
       "whoSees": "Trust Accountant",
@@ -961,6 +961,388 @@
       "time": "14:36",
       "summary": "Human compliance decision recorded before go-live; property reached live compliant.",
       "scenarioRef": "Mitch-015"
+    }
+  ],
+  "cases": [
+    {
+      "ref": "SP 40551",
+      "subject": "12 Kurnell Rd, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "07:41"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "07:44"
+        },
+        {
+          "name": "Assigned",
+          "state": "done",
+          "at": "07:45"
+        },
+        {
+          "name": "Deposit",
+          "state": "done",
+          "at": "07:46"
+        },
+        {
+          "name": "Compliance",
+          "state": "done",
+          "at": "08:12"
+        },
+        {
+          "name": "Listed",
+          "state": "done",
+          "at": "11:20"
+        },
+        {
+          "name": "Live",
+          "state": "current"
+        }
+      ]
+    },
+    {
+      "ref": "SP 40208",
+      "subject": "5 Munro St, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "08:10"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "08:31"
+        },
+        {
+          "name": "Assigned",
+          "state": "done",
+          "at": "08:33"
+        },
+        {
+          "name": "Deposit",
+          "state": "done",
+          "at": "08:31"
+        },
+        {
+          "name": "Compliance",
+          "state": "done",
+          "at": "09:03"
+        },
+        {
+          "name": "Listed",
+          "state": "current"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
+    },
+    {
+      "ref": "SP 41338",
+      "subject": "9 Gerrale St, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "09:55"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "10:15"
+        },
+        {
+          "name": "Assigned",
+          "state": "done",
+          "at": "10:18"
+        },
+        {
+          "name": "Deposit",
+          "state": "done",
+          "at": "11:52"
+        },
+        {
+          "name": "Compliance",
+          "state": "current"
+        },
+        {
+          "name": "Listed",
+          "state": "todo"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
+    },
+    {
+      "ref": "SP 41102",
+      "subject": "3 Gerrale St, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "13:20"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "13:44"
+        },
+        {
+          "name": "Assigned",
+          "state": "done",
+          "at": "13:46"
+        },
+        {
+          "name": "Deposit",
+          "state": "done",
+          "at": "13:50"
+        },
+        {
+          "name": "Compliance",
+          "state": "current"
+        },
+        {
+          "name": "Listed",
+          "state": "todo"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
+    },
+    {
+      "ref": "SP 41207",
+      "subject": "42 Seaview St, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "09:14"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "09:16"
+        },
+        {
+          "name": "Assigned",
+          "state": "done",
+          "at": "09:20"
+        },
+        {
+          "name": "Deposit",
+          "state": "done",
+          "at": "09:40"
+        },
+        {
+          "name": "Compliance",
+          "state": "current"
+        },
+        {
+          "name": "Listed",
+          "state": "todo"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
+    },
+    {
+      "ref": "SP 40662",
+      "subject": "7 Ewos Pde, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "09:38"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "09:41"
+        },
+        {
+          "name": "Assigned",
+          "state": "current"
+        },
+        {
+          "name": "Deposit",
+          "state": "todo"
+        },
+        {
+          "name": "Compliance",
+          "state": "todo"
+        },
+        {
+          "name": "Listed",
+          "state": "todo"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
+    },
+    {
+      "ref": "SP 41355",
+      "subject": "22 Gerrale St, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "11:02"
+        },
+        {
+          "name": "Entered",
+          "state": "current"
+        },
+        {
+          "name": "Assigned",
+          "state": "todo"
+        },
+        {
+          "name": "Deposit",
+          "state": "todo"
+        },
+        {
+          "name": "Compliance",
+          "state": "todo"
+        },
+        {
+          "name": "Listed",
+          "state": "todo"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
+    },
+    {
+      "ref": "SP 40904",
+      "subject": "3 Nicholson Pde, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "Yesterday"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "Yesterday"
+        },
+        {
+          "name": "Assigned",
+          "state": "done",
+          "at": "Yesterday"
+        },
+        {
+          "name": "Deposit",
+          "state": "done",
+          "at": "Yesterday"
+        },
+        {
+          "name": "Compliance",
+          "state": "done",
+          "at": "14:40"
+        },
+        {
+          "name": "Listed",
+          "state": "current"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
+    },
+    {
+      "ref": "SP 39980",
+      "subject": "8 Bay Pde, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "Yesterday"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "Yesterday"
+        },
+        {
+          "name": "Assigned",
+          "state": "done",
+          "at": "Yesterday"
+        },
+        {
+          "name": "Deposit",
+          "state": "done",
+          "at": "Yesterday"
+        },
+        {
+          "name": "Compliance",
+          "state": "done",
+          "at": "16:20"
+        },
+        {
+          "name": "Listed",
+          "state": "current"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
+    },
+    {
+      "ref": "SP 40118",
+      "subject": "15 Kingsway, Cronulla NSW 2230 (sample)",
+      "stages": [
+        {
+          "name": "MAA received",
+          "state": "done",
+          "at": "08:02"
+        },
+        {
+          "name": "Entered",
+          "state": "done",
+          "at": "08:09"
+        },
+        {
+          "name": "Assigned",
+          "state": "done",
+          "at": "08:12"
+        },
+        {
+          "name": "Deposit",
+          "state": "done",
+          "at": "08:15"
+        },
+        {
+          "name": "Compliance",
+          "state": "current"
+        },
+        {
+          "name": "Listed",
+          "state": "todo"
+        },
+        {
+          "name": "Live",
+          "state": "todo"
+        }
+      ]
     }
   ]
 }

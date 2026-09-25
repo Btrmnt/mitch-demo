@@ -149,3 +149,62 @@ export function validateCompleted(input) {
     });
     return issues;
 }
+/**
+ * Onboarding state, checked like everything else that gets rendered.
+ *
+ * Two rules beyond the field checks. A case must have exactly one `current`
+ * stage, because the view marks one and a payload claiming two is asking it
+ * to choose. And stages must run done → current → todo without going back:
+ * a done stage after the current one is a track that reads backwards, which
+ * is worse than no track.
+ */
+export function validateCases(input) {
+    const issues = [];
+    const cases = input?.cases;
+    if (cases === undefined)
+        return issues;
+    if (!Array.isArray(cases)) {
+        return [{ id: null, message: "cases must be an array when present" }];
+    }
+    const STATES = ["done", "current", "todo"];
+    const seen = new Set();
+    cases.forEach((raw, index) => {
+        const c = raw;
+        const id = isNonEmptyString(c?.ref) ? c.ref : `cases[${index}]`;
+        for (const field of ["ref", "subject"]) {
+            if (!isNonEmptyString(c?.[field])) {
+                issues.push({ id, message: `${field} is required on a case` });
+            }
+        }
+        if (isNonEmptyString(c?.ref)) {
+            if (seen.has(c.ref))
+                issues.push({ id, message: `duplicate case ref ${c.ref}` });
+            seen.add(c.ref);
+        }
+        if (!Array.isArray(c?.stages) || c.stages.length === 0) {
+            issues.push({ id, message: "stages must be a non-empty array" });
+            return;
+        }
+        c.stages.forEach((stage, i) => {
+            if (!isNonEmptyString(stage?.name)) {
+                issues.push({ id, message: `stages[${i}].name is required` });
+            }
+            if (!STATES.includes(stage?.state)) {
+                issues.push({ id, message: `stages[${i}].state must be one of ${STATES.join(", ")}` });
+            }
+            if (stage?.at !== undefined && !isNonEmptyString(stage.at)) {
+                issues.push({ id, message: `stages[${i}].at must be a non-empty string when present` });
+            }
+        });
+        const currents = c.stages.filter((s) => s?.state === "current").length;
+        if (currents !== 1) {
+            issues.push({ id, message: `a case needs exactly one current stage, found ${currents}` });
+        }
+        const order = c.stages.map((s) => s?.state);
+        const firstTodo = order.indexOf("todo");
+        if (firstTodo !== -1 && order.slice(firstTodo).some((s) => s === "done")) {
+            issues.push({ id, message: "a done stage follows a todo stage — the track reads backwards" });
+        }
+    });
+    return issues;
+}

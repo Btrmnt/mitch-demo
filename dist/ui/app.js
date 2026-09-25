@@ -1,15 +1,15 @@
-import { fetchedActionSource, fetchedCompletedSource } from "../actions/source.js?v=b9b12cf";
-import { storageDecisionStore } from "../actions/decisions.js?v=b9b12cf";
-import { validateActionsPayload } from "../actions/validate.js?v=b9b12cf";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, } from "./components.js?v=b9b12cf";
-import { showToast } from "./toast.js?v=b9b12cf";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=b9b12cf";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, } from "./state.js?v=b9b12cf";
+import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=32784bf";
+import { storageDecisionStore } from "../actions/decisions.js?v=32784bf";
+import { validateActionsPayload } from "../actions/validate.js?v=32784bf";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseGrid, } from "./components.js?v=32784bf";
+import { showToast } from "./toast.js?v=32784bf";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=32784bf";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, } from "./state.js?v=32784bf";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=b9b12cf";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=32784bf";
 let state = initialUiState();
 let actions = [];
 /**
@@ -26,6 +26,8 @@ let completedSource = null;
  * the property access itself, before any method is called.
  */
 let decisions = null;
+let caseSource = null;
+let cases = [];
 let completed = [];
 /**
  * After a decision, move the reader to the next live item on the same case
@@ -88,6 +90,10 @@ async function refresh() {
             return;
         if (completedSource)
             completed = await completedSource().catch(() => completed);
+        // Onboarding state moves for the same reasons the queue does — a stage
+        // advancing is exactly what a reader came back to see.
+        if (caseSource)
+            cases = await caseSource().catch(() => cases);
         const changed = fresh.length !== actions.length ||
             fresh.some((a, i) => a.id !== actions[i]?.id || a.status !== actions[i]?.status);
         const before = state;
@@ -119,12 +125,14 @@ function render() {
     root.innerHTML = `
     <header class="app-header">
       <div class="app-title">Mitch Actions</div>
-      <div class="chip-row">${chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length)}</div>
+      <div class="chip-row">${chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length, cases.length)}</div>
     </header>
     <main class="queue">
       ${state.filter === "completed"
         ? completedGrid(byMostRecent(completed))
-        : cardGrid(view.cards)}
+        : state.filter === "cases"
+            ? caseGrid(deriveCases(cases, actions, state))
+            : cardGrid(view.cards)}
     </main>
     ${modal(view.openCard)}
   `;
@@ -289,6 +297,8 @@ async function main() {
     // The completed log is decoration for the queue, not a precondition for it.
     // A source that cannot answer it still gives a usable screen.
     completed = await completedSource().catch(() => []);
+    caseSource = fetchedCaseSource(PAYLOAD_URL);
+    cases = await caseSource().catch(() => []);
     // The runtime half of check:actions, at the source boundary. That check
     // only runs at authoring time over files in this repo; a live source's
     // output is not authored here. Rendering an item with an unknown status

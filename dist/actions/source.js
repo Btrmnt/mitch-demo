@@ -52,3 +52,21 @@ export function fetchedCompletedSource(url) {
         return staticCompletedSource(payload)();
     };
 }
+/**
+ * Onboarding state, on the same terms as the other two sources. An absent
+ * `cases` yields an empty list: a payload that only describes exceptions is
+ * legitimate and the UI simply offers no onboarding view for it.
+ */
+export function staticCaseSource(payload) {
+    return async () => [...(payload.cases ?? [])];
+}
+export function fetchedCaseSource(url) {
+    return async () => {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`Could not load ${url}: ${res.status} ${res.statusText}`);
+        }
+        const payload = (await res.json());
+        return staticCaseSource(payload)();
+    };
+}

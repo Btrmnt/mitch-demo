@@ -90,15 +90,18 @@ export function deriveView(actions, state) {
     const counts = {
         all: all.length,
         // Filled by the caller: deriveView projects actions, and completed work
-        // is a different read that this function is not given.
+        // and onboarding state are different reads this function is not given.
         completed: 0,
+        cases: 0,
         needs_you: all.filter((c) => c.status === "needs_you").length,
         waiting: all.filter((c) => c.status === "waiting").length,
         sent: all.filter((c) => c.status === "sent").length,
         closed: all.filter((c) => c.status === "closed").length,
     };
     let cards = all;
-    if (state.filter !== "all" && state.filter !== "completed") {
+    if (state.filter !== "all" &&
+        state.filter !== "completed" &&
+        state.filter !== "cases") {
         cards = cards.filter((c) => c.status === state.filter);
     }
     if (state.redAlertsOnly)
@@ -211,4 +214,30 @@ export function restoreDecisions(actions, decisions, state) {
         }
     }
     return { state: { ...state, overrides }, stale };
+}
+/**
+ * Projects onboarding state through the queue.
+ *
+ * The payload says which stage a case has reached. Whether that stage is
+ * BLOCKED is not the payload's to say — it is whatever is still open on the
+ * same caseRef, read through local decisions. Computing it here rather than
+ * declaring it means the two views cannot disagree about why a property is
+ * stuck, and that resolving the last open item unblocks the stage on screen
+ * without anything else being told.
+ */
+export function deriveCases(cases, actions, state) {
+    return cases.map((c) => {
+        const blockers = actions
+            .filter((a) => a.caseRef === c.ref &&
+            LIVE.includes(state.overrides[a.id]?.status ?? a.status))
+            .map((a) => ({ id: a.id, title: a.title }));
+        return {
+            ...c,
+            blockers,
+            stages: c.stages.map((stage) => ({
+                ...stage,
+                blocked: stage.state === "current" && blockers.length > 0,
+            })),
+        };
+    });
 }
