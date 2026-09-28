@@ -7,11 +7,34 @@ export function initialUiState() {
         openCardId: null,
         openMenuId: null,
         owner: null,
+        rehearsal: false,
         overrides: {},
     };
 }
 export function setFilter(state, filter) {
     return { ...state, filter };
+}
+/**
+ * Enters or leaves rehearsal.
+ *
+ * Leaving DISCARDS every rehearsed decision. They were explicitly not real,
+ * and carrying them into live work would turn "let me show you what this
+ * does" into a set of decisions nobody knowingly took. Real decisions taken
+ * before rehearsal began are untouched.
+ */
+export function toggleRehearsal(state) {
+    if (!state.rehearsal)
+        return { ...state, rehearsal: true };
+    const kept = {};
+    for (const [id, override] of Object.entries(state.overrides)) {
+        if (!override.rehearsed)
+            kept[id] = override;
+    }
+    return { ...state, rehearsal: false, overrides: kept };
+}
+/** How many decisions this rehearsal is holding back. */
+export function rehearsedCount(state) {
+    return Object.values(state.overrides).filter((o) => o.rehearsed).length;
 }
 /** Narrows the board to one holder, or to everyone when given null. */
 export function setOwner(state, owner) {
@@ -58,7 +81,13 @@ export function applyDecision(state, id, status, note, entry, baseStatus) {
         // A decision reached through the overflow menu closes that menu with it;
         // one taken elsewhere leaves a menu open on another card alone.
         openMenuId: state.openMenuId === id ? null : state.openMenuId,
-        overrides: { ...state.overrides, [id]: { status, note, entry, baseStatus } },
+        overrides: {
+            ...state.overrides,
+            [id]: {
+                status, note, entry, baseStatus,
+                ...(state.rehearsal ? { rehearsed: true } : {}),
+            },
+        },
     };
 }
 const DEFAULT_NOTE = {

@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=c5a1624";
+import { esc } from "./escape.js?v=04e268e";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",
@@ -465,6 +465,10 @@ const ICON_BOARD = `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true" foc
     `<rect x="6.3" y="2.4" width="3.4" height="7.6" rx="1" fill="currentColor"/>` +
     `<rect x="11.4" y="2.4" width="3.4" height="9.6" rx="1" fill="currentColor"/>` +
     `</svg>`;
+/** Stand-in for `fa-flask`. */
+const ICON_FLASK = `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">` +
+    `<path d="M6.4 1.6h3.2v1.2H9.1v3.3l3.9 6.2a1.6 1.6 0 0 1-1.35 2.45H4.35A1.6 1.6 0 0 1 3 12.3l3.9-6.2V2.8H6.4z" ` +
+    `fill="currentColor"/></svg>`;
 /** Stand-in for `fa-list-check`. */
 const ICON_LIST = `<svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">` +
     `<rect x="1" y="3" width="3" height="3" rx="0.8" fill="currentColor"/>` +
@@ -583,4 +587,42 @@ export function ownerRow(owners, active) {
     }))
         .join("");
     return `${all}<span class="chip-divider"></span>${each}`;
+}
+/**
+ * The rehearsal control, beside the view switch.
+ *
+ * Tertiary like its neighbour, and it states what turning it on would do
+ * rather than what is currently true — a control reading "Rehearsal" while
+ * you are already rehearsing has to be learned. While on, the strip below
+ * says so plainly, which is the part that must not be missable.
+ */
+export function rehearsalSwitch(on, held) {
+    const label = on ? "Leave rehearsal" : "Rehearsal";
+    const count = on && held > 0
+        ? `<span class="view-switch__count">${esc(String(held))}</span>`
+        : "";
+    return (`<button class="btn-tertiary view-switch rehearsal-switch${on ? " rehearsal-switch--on" : ""}" ` +
+        `data-action="toggle-rehearsal" title="Work the queue for real and let nothing out of the building">` +
+        `${ICON_FLASK}<span>${esc(label)}</span>${count}</button>`);
+}
+/**
+ * The strip that makes rehearsal impossible to mistake for live work.
+ *
+ * Deliberately not a subtle tint on the header: a demo that quietly looks
+ * slightly different is exactly the one somebody misreads in front of a
+ * client. It states the two things that are true — nothing is saved, nothing
+ * would be sent — and counts what is being held.
+ */
+export function rehearsalBanner(on, held) {
+    if (!on)
+        return "";
+    const what = held === 0
+        ? "Nothing held back yet."
+        : `${esc(String(held))} decision${held === 1 ? "" : "s"} held back — computed, never sent.`;
+    return `
+    <div class="rehearsal-strip" role="status">
+      <span class="rehearsal-strip__tag">Rehearsal</span>
+      <span>${"Decisions compute and the queue moves. Nothing is saved, and " +
+        "nothing would leave the building. " + what}</span>
+    </div>`;
 }

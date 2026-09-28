@@ -1005,3 +1005,38 @@ html, body {
   border-radius: var(--radius-pill);
   padding: 1px 6px;
 }
+
+/* ── Rehearsal ─────────────────────────────────────────────────────────────
+   The control sits beside the view switch; the strip below the header is what
+   makes the mode unmistakable. A subtle tint on the header would be exactly
+   the thing somebody misreads in front of a client, so this is a full-width
+   band in the alert palette — not because rehearsal is dangerous, but because
+   mistaking it for live work would be. */
+.rehearsal-switch--on {
+  color: var(--danger-ink);
+  font-weight: 700;
+}
+.rehearsal-strip {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 9px 28px;
+  background: var(--danger-tint);
+  border-bottom: 1px solid rgba(229, 57, 43, 0.28);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--danger-ink);
+}
+.rehearsal-strip__tag {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(229, 57, 43, 0.4);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+}

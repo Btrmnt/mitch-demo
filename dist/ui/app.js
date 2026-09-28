@@ -1,15 +1,15 @@
-import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=c5a1624";
-import { storageDecisionStore } from "../actions/decisions.js?v=c5a1624";
-import { validateActionsPayload } from "../actions/validate.js?v=c5a1624";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, ownerRow, } from "./components.js?v=c5a1624";
-import { showToast } from "./toast.js?v=c5a1624";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=c5a1624";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, setOwner, ownersOf, } from "./state.js?v=c5a1624";
+import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=04e268e";
+import { storageDecisionStore } from "../actions/decisions.js?v=04e268e";
+import { validateActionsPayload } from "../actions/validate.js?v=04e268e";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, ownerRow, rehearsalSwitch, rehearsalBanner, } from "./components.js?v=04e268e";
+import { showToast } from "./toast.js?v=04e268e";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=04e268e";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, setOwner, ownersOf, toggleRehearsal, rehearsedCount, } from "./state.js?v=04e268e";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=c5a1624";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=04e268e";
 let state = initialUiState();
 let actions = [];
 /**
@@ -57,6 +57,9 @@ function followOn(id) {
  * already in UI state either way.
  */
 async function remember(id, status, note, entry) {
+    // A rehearsed decision is never written. It is the whole point.
+    if (state.rehearsal)
+        return;
     await decisions?.save({
         id, status, note, entry,
         baseStatus: upstreamStatus(id),
@@ -126,6 +129,7 @@ function render() {
     <header class="app-header">
       <div class="app-title">
         Mitch Actions
+        ${rehearsalSwitch(state.rehearsal, rehearsedCount(state))}
         ${cases.length
         ? viewSwitch(state.filter === "cases", { cases: cases.length, open: view.counts.needs_you })
         : ""}
@@ -134,6 +138,7 @@ function render() {
         ? ownerRow(ownersOf(cases), state.owner)
         : chipRow(view.counts, state.filter, state.redAlertsOnly, completed.length)}</div>
     </header>
+    ${rehearsalBanner(state.rehearsal, rehearsedCount(state))}
     <main class="queue">
       ${state.filter === "completed"
         ? completedGrid(byMostRecent(completed))
@@ -214,6 +219,16 @@ function bindEvents(root) {
         }
         // An empty value is "everyone" — the chip carries no name because there
         // is no holder called everyone.
+        if (action === "toggle-rehearsal") {
+            const leaving = state.rehearsal;
+            const held = rehearsedCount(state);
+            state = toggleRehearsal(state);
+            showToast(leaving
+                ? held > 0
+                    ? `Rehearsal over. ${held} rehearsed decision${held === 1 ? "" : "s"} discarded — nothing was saved or sent.`
+                    : "Rehearsal over."
+                : "Rehearsal on. Decisions will compute and the queue will move; nothing is saved or sent.");
+        }
         if (action === "owner") {
             state = setOwner(state, value ? value : null);
         }
