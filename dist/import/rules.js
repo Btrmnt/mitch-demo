@@ -1,4 +1,4 @@
-import { parseFee, feeBand } from "./fee.js?v=04e268e";
+import { parseFee, feeBand } from "./fee.js?v=4874af0";
 const has = (v) => Boolean(v && v.trim());
 const no = (v) => !has(v);
 /** As above, in days. */

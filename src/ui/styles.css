@@ -51,7 +51,7 @@ html, body {
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--ink-muted-2);
 }
 
 .badge {
@@ -69,8 +69,8 @@ html, body {
    the Needs You status badge sitting next to it. */
 .badge--tag {
   color: var(--ink-muted-1);
-  background: rgba(31, 35, 37, 0.07);
-  box-shadow: inset 0 1px 2px rgba(31, 35, 37, 0.08);
+  background: var(--tag-bg);
+  box-shadow: var(--tag-inset);
 }
 .badge--needs_you { color: var(--status-needs-you-ink); background: var(--status-needs-you-tint); }
 .badge--waiting { color: var(--status-waiting-ink); background: var(--status-waiting-tint); }
@@ -90,7 +90,7 @@ html, body {
 }
 .chip:hover { border-color: var(--ink-muted-2); }
 .chip--active {
-  color: #fff;
+  color: var(--on-brand);
   background: var(--brand-navy);
   border-color: var(--brand-navy);
 }
@@ -125,7 +125,7 @@ html, body {
 
 .btn-primary {
   font-weight: 700;
-  color: #fff;
+  color: var(--on-brand);
   background: var(--brand-navy-2);
   border: none;
 }
@@ -251,7 +251,7 @@ html, body {
   font-family: var(--font-ui);
   font-weight: 800;
   font-size: 12px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+  box-shadow: var(--shadow-control);
 }
 .card-ctl--menu {
   border: 1px solid var(--hairline-strong);
@@ -270,9 +270,9 @@ html, body {
   min-width: 180px;
   padding: 4px;
   background: var(--surface-card);
-  border: 1px solid rgba(31, 35, 37, 0.15);
+  border: 1px solid var(--overlay-border);
   border-radius: var(--radius-sm);
-  box-shadow: 0 16px 38px -22px rgba(22, 36, 60, 0.35);
+  box-shadow: var(--shadow-menu);
   z-index: 1;
 }
 /* The type treatment comes from .btn-tertiary, which every menu entry also
@@ -297,7 +297,7 @@ html, body {
 
 .card-alert {
   background: var(--danger-tint);
-  border: 1px solid rgba(229, 57, 43, 0.28);
+  border: 1px solid var(--danger-border);
   border-radius: var(--radius-sm);
   padding: 10px 12px;
   font-size: 12px;
@@ -351,7 +351,7 @@ html, body {
   border: 1px solid var(--hairline);
   border-left: none;
   border-radius: var(--radius-context);
-  box-shadow: 0 24px 52px -30px rgba(22, 36, 60, 0.45);
+  box-shadow: var(--shadow-panel);
   overflow-y: auto;
   position: relative;
   z-index: 1;
@@ -371,7 +371,7 @@ html, body {
   margin: 0 0 10px;
   font-size: 12px;
   line-height: 1.55;
-  color: #6B6D6A;
+  color: var(--ink-muted-1);
 }
 /* A pill is one short line. Real rule names run long — "Owner Entry —
    Business + Individual, Existing Contact Conflict" wrapped to four lines in
@@ -390,7 +390,7 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   background: var(--surface-card);
-  border: 1px solid rgba(31, 35, 37, 0.15);
+  border: 1px solid var(--overlay-border);
   border-radius: var(--radius-pill);
   padding: 4px 9px;
   font-family: var(--font-mono);
@@ -435,7 +435,7 @@ html, body {
      this named stop is what guarantees nothing in the queue paints over an
      open modal. Do not replace it with a small number. */
   z-index: var(--z-modal);
-  background: rgba(15, 23, 42, 0.55);
+  background: var(--scrim);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -718,7 +718,7 @@ html, body {
   font-family: var(--font-ui);
   font-size: 12.5px;
   line-height: 1.45;
-  box-shadow: 0 8px 28px rgba(22, 36, 60, 0.28);
+  box-shadow: var(--shadow-toast);
   opacity: 0;
   pointer-events: none;
   transition: opacity 160ms ease, transform 160ms ease;
@@ -898,7 +898,7 @@ html, body {
 }
 /* Blocked borrows the red-alert colour on purpose: it is the same fact the
    queue states, seen from the other side. */
-.case-card--blocked { border-color: rgba(229, 57, 43, 0.4); }
+.case-card--blocked { border-color: var(--danger-border-strong); }
 .case-card__ref { margin: 0; font-size: 12.5px; font-weight: 700; color: var(--ink-1); }
 .case-card__subject {
   margin: 2px 0 0;
@@ -1023,7 +1023,7 @@ html, body {
   flex-wrap: wrap;
   padding: 9px 28px;
   background: var(--danger-tint);
-  border-bottom: 1px solid rgba(229, 57, 43, 0.28);
+  border-bottom: 1px solid var(--danger-border);
   font-family: var(--font-ui);
   font-size: 12px;
   line-height: 1.45;
@@ -1036,7 +1036,7 @@ html, body {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  border: 1px solid rgba(229, 57, 43, 0.4);
+  border: 1px solid var(--danger-border-strong);
   border-radius: var(--radius-pill);
   padding: 2px 8px;
 }

@@ -1,4 +1,4 @@
-import { esc } from "./escape.js?v=04e268e";
+import { esc } from "./escape.js?v=4874af0";
 /** Human labels for each status, as the design system writes them. */
 export const STATUS_LABEL = {
     needs_you: "Needs You",

@@ -64,4 +64,174 @@
     repeating-linear-gradient(135deg,
       rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 2px,
       transparent 2px, transparent 6px);
+
+  /* The last values styles.css used to hardcode. Named because a theme swap
+     is only a swap if nothing is left behind — a shadow tuned for a white
+     card is invisible on a dark one, and a border tuned for dark ink is
+     invisible on light. */
+  --on-brand: #ffffff;
+  /* Ink for the one element that sits ON the queue motif rather than on a
+     card. The motif is dark in both themes, so this does not flip with them —
+     tokenising it as --ink-muted-2 put grey text on a navy field. */
+  --ink-on-motif: rgba(255, 255, 255, 0.55);
+  --tag-bg: rgba(31, 35, 37, 0.07);
+  --tag-inset: inset 0 1px 2px rgba(31, 35, 37, 0.08);
+  --overlay-border: rgba(31, 35, 37, 0.15);
+  --danger-border: rgba(229, 57, 43, 0.28);
+  --danger-border-strong: rgba(229, 57, 43, 0.4);
+  --scrim: rgba(15, 23, 42, 0.55);
+  --shadow-control: 0 1px 2px rgba(16, 24, 40, 0.08);
+  --shadow-menu: 0 16px 38px -22px rgba(22, 36, 60, 0.35);
+  --shadow-panel: 0 24px 52px -30px rgba(22, 36, 60, 0.45);
+  --shadow-toast: 0 8px 28px rgba(22, 36, 60, 0.28);
+}
+
+/* ── Dark ──────────────────────────────────────────────────────────────────
+   Every token above, restated. Only the values change: nothing in styles.css
+   knows a theme exists, which is what makes this a swap rather than a fork.
+
+   Declared twice on purpose. `[data-theme="dark"]` is an explicit choice —
+   Teams tells a tab which theme it is in, and that must win. The media query
+   covers a browser whose owner has chosen dark and nobody has told us, and is
+   guarded against `[data-theme="light"]` so an explicit light choice is not
+   overridden by the operating system.
+
+   The palette is the light one inverted in LIGHTNESS, not in hue. Highland's
+   navy and the accent blue stay recognisably themselves; what changes is
+   which end of the scale carries the ink and which carries the surface. A
+   dark theme that also shifts hue reads as a different product. */
+:root[data-theme="dark"] {
+  /* ink — now the light end */
+  --ink-1: #E7ECF2;
+  --ink-2: #DCE3EB;
+  --ink-muted-1: #A9B3C0;
+  --ink-muted-2: #7F8996;
+  --ink-muted-3: #6F7783;
+
+  /* brand — navy cannot be a background here, so it carries ink instead,
+     and the blue that was an accent on white becomes the filled surface */
+  --brand-navy: #C9D6E6;
+  --brand-navy-2: #4C7FD1;
+
+  --accent-blue: #5FA8DC;
+  --accent-blue-strong: #7CC1EC;
+  --accent-blue-tint: #16283A;
+
+  /* status — tints go from a wash of white to a wash of the surface */
+  --status-needs-you-ink: #8FC7F0;
+  --status-needs-you-tint: #16283A;
+  --status-sent-ink: #7FD0A8;
+  --status-sent-tint: #142A22;
+  --status-waiting-ink: #E3B778;
+  --status-waiting-tint: #2C2318;
+  --status-closed-ink: #97A1AE;
+  --status-closed-tint: #232931;
+
+  --danger-ink: #F08C82;
+  --danger-tint: rgba(229, 57, 43, 0.18);
+
+  /* surfaces — page is the darkest, cards lift off it, context sits between */
+  --surface-page: #14181E;
+  --surface-card: #1C222A;
+  --surface-context: #252C36;
+
+  --hairline: #2E3641;
+  --hairline-strong: #3C4552;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.32),
+                 0 8px 20px -14px rgba(0, 0, 0, 0.55);
+
+  --on-brand: #0F141A;
+  --ink-on-motif: rgba(255, 255, 255, 0.5);
+  --tag-bg: rgba(255, 255, 255, 0.07);
+  --tag-inset: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  --overlay-border: rgba(255, 255, 255, 0.14);
+  --danger-border: rgba(240, 140, 130, 0.34);
+  --danger-border-strong: rgba(240, 140, 130, 0.5);
+  /* Deeper than the light scrim: over a dark page a translucent wash has less
+     contrast to spend, so it has to be darker to read as a layer at all. */
+  --scrim: rgba(3, 6, 10, 0.68);
+  --shadow-control: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-menu: 0 16px 38px -22px rgba(0, 0, 0, 0.72);
+  --shadow-panel: 0 24px 52px -30px rgba(0, 0, 0, 0.8);
+  --shadow-toast: 0 8px 28px rgba(0, 0, 0, 0.55);
+  --motif-queue:
+    radial-gradient(circle at 20% 15%, #16243C 0%, #0E1724 45%, #070C14 100%),
+    repeating-linear-gradient(135deg,
+      rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 2px,
+      transparent 2px, transparent 6px);
+
+}
+
+/* Tell the browser which scrollbars, form controls and default canvas to use.
+   Without this a dark page keeps light scrollbars and a white flash on load. */
+:root { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+@media (prefers-color-scheme: dark) {
+  /* The same values, for a browser whose owner chose dark and nobody told us.
+     Guarded: an explicit light choice is not overridden by the OS. */
+  :root:not([data-theme="light"]) {
+  /* ink — now the light end */
+  --ink-1: #E7ECF2;
+  --ink-2: #DCE3EB;
+  --ink-muted-1: #A9B3C0;
+  --ink-muted-2: #7F8996;
+  --ink-muted-3: #6F7783;
+
+  /* brand — navy cannot be a background here, so it carries ink instead,
+     and the blue that was an accent on white becomes the filled surface */
+  --brand-navy: #C9D6E6;
+  --brand-navy-2: #4C7FD1;
+
+  --accent-blue: #5FA8DC;
+  --accent-blue-strong: #7CC1EC;
+  --accent-blue-tint: #16283A;
+
+  /* status — tints go from a wash of white to a wash of the surface */
+  --status-needs-you-ink: #8FC7F0;
+  --status-needs-you-tint: #16283A;
+  --status-sent-ink: #7FD0A8;
+  --status-sent-tint: #142A22;
+  --status-waiting-ink: #E3B778;
+  --status-waiting-tint: #2C2318;
+  --status-closed-ink: #97A1AE;
+  --status-closed-tint: #232931;
+
+  --danger-ink: #F08C82;
+  --danger-tint: rgba(229, 57, 43, 0.18);
+
+  /* surfaces — page is the darkest, cards lift off it, context sits between */
+  --surface-page: #14181E;
+  --surface-card: #1C222A;
+  --surface-context: #252C36;
+
+  --hairline: #2E3641;
+  --hairline-strong: #3C4552;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.32),
+                 0 8px 20px -14px rgba(0, 0, 0, 0.55);
+
+  --on-brand: #0F141A;
+  --ink-on-motif: rgba(255, 255, 255, 0.5);
+  --tag-bg: rgba(255, 255, 255, 0.07);
+  --tag-inset: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  --overlay-border: rgba(255, 255, 255, 0.14);
+  --danger-border: rgba(240, 140, 130, 0.34);
+  --danger-border-strong: rgba(240, 140, 130, 0.5);
+  /* Deeper than the light scrim: over a dark page a translucent wash has less
+     contrast to spend, so it has to be darker to read as a layer at all. */
+  --scrim: rgba(3, 6, 10, 0.68);
+  --shadow-control: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-menu: 0 16px 38px -22px rgba(0, 0, 0, 0.72);
+  --shadow-panel: 0 24px 52px -30px rgba(0, 0, 0, 0.8);
+  --shadow-toast: 0 8px 28px rgba(0, 0, 0, 0.55);
+  --motif-queue:
+    radial-gradient(circle at 20% 15%, #16243C 0%, #0E1724 45%, #070C14 100%),
+    repeating-linear-gradient(135deg,
+      rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 2px,
+      transparent 2px, transparent 6px);
+
+}
+  :root:not([data-theme="light"]) { color-scheme: dark; }
 }

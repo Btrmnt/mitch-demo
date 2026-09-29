@@ -1,15 +1,16 @@
-import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=04e268e";
-import { storageDecisionStore } from "../actions/decisions.js?v=04e268e";
-import { validateActionsPayload } from "../actions/validate.js?v=04e268e";
-import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, ownerRow, rehearsalSwitch, rehearsalBanner, } from "./components.js?v=04e268e";
-import { showToast } from "./toast.js?v=04e268e";
-import { initMasonry, relayoutGrid } from "./masonry.js?v=04e268e";
-import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, setOwner, ownersOf, toggleRehearsal, rehearsedCount, } from "./state.js?v=04e268e";
+import { fetchedActionSource, fetchedCompletedSource, fetchedCaseSource, } from "../actions/source.js?v=4874af0";
+import { storageDecisionStore } from "../actions/decisions.js?v=4874af0";
+import { validateActionsPayload } from "../actions/validate.js?v=4874af0";
+import { chipRow, cardGrid, modal, issueScreen, completedGrid, caseBoard, viewSwitch, ownerRow, rehearsalSwitch, rehearsalBanner, } from "./components.js?v=4874af0";
+import { showToast } from "./toast.js?v=4874af0";
+import { initTheme } from "./theme.js?v=4874af0";
+import { initMasonry, relayoutGrid } from "./masonry.js?v=4874af0";
+import { initialUiState, deriveView, setFilter, toggleRedAlerts, applyDecision, closeCard, openCard, toggleMenu, closeMenu, reconcile, byMostRecent, restoreDecisions, deriveCases, setOwner, ownersOf, toggleRehearsal, rehearsedCount, } from "./state.js?v=4874af0";
 // Relative, not root-absolute: the same tree is served both at a host
 // root (the dev server, the gated deploy) and under a path prefix
 // (GitHub Pages serves a project repo at /<repo>/). A leading slash
 // resolves to the host root in the second case and 404s.
-const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=04e268e";
+const PAYLOAD_URL = "./src/data/highland-mitch-actions.json?v=4874af0";
 let state = initialUiState();
 let actions = [];
 /**
@@ -364,6 +365,7 @@ async function main() {
     bindEvents(root);
     // The resize listener, attached once here for the same reason the click and
     // keydown listeners are — never from inside render().
+    initTheme();
     initMasonry();
     // Coming back to this tab is the signal that something may have changed
     // elsewhere. Both events fire in practice — visibilitychange when Teams

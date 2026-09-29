@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow" />
     <title>Mitch Actions</title>
     <script>
       // This file is served with `cache-control: max-age=600`, and the Teams
@@ -18,6 +17,20 @@
       // modules still carry a build id on their own imports, which is what
       // keeps the rest of the graph fresh.
       (function () {
+        // Theme BEFORE any stylesheet, or the page paints light for a frame
+        // and flips. Mirrors resolveTheme() in src/ui/theme.ts, which owns the
+        // rule and is tested; this is the first-paint copy and must not drift
+        // from it. Teams substitutes {theme} into the tab's contentUrl, so the
+        // host's answer arrives in the URL with no SDK and no CDN.
+        var t = new URLSearchParams(location.search).get('theme');
+        var dark = t === 'dark' || t === 'contrast'
+          ? true
+          : t === 'default'
+            ? false
+            : window.matchMedia &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+
         var v = Date.now().toString(36);
         ['src/ui/fonts.css', 'src/ui/tokens.css', 'src/ui/styles.css'].forEach(
           function (href) {
